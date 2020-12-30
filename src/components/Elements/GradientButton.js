@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Button, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const GradientButton = ({colors, wrapperStyle}) => {
+const GradientButton = ({colors, wrapperStyle, ...args}) => {
   return (
     <View style={{...styles.container, ...wrapperStyle}}>
       <LinearGradient
@@ -10,7 +10,7 @@ const GradientButton = ({colors, wrapperStyle}) => {
         style={styles.gradientButton}
         start={{y: 0.0, x: 0.0}}
         end={{y: 0.0, x: 1.0}}>
-        <Button style={styles.loginButton} title={'Welcome'} color="white" />
+        <Button style={styles.loginButton} color="white" {...args} />
       </LinearGradient>
     </View>
   );
