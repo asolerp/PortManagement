@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import auth from '@react-native-firebase/auth';
+import SplashScreen from 'react-native-splash-screen';
 
 const App = () => {
   // Set an initializing state whilst Firebase connects
@@ -17,6 +18,10 @@ const App = () => {
     },
     [initializing],
   );
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   useEffect(() => {
     const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
