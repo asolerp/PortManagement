@@ -1,15 +1,23 @@
 import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 
-const Input = ({label, name, value, onChange, ...args}) => {
+const Input = ({
+  label,
+  name,
+  value,
+  onChange,
+  inputStyles,
+  labelStyle,
+  ...args
+}) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
+      <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
       <TextInput
         autoCapitalize="none"
         value={value}
         onChangeText={(text) => onChange(text, name)}
-        style={styles.input}
+        style={{...styles.input, ...inputStyles}}
         {...args}
       />
     </View>

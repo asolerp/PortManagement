@@ -1,12 +1,27 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
-import ProfileBar from '../components/ProfileBar';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const NewHomeScreen = () => {
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import NewFormHome from '../components/Forms/NewHomeForm';
+
+import TitlePage from '../components/TitlePage';
+
+const NewHomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <Text>Formulario nueva casa</Text>
+      <TitlePage
+        leftSide={
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Icon name="arrow-back-ios" size={30} color="black" />
+          </TouchableOpacity>
+        }
+        title="Nueva casa"
+      />
+      <View style={styles.newHomeScreen}>
+        <NewFormHome />
+      </View>
     </View>
   );
 };
@@ -15,8 +30,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#F2F2F2',
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 30,
+  },
+  newHomeScreen: {
+    flex: 6,
+    justifyContent: 'flex-start',
   },
 });
 

@@ -1,14 +1,12 @@
 import React from 'react';
-import {View, StyleSheet, TouchableHighlight} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const AddButton = ({onPress}) => {
+const AddButton = () => {
   return (
     <View style={styles.container}>
-      <TouchableHighlight onPress={onPress}>
-        <Icon name="add" size={40} color={'white'} />
-      </TouchableHighlight>
+      <Icon name="add" size={40} color={'white'} />
     </View>
   );
 };
