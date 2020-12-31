@@ -14,7 +14,7 @@ const LoginForm = () => {
 
   const signIn = async () => {
     try {
-      auth().createUserWithEmailAndPassword(username, password);
+      auth().signInWithEmailAndPassword(username, password);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');

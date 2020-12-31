@@ -12,5 +12,5 @@ exports.helloWorld = functions.https.onRequest((request, response) => {
 });
 
 exports.newUser = functions.auth.user().onCreate((user) => {
-  admin.database().ref(`/users/${user.uid}`).set({email: user.email});
+  admin.firestore().collection(`users`).doc(user.uid).set({email: user.email});
 });
