@@ -5,8 +5,9 @@ import {View, StyleSheet, Text, Button} from 'react-native';
 import auth from '@react-native-firebase/auth';
 
 import {AuthContext} from '../navigation/AuthNavigator';
+import ProfileBar from '../components/ProfileBar';
 
-const Home = () => {
+const DashboardScreen = () => {
   const user = useContext(AuthContext);
   console.log(user);
 
@@ -20,8 +21,10 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text>Hola Home! Welcome {user.email}</Text>
-      <Button title="Logout" onPress={logOut} />
+      <ProfileBar />
+      <View style={styles.home}>
+        <Button title="Logout" onPress={logOut} />
+      </View>
     </View>
   );
 };
@@ -29,9 +32,13 @@ const Home = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#F2F2F2',
+  },
+  home: {
+    flex: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
 });
 
-export default Home;
+export default DashboardScreen;
