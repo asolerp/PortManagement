@@ -1153,6 +1153,11 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-10.4.0.tgz#83d7bb13404d4266f2cad6bf5a0ad889805bd608"
   integrity sha512-y9F2mJVfbLUDxGZ/HdmY95wDuHNJb7aGcFSb8HuJaXNWXrF28ebeI1AhAM4FICWGunrzYIDl7UXYyeONl+aitg==
 
+"@react-native-picker/picker@^1.8.3":
+  version "1.9.8"
+  resolved "https://registry.yarnpkg.com/@react-native-picker/picker/-/picker-1.9.8.tgz#7272ec9957e2234bc23aeeee2b25db1ede9d1ffc"
+  integrity sha512-DcIrg9jMLqercmrWzV1WjpiNVo54CYamwsD91b+gKiY1F0dBDjQHilmsuTje7UesrZc9K+of4DGtisB4i/QxJg==
+
 "@react-navigation/core@^5.14.4":
   version "5.14.4"
   resolved "https://registry.yarnpkg.com/@react-navigation/core/-/core-5.14.4.tgz#f63a2cd214bddbd25e1181f9335c32dfc3b6460f"
@@ -5828,6 +5833,14 @@ react-native-linear-gradient@^2.5.6:
   version "2.5.6"
   resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.5.6.tgz#96215cbc5ec7a01247a20890888aa75b834d44a0"
   integrity sha512-HDwEaXcQIuXXCV70O+bK1rizFong3wj+5Q/jSyifKFLg0VWF95xh8XQgfzXwtq0NggL9vNjPKXa016KuFu+VFg==
+
+react-native-picker-select@^8.0.4:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-picker-select/-/react-native-picker-select-8.0.4.tgz#3f7f1f42df69b06e7d2c10338288332a6c40fd10"
+  integrity sha512-orBjPIwBkV5oipyVw263YNMI56f6Kj3p/ejabZoCYYNSG3AiLVVhC2RqsxMgDA7IayyURAW+AlV+mDJyVqLBkg==
+  dependencies:
+    "@react-native-picker/picker" "^1.8.3"
+    lodash.isequal "^4.5.0"
 
 react-native-reanimated@^1.13.2:
   version "1.13.2"

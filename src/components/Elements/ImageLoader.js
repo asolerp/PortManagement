@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'stretch',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   houseImage: {
     height: 170,
