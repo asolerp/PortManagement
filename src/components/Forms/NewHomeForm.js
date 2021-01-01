@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useNavigation} from '@react-navigation/native';
+
 import {View, StyleSheet, ScrollView, Button} from 'react-native';
 
 // UI
@@ -10,6 +12,7 @@ import Input from '../Elements/Input';
 import UserSelector from '../Elements/UserSelector';
 
 const NewFormHome = () => {
+  const navigation = useNavigation();
   const [houseImage, setHouseImage] = useState();
 
   return (
@@ -64,7 +67,10 @@ const NewFormHome = () => {
           />
         </View>
       </View>
-      <UserSelector label="Propietario" />
+      <UserSelector
+        label="Propietario"
+        onPress={() => navigation.navigate('UserList')}
+      />
       <Button title="Guardar" />
     </ScrollView>
   );

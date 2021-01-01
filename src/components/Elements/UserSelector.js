@@ -1,12 +1,15 @@
 import React from 'react';
 
 import {View, Text, StyleSheet} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const UserSelector = ({label}) => {
+const UserSelector = ({label, onPress}) => {
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
-      <View style={styles.selector} />
+      <TouchableOpacity onPress={onPress}>
+        <View style={styles.selector} />
+      </TouchableOpacity>
     </View>
   );
 };

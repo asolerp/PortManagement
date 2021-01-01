@@ -9,6 +9,7 @@ import firestore from '@react-native-firebase/firestore';
 const ProfileBar = () => {
   const user = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState();
+
   useEffect(() => {
     const subscriber = firestore()
       .collection('users')
