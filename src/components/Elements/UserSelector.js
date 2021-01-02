@@ -33,7 +33,7 @@ const UserSelector = ({label, onPress, user}) => {
 
 const styles = StyleSheet.create({
   selector: {
-    height: 70,
+    height: 50,
     borderRadius: 10,
     backgroundColor: 'white',
     flexDirection: 'row',
@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   infoWrapper: {
-    flex: 4,
+    flex: 5,
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 40,
+    height: 40,
     borderRadius: 100,
     resizeMode: 'cover',
   },

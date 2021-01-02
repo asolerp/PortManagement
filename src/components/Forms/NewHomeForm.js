@@ -1,24 +1,54 @@
 import React, {useContext, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
+import {useForm, Controller} from 'react-hook-form';
 
-import {View, StyleSheet, ScrollView, Button, SafeAreaView} from 'react-native';
+import {
+  ActivityIndicator,
+  View,
+  StyleSheet,
+  ScrollView,
+  Button,
+  Alert,
+} from 'react-native';
 
 // UI
 import ImageLoader from '../../components/Elements/ImageLoader';
+import UserSelector from '../Elements/UserSelector';
+import Input from '../Elements/Input';
+
+// Firebase
+import {newHouse} from '../../firebase/uploadNewHouse';
 
 // Utils
 import {launchImage} from '../../utils/imageFunctions';
-import Input from '../Elements/Input';
-import UserSelector from '../Elements/UserSelector';
 import {NewHouseFormContext} from '../../context/newHouseFormContext';
+import {AuthContext} from '../../navigation/AuthNavigator';
 
 const NewFormHome = () => {
-  const {users} = useContext(NewHouseFormContext);
-
-  console.log('context', users);
-
+  const user = useContext(AuthContext);
+  const {users, handleUsers} = useContext(NewHouseFormContext);
+  const {control, handleSubmit, errors, reset} = useForm();
   const navigation = useNavigation();
   const [houseImage, setHouseImage] = useState();
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      await newHouse({...data, owner: users[0]}, houseImage, user.uid);
+      reset();
+      setHouseImage(null);
+      handleUsers([]);
+      Alert.alert(
+        'Nueva casa registrada',
+        'Se ha registrado una nueva casa :)!',
+      );
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <ScrollView style={styles.scrollWrapper}>
@@ -26,49 +56,99 @@ const NewFormHome = () => {
         onPress={() => launchImage(setHouseImage)}
         image={houseImage}
       />
-      <Input
-        // value={username}
-        // onChange={handlerInput}
-        label="Nombre de la casa"
+      <Controller
+        control={control}
+        render={({onChange, onBlur, value}) => (
+          <Input
+            onBlur={onBlur}
+            onChangeText={(v) => onChange(v)}
+            value={value}
+            label="Nombre de la casa"
+            name="houseName"
+            inputStyles={styles.newHomeInput}
+            labelStyle={styles.newHomeLabel}
+            error={errors.houseName}
+          />
+        )}
         name="houseName"
-        inputStyles={styles.newHomeInput}
-        labelStyle={styles.newHomeLabel}
+        rules={{required: true}}
+        defaultValue=""
       />
-      <Input
-        // value={username}
-        // onChange={handlerInput}
-        label="Calle"
+      <Controller
+        control={control}
+        render={({onChange, onBlur, value}) => (
+          <Input
+            onBlur={onBlur}
+            onChangeText={(v) => onChange(v)}
+            value={value}
+            label="Calle"
+            name="street"
+            inputStyles={styles.newHomeInput}
+            labelStyle={styles.newHomeLabel}
+            error={errors.street}
+          />
+        )}
         name="street"
-        inputStyles={styles.newHomeInput}
-        labelStyle={styles.newHomeLabel}
+        rules={{required: true}}
+        defaultValue=""
       />
-      <Input
-        // value={username}
-        // onChange={handlerInput}
-        label="Municipio"
+      <Controller
+        control={control}
+        render={({onChange, onBlur, value}) => (
+          <Input
+            onBlur={onBlur}
+            onChangeText={(v) => onChange(v)}
+            value={value}
+            label="Municipio"
+            name="municipio"
+            inputStyles={styles.newHomeInput}
+            labelStyle={styles.newHomeLabel}
+            error={errors.municipio}
+          />
+        )}
         name="municipio"
-        inputStyles={styles.newHomeInput}
-        labelStyle={styles.newHomeLabel}
+        rules={{required: true}}
+        defaultValue=""
       />
       <View style={styles.multipleLineInputs}>
         <View style={styles.multiLineElementLeft}>
-          <Input
-            // value={username}
-            // onChange={handlerInput}
-            label="Código postal"
+          <Controller
+            control={control}
+            render={({onChange, onBlur, value}) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={(v) => onChange(v)}
+                value={value}
+                label="Código postal"
+                name="cp"
+                inputStyles={styles.newHomeInput}
+                labelStyle={styles.newHomeLabel}
+                error={errors.cp}
+              />
+            )}
             name="cp"
-            inputStyles={styles.newHomeInput}
-            labelStyle={styles.newHomeLabel}
+            rules={{required: true}}
+            defaultValue=""
           />
         </View>
         <View style={styles.multiLineElementRight}>
-          <Input
-            // value={username}
-            // onChange={handlerInput}
-            label="Teléfono"
+          <Controller
+            control={control}
+            render={({onChange, onBlur, value}) => (
+              <Input
+                onBlur={onBlur}
+                onChangeText={(v) => onChange(v)}
+                value={value}
+                label="Teléfono"
+                name="phone"
+                inputStyles={styles.newHomeInput}
+                labelStyle={styles.newHomeLabel}
+                error={errors.phone}
+              />
+            )}
             name="phone"
-            inputStyles={styles.newHomeInput}
-            labelStyle={styles.newHomeLabel}
+            rules={{required: true}}
+            defaultValue=""
           />
         </View>
       </View>
@@ -77,7 +157,15 @@ const NewFormHome = () => {
         onPress={() => navigation.navigate('UserList')}
         user={users[0]}
       />
-      <Button style={{marginBottom: 200}} title="Guardar" />
+      {!loading ? (
+        <Button
+          style={{marginBottom: 200}}
+          onPress={handleSubmit(onSubmit)}
+          title="Guardar"
+        />
+      ) : (
+        <ActivityIndicator />
+      )}
     </ScrollView>
   );
 };
@@ -97,6 +185,7 @@ const styles = StyleSheet.create({
   },
   newHomeInput: {
     backgroundColor: 'white',
+    color: 'black',
   },
   newHomeLabel: {
     color: 'black',

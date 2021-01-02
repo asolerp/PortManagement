@@ -8,16 +8,22 @@ const Input = ({
   onChange,
   inputStyles,
   labelStyle,
+  error,
   ...args
 }) => {
   return (
     <View style={styles.container}>
       <Text style={{...styles.label, ...labelStyle}}>{label}</Text>
       <TextInput
+        placeholder={error && 'El campo es obligatorio'}
+        placeholderTextColor="red"
         autoCapitalize="none"
         value={value}
-        onChangeText={(text) => onChange(text, name)}
-        style={{...styles.input, ...inputStyles}}
+        style={
+          error
+            ? {...styles.input, ...styles.inputError, ...inputStyles}
+            : {...styles.input, ...inputStyles}
+        }
         {...args}
       />
     </View>
@@ -40,6 +46,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     color: 'white',
+  },
+  inputError: {
+    borderWidth: 2,
+    borderColor: 'red',
   },
 });
 

@@ -18,6 +18,7 @@ export const launchImage = (houseSetter) => {
     } else {
       console.log('response', JSON.stringify(response));
       houseSetter({
+        fileName: response.fileName,
         filePath: response,
         fileData: response.data,
         fileUri: response.uri,
