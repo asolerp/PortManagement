@@ -1,14 +1,31 @@
 import React from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-const UserSelector = ({label, onPress}) => {
+const UserSelector = ({label, onPress, user}) => {
+  console.log('user', user);
   return (
     <View>
       <Text style={styles.label}>{label}</Text>
       <TouchableOpacity onPress={onPress}>
-        <View style={styles.selector} />
+        <View style={styles.selector}>
+          {user && (
+            <React.Fragment>
+              <View style={styles.avatarWrapper}>
+                <Image
+                  style={styles.avatar}
+                  source={{
+                    uri: user?.profileImage,
+                  }}
+                />
+              </View>
+              <View style={styles.infoWrapper}>
+                <Text style={styles.name}>{user.firstName}</Text>
+              </View>
+            </React.Fragment>
+          )}
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -16,14 +33,33 @@ const UserSelector = ({label, onPress}) => {
 
 const styles = StyleSheet.create({
   selector: {
-    height: 50,
+    height: 70,
     borderRadius: 10,
     backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
   },
   label: {
     color: 'black',
     marginBottom: 10,
     fontSize: 15,
+  },
+  avatarWrapper: {
+    flex: 1,
+  },
+  infoWrapper: {
+    flex: 4,
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
+    resizeMode: 'cover',
+  },
+  name: {
+    fontWeight: 'bold',
+    fontSize: 20,
   },
 });
 

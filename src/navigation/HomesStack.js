@@ -10,7 +10,7 @@ import {NewHouseFormContext} from '../context/newHouseFormContext';
 const Stack = createStackNavigator();
 
 export default function SignOutStack() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
 
   const handleUsers = (usersSelection) => {
     setUsers(usersSelection);

@@ -1,9 +1,16 @@
-import React from 'react';
+import React, {useContext} from 'react';
 
 import {View, Text, Image, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+import {NewHouseFormContext} from '../context/newHouseFormContext';
 
-const UserItemList = ({user, selectedUser, setSelectedUser}) => {
+const UserItemList = ({user}) => {
+  const {users, handleUsers} = useContext(NewHouseFormContext);
+
+  const findUserID = (uid) => {
+    return users?.find((u) => u.id === uid);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.avatarWrapper}>
@@ -20,10 +27,14 @@ const UserItemList = ({user, selectedUser, setSelectedUser}) => {
       <View style={styles.checkboxWrapper}>
         <CheckBox
           disabled={false}
-          value={selectedUser[user.id] || false}
-          onValueChange={(newValue) =>
-            setSelectedUser({[user.id]: newValue, ...selectedUser})
-          }
+          value={findUserID(user.id) ? true : false}
+          onValueChange={(newValue) => {
+            if (!newValue) {
+              handleUsers(users?.filter((u) => u.id !== user.id));
+            } else {
+              handleUsers([...users, user]);
+            }
+          }}
         />
       </View>
     </View>

@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   },
   newHomeScreen: {
     flex: 6,
+    paddingBottom: 100,
     justifyContent: 'flex-start',
   },
 });

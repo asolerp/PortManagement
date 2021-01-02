@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 
-import {View, StyleSheet, ScrollView, Button} from 'react-native';
+import {View, StyleSheet, ScrollView, Button, SafeAreaView} from 'react-native';
 
 // UI
 import ImageLoader from '../../components/Elements/ImageLoader';
@@ -10,8 +10,13 @@ import ImageLoader from '../../components/Elements/ImageLoader';
 import {launchImage} from '../../utils/imageFunctions';
 import Input from '../Elements/Input';
 import UserSelector from '../Elements/UserSelector';
+import {NewHouseFormContext} from '../../context/newHouseFormContext';
 
 const NewFormHome = () => {
+  const {users} = useContext(NewHouseFormContext);
+
+  console.log('context', users);
+
   const navigation = useNavigation();
   const [houseImage, setHouseImage] = useState();
 
@@ -70,8 +75,9 @@ const NewFormHome = () => {
       <UserSelector
         label="Propietario"
         onPress={() => navigation.navigate('UserList')}
+        user={users[0]}
       />
-      <Button title="Guardar" />
+      <Button style={{marginBottom: 200}} title="Guardar" />
     </ScrollView>
   );
 };
