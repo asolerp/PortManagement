@@ -1,13 +1,49 @@
-import React from 'react';
-import {View, Text, StyleSheet, Button, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native';
+
+// Firebase
+import firestore from '@react-native-firebase/firestore';
 
 import AddButton from '../components/Elements/AddButton';
 import ProfileBar from '../components/ProfileBar';
+import HouseItemList from '../components/HouseItemList';
 
 const HomesScreen = ({navigation}) => {
+  const [housesList, setHousesList] = useState([]);
+
+  console.log('lista de casas', housesList);
+
+  const onResult = (QuerySnapshot) => {
+    setHousesList(QuerySnapshot.docs.map((doc) => doc.data()));
+  };
+
+  const onError = (error) => {
+    console.error(error);
+  };
+
   const handleNewHome = () => {
     navigation.navigate('NewHome');
   };
+
+  const renderItem = ({item}) => {
+    return <HouseItemList house={item} />;
+  };
+
+  useEffect(() => {
+    const subscriber = firestore()
+      .collection('houses')
+      .onSnapshot(onResult, onError);
+
+    // Stop listening for updates when no longer required
+    return () => subscriber();
+  }, []);
 
   return (
     <React.Fragment>
@@ -19,7 +55,19 @@ const HomesScreen = ({navigation}) => {
       <View style={styles.container}>
         <ProfileBar />
         <View style={styles.homesScreen}>
-          <Text>No tienes ninguna casa en este momento</Text>
+          <ScrollView contentContainerStyle={styles.scrollWrapper}>
+            {housesList ? (
+              <View style={{alignSelf: 'stretch'}}>
+                <FlatList
+                  data={housesList}
+                  renderItem={renderItem}
+                  keyExtractor={(item) => item.id}
+                />
+              </View>
+            ) : (
+              <Text>No se han encontrado casas</Text>
+            )}
+          </ScrollView>
         </View>
       </View>
     </React.Fragment>
@@ -39,8 +87,11 @@ const styles = StyleSheet.create({
   },
   homesScreen: {
     flex: 5,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 30,
+    paddingTop: 50,
+  },
+  scrollWrapper: {
+    flex: 1,
   },
 });
 

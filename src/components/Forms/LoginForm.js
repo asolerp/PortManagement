@@ -40,13 +40,13 @@ const LoginForm = () => {
     <View style={styles.formWrapper}>
       <Input
         value={username}
-        onChange={handlerInput}
+        onChangeText={handlerInput}
         label="Email"
         name="username"
       />
       <Input
         value={password}
-        onChange={handlerInput}
+        onChangeText={handlerInput}
         label="Password"
         name="password"
         secureTextEntry
