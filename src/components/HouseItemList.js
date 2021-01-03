@@ -11,7 +11,7 @@ const Owner = ({owner}) => {
           uri: owner?.profileImage,
         }}
       />
-      <Text>{owner.firstName}</Text>
+      <Text>{owner?.firstName}</Text>
     </View>
   );
 };
