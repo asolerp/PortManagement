@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   homesScreen: {
-    flex: 5,
+    flex: 10,
     paddingTop: 20,
   },
   scrollWrapper: {

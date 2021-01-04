@@ -3,7 +3,9 @@ import React, {useState} from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {NewHouseFormContext} from '../context/newHouseFormContext';
+
 import JobsScreen from '../screens/Jobs/JobsScreen';
+import NewJobScreen from '../screens/Jobs/NewJobScreen';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +31,7 @@ export default function JobsStack() {
             cardStyle: {backgroundColor: 'transparent'},
           }}
         />
+        <Stack.Screen name="NewJob" component={NewJobScreen} />
       </Stack.Navigator>
     </NewHouseFormContext.Provider>
   );

@@ -5,11 +5,15 @@ import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import AddButton from '../../components/Elements/AddButton';
 import TitlePage from '../../components/TitlePage';
 
-const JobsScreen = () => {
+const JobsScreen = ({navigation}) => {
+  const handleNewJob = () => {
+    navigation.navigate('NewJob');
+  };
+
   return (
     <React.Fragment>
       <View style={styles.addButton}>
-        <TouchableOpacity onPress={() => {}}>
+        <TouchableOpacity onPress={() => handleNewJob()}>
           <AddButton />
         </TouchableOpacity>
       </View>
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   jobsScreen: {
-    flex: 5,
+    flex: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -14,10 +14,16 @@ const NewHomeScreen = ({navigation}) => {
       <TitlePage
         leftSide={
           <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back-ios" size={30} color="black" />
+            <Icon
+              name="arrow-back-ios"
+              size={30}
+              color="black"
+              style={{marginBottom: 20}}
+            />
           </TouchableOpacity>
         }
         title="Nueva casa"
+        color="black"
       />
       <View style={styles.newHomeScreen}>
         <NewFormHome />
@@ -29,11 +35,12 @@ const NewHomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
   },
   newHomeScreen: {
-    flex: 6,
+    flex: 7,
     paddingBottom: 100,
+    paddingTop: 20,
+    paddingHorizontal: 30,
     justifyContent: 'flex-start',
   },
 });

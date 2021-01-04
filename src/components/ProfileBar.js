@@ -63,10 +63,12 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 30,
+    color: 'white',
   },
   userName: {
     fontSize: 30,
     fontWeight: 'bold',
+    color: 'white',
   },
 });
 
