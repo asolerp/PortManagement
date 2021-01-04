@@ -4,9 +4,9 @@ import {View, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NewFormHome from '../components/Forms/NewHomeForm';
+import NewFormHome from '../../components/Forms/NewHomeForm';
 
-import TitlePage from '../components/TitlePage';
+import TitlePage from '../../components/TitlePage';
 
 const NewHomeScreen = ({navigation}) => {
   return (
@@ -29,7 +29,6 @@ const NewHomeScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
     paddingHorizontal: 30,
   },
   newHomeScreen: {

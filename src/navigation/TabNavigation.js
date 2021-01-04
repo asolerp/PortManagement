@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 // Screens
 import DashboardScreen from '../screens/DashboardScreen';
 import HomesStack from './HomesStack';
+import JobsStack from './JobsStack';
 
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 
@@ -35,8 +36,8 @@ const TabNavigation = () => {
         }}
       />
       <Tabs.Screen
-        name="Jobs"
-        component={DashboardScreen}
+        name="Trabajos"
+        component={JobsStack}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Icon

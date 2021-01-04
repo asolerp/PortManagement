@@ -3,7 +3,7 @@ import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
-import LoginForm from '../components/Forms/LoginForm';
+import LoginForm from '../../components/Forms/LoginForm';
 
 const LoginScreen = () => {
   return (
@@ -14,7 +14,7 @@ const LoginScreen = () => {
           <View style={styles.logoWrapper}>
             <Image
               style={styles.logo}
-              source={require('../assets/images/logo_pm_servicios.png')}
+              source={require('../../assets/images/logo_pm_servicios.png')}
             />
           </View>
           <View style={styles.welcomeWrapper}>

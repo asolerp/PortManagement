@@ -6,14 +6,15 @@ import {
   ScrollView,
   FlatList,
   TouchableOpacity,
+  SafeAreaView,
 } from 'react-native';
 
 // Firebase
 import firestore from '@react-native-firebase/firestore';
 
-import AddButton from '../components/Elements/AddButton';
-import ProfileBar from '../components/ProfileBar';
-import HouseItemList from '../components/HouseItemList';
+import AddButton from '../../components/Elements/AddButton';
+import TitlePage from '../../components/TitlePage';
+import HouseItemList from '../../components/HouseItemList';
 
 const HomesScreen = ({navigation}) => {
   const [housesList, setHousesList] = useState([]);
@@ -53,17 +54,21 @@ const HomesScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <ProfileBar />
+        <TitlePage title="Casas" />
         <View style={styles.homesScreen}>
           <ScrollView contentContainerStyle={styles.scrollWrapper}>
             {housesList ? (
-              <View style={{alignSelf: 'stretch'}}>
+              <SafeAreaView style={{alignSelf: 'stretch'}}>
                 <FlatList
                   data={housesList}
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
+                  contentContainerStyle={{
+                    flexGrow: 1,
+                    alignItems: 'center',
+                  }}
                 />
-              </View>
+              </SafeAreaView>
             ) : (
               <Text>No se han encontrado casas</Text>
             )}
@@ -77,7 +82,7 @@ const HomesScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: 'transparent',
   },
   addButton: {
     position: 'absolute',
@@ -87,11 +92,11 @@ const styles = StyleSheet.create({
   },
   homesScreen: {
     flex: 5,
-    paddingHorizontal: 30,
-    paddingTop: 50,
+    paddingTop: 20,
   },
   scrollWrapper: {
     flex: 1,
+    alignItems: 'center',
   },
 });
 

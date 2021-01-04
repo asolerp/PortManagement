@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import {useForm, Controller} from 'react-hook-form';
+
 import {Text, View, StyleSheet} from 'react-native';
 import GradientButton from '../Elements/GradientButton';
 
@@ -9,12 +11,11 @@ import auth from '@react-native-firebase/auth';
 import Input from '../Elements/Input';
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const {control, handleSubmit, errors, reset} = useForm();
 
-  const signIn = async () => {
+  const signIn = async (data) => {
     try {
-      auth().signInWithEmailAndPassword(username, password);
+      auth().signInWithEmailAndPassword(data.username, data.password);
     } catch (err) {
       if (err.code === 'auth/email-already-in-use') {
         console.log('That email address is already in use!');
@@ -28,34 +29,43 @@ const LoginForm = () => {
     }
   };
 
-  const handlerInput = (text, input) => {
-    if (input === 'username') {
-      setUsername(text);
-    } else {
-      setPassword(text);
-    }
-  };
-
   return (
     <View style={styles.formWrapper}>
-      <Input
-        value={username}
-        onChangeText={handlerInput}
-        label="Email"
+      <Controller
+        control={control}
+        render={({onChange, onBlur, value}) => (
+          <Input
+            value={value}
+            onChangeText={(v) => onChange(v)}
+            label="Email"
+            name="username"
+          />
+        )}
         name="username"
+        rules={{required: true}}
+        defaultValue=""
       />
-      <Input
-        value={password}
-        onChangeText={handlerInput}
-        label="Password"
+      <Controller
+        control={control}
+        render={({onChange, onBlur, value}) => (
+          <Input
+            value={value}
+            onChangeText={(v) => onChange(v)}
+            label="Password"
+            name="password"
+            secureTextEntry
+          />
+        )}
         name="password"
-        secureTextEntry
+        rules={{required: true}}
+        defaultValue=""
       />
+
       <Text style={styles.forgotText}>He olvidado mi contraseña</Text>
       <GradientButton
         colors={['#126D9B', '#126D9B']}
         wrapperStyle={styles.gradientButton}
-        onPress={signIn}
+        onPress={handleSubmit(signIn)}
         title="Login"
       />
     </View>

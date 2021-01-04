@@ -16,10 +16,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignContent: 'flex-end',
     alignItems: 'flex-end',
-    marginBottom: 30,
+    paddingHorizontal: 30,
   },
   title: {
-    fontSize: 30,
+    fontSize: 50,
     fontWeight: 'bold',
   },
 });

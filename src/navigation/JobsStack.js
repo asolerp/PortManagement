@@ -1,17 +1,13 @@
 import React, {useState} from 'react';
 
-import {ImageBackground, StyleSheet} from 'react-native';
-
 import {createStackNavigator} from '@react-navigation/stack';
-import HomesScreen from '../screens/Homes/HomesScreen';
-import NewHomeScreen from '../screens/Homes/NewHomeScreen';
-import UserListSelectorScreen from '../screens/UserListSelectorScreen';
 
 import {NewHouseFormContext} from '../context/newHouseFormContext';
+import JobsScreen from '../screens/Jobs/JobsScreen';
 
 const Stack = createStackNavigator();
 
-export default function HomesStack() {
+export default function JobsStack() {
   const [users, setUsers] = useState([]);
 
   const handleUsers = (usersSelection) => {
@@ -27,14 +23,12 @@ export default function HomesStack() {
     <NewHouseFormContext.Provider value={value}>
       <Stack.Navigator headerMode="none">
         <Stack.Screen
-          name="Homes"
-          component={HomesScreen}
+          name="Jobs"
+          component={JobsScreen}
           options={{
             cardStyle: {backgroundColor: 'transparent'},
           }}
         />
-        <Stack.Screen name="NewHome" component={NewHomeScreen} />
-        <Stack.Screen name="UserList" component={UserListSelectorScreen} />
       </Stack.Navigator>
     </NewHouseFormContext.Provider>
   );

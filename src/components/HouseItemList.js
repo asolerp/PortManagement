@@ -41,12 +41,20 @@ const HouseItemList = ({house}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: '85%',
     flexDirection: 'row',
     backgroundColor: 'white',
-    alignItems: 'center',
+    alignSelf: 'stretch',
     borderRadius: 10,
-    marginBottom: 20,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    marginTop: 10,
+    marginBottom: 10,
   },
   avatarWrapper: {
     flex: 2,
