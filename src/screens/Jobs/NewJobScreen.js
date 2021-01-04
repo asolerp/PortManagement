@@ -25,7 +25,7 @@ const NewJobScreen = ({navigation}) => {
         title="Nuevo Trabajo"
         color="black"
       />
-      <TabBar />
+      <TabBar tabs={['General', 'Tareas', 'Settings']} />
       <View style={styles.newJobScreen} />
     </View>
   );

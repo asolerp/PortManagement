@@ -1,13 +1,8 @@
 import React, {useState, createRef} from 'react';
-import {
-  View,
-  Text,
-  Dimensions,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 // Animation
 import {Transition, Transitioning} from 'react-native-reanimated';
+import Tab from './TabBarReanimated/Tab';
 
 const transition = (
   <Transition.Together>
@@ -15,15 +10,14 @@ const transition = (
   </Transition.Together>
 );
 
-const screenWidth = Math.round(Dimensions.get('window').width);
-
-const TabBar = () => {
+const TabBar = ({tabs}) => {
   const [tabPosition, setTabPosition] = useState(0);
   const [tabWidth, setTabWidth] = useState(0);
+  const [tabsPositions, setTabsPositions] = useState([]);
+
+  console.log(tabsPositions);
 
   const transRef = createRef();
-
-  console.log(tabWidth);
 
   const handleTab = (index) => {
     console.log(transRef.current.measure);
@@ -42,21 +36,20 @@ const TabBar = () => {
           style={{
             ...styles.dot,
             ...{
-              left: tabPosition === 0 ? tabWidth / 4 - 7.5 : null,
-              right: tabPosition === 1 ? tabWidth / 4 - 7.5 : null,
+              left: tabsPositions[tabPosition]?.x + 7.5,
             },
           }}
         />
-        <View style={styles.tab}>
-          <TouchableOpacity onPress={() => handleTab(0)}>
-            <Text>Hola</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.tab}>
-          <TouchableOpacity onPress={() => handleTab(1)}>
-            <Text>Adios</Text>
-          </TouchableOpacity>
-        </View>
+        {tabs.map((tab, i) => (
+          <Tab
+            onLayout={(e) =>
+              setTabsPositions([...tabsPositions, e.nativeEvent.layout])
+            }
+            title={tab}
+            handleTab={handleTab}
+            index={i}
+          />
+        ))}
       </View>
     </Transitioning.View>
   );
@@ -71,14 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
   },
-  tab: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-    height: 50,
-    alignSelf: 'stretch',
-  },
+
   dot: {
     height: 15,
     width: 15,
