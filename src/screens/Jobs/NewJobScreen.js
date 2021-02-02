@@ -4,6 +4,7 @@ import {View, StyleSheet, Text, TextInput} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import Accordian from '../../components/Elements/Accordian';
 import InputGroup from '../../components/Elements/InputGroup';
 
 import TabBar from '../../components/TabBar';
@@ -44,6 +45,7 @@ const NewJobScreen = ({navigation}) => {
             onChangeText={(text) => onChangeText(text)}
             value={value}
           />
+          <Accordian title="hola" textData="Esto es una prueba" />
         </InputGroup>
       </View>
     </View>

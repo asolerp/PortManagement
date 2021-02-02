@@ -18,6 +18,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowColor: 'black',
   },
+  separator: {
+    borderBottomColor: '#EAEAEA',
+    borderBottomWidth: 1,
+  },
 });
 
 const InputGroup = ({children}) => {
@@ -29,14 +33,7 @@ const InputGroup = ({children}) => {
           {children.map((elemnt, i) => (
             <React.Fragment>
               {elemnt}
-              {i !== children.length - 1 && (
-                <View
-                  style={{
-                    borderBottomColor: '#EAEAEA',
-                    borderBottomWidth: 1,
-                  }}
-                />
-              )}
+              {i !== children.length - 1 && <View style={styles.separator} />}
             </React.Fragment>
           ))}
         </View>
