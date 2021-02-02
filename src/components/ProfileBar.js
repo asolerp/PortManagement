@@ -15,8 +15,8 @@ const ProfileBar = () => {
       .collection('users')
       .doc(user.uid)
       .onSnapshot((documentSnapshot) => {
-        setUserProfile(documentSnapshot.data());
-        console.log('User data: ', documentSnapshot.data());
+        setUserProfile(documentSnapshot?.data());
+        console.log('User data: ', documentSnapshot?.data());
       });
 
     // Stop listening for updates when no longer required
@@ -63,12 +63,12 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 30,
-    color: 'white',
+    color: 'black',
   },
   userName: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'white',
+    color: 'black',
   },
 });
 

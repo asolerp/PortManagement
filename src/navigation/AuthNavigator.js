@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, createContext} from 'react';
 
-import {ImageBackground, StyleSheet} from 'react-native';
+import {View, StyleSheet} from 'react-native';
 
 import SignInStack from './SignInStack';
 import SignOutStack from './SignOutStack';
@@ -11,10 +11,27 @@ import auth from '@react-native-firebase/auth';
 export const AuthContext = createContext(null);
 
 const styles = StyleSheet.create({
-  image: {
+  appBackground: {
+    flex: 1,
+    backgroundColor: '#4DAABF',
+  },
+  background: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
+    backgroundColor: '#F8F8F8',
+    position: 'absolute',
+    height: '86%',
+    width: '100%',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: 'black',
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
 });
 
@@ -46,11 +63,10 @@ export default function AuthNavigator() {
 
   return user ? (
     <AuthContext.Provider value={user}>
-      <ImageBackground
-        source={require('../assets/images/fondo_pm.png')}
-        style={styles.image}>
+      <View style={styles.appBackground}>
+        <View style={styles.background} />
         <SignInStack />
-      </ImageBackground>
+      </View>
     </AuthContext.Provider>
   ) : (
     <SignOutStack />

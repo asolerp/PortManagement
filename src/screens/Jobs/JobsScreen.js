@@ -18,7 +18,7 @@ const JobsScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <TitlePage title="Trabajos" />
+        <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
           <Text>No tienes nigún trabajo activo en este momento</Text>
         </View>

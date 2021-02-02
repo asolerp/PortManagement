@@ -54,7 +54,7 @@ const HomesScreen = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <TitlePage title="Casas" />
+        <TitlePage title="Casas" color="black" />
         <View style={styles.homesScreen}>
           <ScrollView contentContainerStyle={styles.scrollWrapper}>
             {housesList ? (
