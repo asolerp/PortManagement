@@ -3,21 +3,14 @@ import {View, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-  },
-  inputContainer: {
+    marginBottom: 20,
     backgroundColor: 'white',
+    borderRadius: 10,
     paddingTop: 10,
     paddingLeft: 30,
     paddingBottom: 10,
-    borderRadius: 10,
-    shadowOffset: {
-      width: 0,
-      height: 0,
-    },
-    shadowOpacity: 0.1,
-    shadowColor: 'black',
   },
+  inputContainer: {},
   separator: {
     borderBottomColor: '#EAEAEA',
     borderBottomWidth: 1,
@@ -25,7 +18,6 @@ const styles = StyleSheet.create({
 });
 
 const InputGroup = ({children}) => {
-  console.log(children);
   return (
     <View style={styles.container}>
       {Array.isArray(children) ? (

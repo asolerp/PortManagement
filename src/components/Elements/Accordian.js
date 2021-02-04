@@ -9,8 +9,7 @@ import {
   Platform,
   UIManager,
 } from 'react-native';
-
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import IconCircle from './IconCirlce';
 
 const Colors = {
   PRIMARY: '#1abc9c',
@@ -26,8 +25,9 @@ const Colors = {
   OFFLINE_GRAY: '#535353',
 };
 
-const Accordian = ({title, textData}) => {
-  const [expanded, setExpanded] = useState();
+const Accordian = ({title, subtitle, iconProps, children}) => {
+  const [expanded, setExpanded] = useState(false);
+  const [switchStatus, setSwitchStatus] = useState(false);
 
   const accordian = createRef();
 
@@ -40,24 +40,46 @@ const Accordian = ({title, textData}) => {
     setExpanded(!expanded);
   };
 
+  const toggleExpandWithSwitch = (event) => {
+    console.log(event);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    event ? setExpanded(!expanded) : setExpanded(false);
+    setSwitchStatus(!switchStatus);
+  };
+
   return (
     <View style={styles.container}>
-      <View style={styles.accordianContainer}>
-        <Text style={[styles.title, styles.font]}>{title}</Text>
-        <Switch
-          ref={accordian}
-          trackColor={{false: '#767577', true: '#81b0ff'}}
-          thumbColor={expanded ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
-          onValueChange={toggleExpand}
-          value={expanded}
-        />
-      </View>
+      <TouchableOpacity
+        onPress={() => {
+          switchStatus && toggleExpand();
+        }}>
+        <View style={styles.accordianContainer}>
+          <View style={styles.iconContainer}>
+            <IconCircle name={iconProps?.name} color={iconProps?.color} />
+            <View>
+              <Text style={[styles.title, styles.font]}>{title}</Text>
+              {subtitle && switchStatus && (
+                <Text style={styles.subtitle}>{subtitle}</Text>
+              )}
+            </View>
+          </View>
+          <Switch
+            ref={accordian}
+            style={{transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
+            trackColor={{false: '#C9C9C9', true: '#81b0ff'}}
+            thumbColor={switchStatus ? '#f5dd4b' : '#f4f3f4'}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleExpandWithSwitch}
+            value={switchStatus}
+          />
+        </View>
+      </TouchableOpacity>
       <View style={styles.parentHr} />
       {expanded && (
-        <View style={styles.child}>
-          <Text>{textData}</Text>
-        </View>
+        <React.Fragment>
+          <View style={styles.separator} />
+          <View style={styles.child}>{children}</View>
+        </React.Fragment>
       )}
     </View>
   );
@@ -68,13 +90,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
   },
-  container: {},
+  subtitle: {
+    color: '#2A7BA5',
+  },
+  iconContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  iconCircle: {
+    borderRadius: 100,
+    marginRight: 10,
+    padding: 5,
+  },
+  iconStyle: {},
   accordianContainer: {
-    backgroundColor: 'red',
     height: 40,
+    paddingRight: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  separator: {
+    borderBottomColor: '#EAEAEA',
+    borderBottomWidth: 1,
   },
   row: {
     flexDirection: 'row',
@@ -90,7 +129,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   child: {
-    padding: 16,
+    display: 'flex',
+    paddingTop: 10,
+    paddingRight: 20,
   },
 });
 
