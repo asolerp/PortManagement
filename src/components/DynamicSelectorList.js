@@ -6,34 +6,38 @@ import {
   FlatList,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
+  Button,
 } from 'react-native';
 
 // Firebase
 import firestore from '@react-native-firebase/firestore';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import TitlePage from '../components/TitlePage';
 import {SearchBar} from 'react-native-elements';
-import ItemList from '../components/ItemList';
+import ItemList from './ItemList';
 
-const UserListSelectorScreen = ({
-  navigation,
-  userType,
-  multiSelect = false,
-  selection,
-  setSelection,
+const DynamicSelectorList = ({
+  collection,
+  filter,
+  searchBy,
+  schema,
+  set,
+  get,
 }) => {
   const [search, setSearch] = useState();
   const [list, setList] = useState();
+  const [filteredList, setFilteredList] = useState();
 
   const [usersSelected, setUsersSelected] = useState({});
 
   useEffect(() => {
     const listUsers = [];
-    firestore()
-      .collection('users')
-      .where('role', '==', 'owner')
+    let query = firestore().collection(collection);
+
+    if (filter) {
+      query = query.where(filter.label, filter.operator, filter.value);
+    }
+
+    query = query
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((documentSnapshot) => {
@@ -41,48 +45,46 @@ const UserListSelectorScreen = ({
         });
       })
       .then(() => setList(listUsers));
-  }, []);
+  }, [filter, collection]);
 
   const handleSearch = (text) => {
     setSearch(text);
+    const fList = list.filter((item) =>
+      item[searchBy].toLowerCase().includes(search?.toLowerCase()),
+    );
+    setFilteredList(fList);
   };
+
+  useEffect(() => {
+    if (search?.lenght === 0 || !search) {
+      setFilteredList(undefined);
+    }
+  }, [search]);
 
   const renderItem = ({item}) => {
     return (
-      <ItemList
-        user={item}
-        selectedUser={usersSelected}
-        setSelectedUser={setUsersSelected}
-      />
+      <React.Fragment>
+        <ItemList item={item} schema={schema} setter={set} getter={get} />
+        <View style={styles.separator} />
+      </React.Fragment>
     );
   };
 
   return (
     <View style={styles.container}>
-      <TitlePage
-        leftSide={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back-ios" size={30} color="black" />
-          </TouchableOpacity>
-        }
-        title="Propietarios"
-      />
-
       <View style={styles.userListSelectorScreen}>
         <SearchBar
           placeholder="Type Here..."
           onChangeText={handleSearch}
           value={search}
           platform="ios"
-          containerStyle={styles.containerSearchBar}
-          inputContainerStyle={styles.inputContainerStyle}
         />
 
         <ScrollView contentContainerStyle={styles.scrollWrapper}>
           {list ? (
             <View style={{flex: 1, alignSelf: 'stretch'}}>
               <FlatList
-                data={list}
+                data={filteredList || list}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.id}
               />
@@ -99,7 +101,6 @@ const UserListSelectorScreen = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 30,
   },
   titleWrapper: {
     flex: 1.2,
@@ -120,6 +121,10 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     backgroundColor: 'white',
   },
+  separator: {
+    borderBottomColor: '#EAEAEA',
+    borderBottomWidth: 1,
+  },
 });
 
-export default UserListSelectorScreen;
+export default DynamicSelectorList;

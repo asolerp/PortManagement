@@ -4,11 +4,9 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {NewHouseFormContext} from '../context/newHouseFormContext';
 
-const UserItemList = ({user}) => {
-  const {users, handleUsers} = useContext(NewHouseFormContext);
-
-  const findUserID = (uid) => {
-    return users?.find((u) => u.id === uid);
+const ItemList = ({item, schema, setter, getter}) => {
+  const findItemID = (uid) => {
+    return getter?.find((i) => i.id === uid);
   };
 
   return (
@@ -17,22 +15,23 @@ const UserItemList = ({user}) => {
         <Image
           style={styles.avatar}
           source={{
-            uri: user?.profileImage,
+            uri: item[schema?.img],
           }}
         />
       </View>
       <View style={styles.infoWrapper}>
-        <Text style={styles.name}>{user.firstName}</Text>
+        <Text style={styles.name}>{item[schema.name]}</Text>
       </View>
       <View style={styles.checkboxWrapper}>
         <CheckBox
           disabled={false}
-          value={findUserID(user.id) ? true : false}
+          value={findItemID(item.id) ? true : false}
           onValueChange={(newValue) => {
             if (!newValue) {
-              handleUsers(users?.filter((u) => u.id !== user.id));
+              const updatedItemList = getter?.filter((i) => i.id !== item.id);
+              setter(updatedItemList);
             } else {
-              handleUsers([...users, user]);
+              setter([...getter, item]);
             }
           }}
         />
@@ -47,25 +46,24 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     alignItems: 'center',
-    borderRadius: 10,
     padding: 10,
   },
   avatarWrapper: {
     flex: 1,
   },
   infoWrapper: {
-    flex: 4,
+    flex: 6,
   },
   avatar: {
-    width: 50,
-    height: 50,
+    width: 30,
+    height: 30,
     borderRadius: 100,
     resizeMode: 'cover',
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
   },
 });
 
-export default UserItemList;
+export default ItemList;

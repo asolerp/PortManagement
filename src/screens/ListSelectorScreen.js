@@ -12,10 +12,8 @@ import {
 // Firebase
 import firestore from '@react-native-firebase/firestore';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-import TitlePage from '../components/TitlePage';
 import {SearchBar} from 'react-native-elements';
-import UserItemList from '../components/UserItemList';
+import ItemList from '../components/ItemList';
 
 const ListSelectorScreen = ({handleClose}) => {
   const [search, setSearch] = useState();
@@ -44,7 +42,7 @@ const ListSelectorScreen = ({handleClose}) => {
   const renderItem = ({item}) => {
     return (
       <React.Fragment>
-        <UserItemList
+        <ItemList
           user={item}
           selectedUser={usersSelected}
           setSelectedUser={setUsersSelected}
