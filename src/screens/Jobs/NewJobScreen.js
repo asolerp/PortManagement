@@ -26,8 +26,9 @@ const NewJobScreen = ({navigation}) => {
   const [time, setTime] = useState(new Date());
   const [recurrente, setRecurrente] = useState(false);
   const [asignWorkers, setAsignWorkers] = useState([]);
+  const [asignHouse, setAsignHouse] = useState([]);
 
-  console.log(asignWorkers, 'asignWorkers');
+  console.log(asignWorkers, asignHouse);
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -112,8 +113,7 @@ const NewJobScreen = ({navigation}) => {
           <InputGroup>
             <Accordian
               title="Asignar a..."
-              iconProps={{name: 'person', color: 'blue'}}
-              textData="Esto es una prueba">
+              iconProps={{name: 'person', color: 'blue'}}>
               <View style={styles.asignList}>
                 <DynamicSelectorList
                   collection="houses"
@@ -121,6 +121,18 @@ const NewJobScreen = ({navigation}) => {
                   schema={{img: 'houseImage', name: 'houseName'}}
                   get={asignWorkers}
                   set={setAsignWorkers}
+                  multiple={true}
+                />
+              </View>
+            </Accordian>
+            <Accordian title="Casa" iconProps={{name: 'house', color: 'brown'}}>
+              <View style={styles.asignList}>
+                <DynamicSelectorList
+                  collection="users"
+                  searchBy="firstName"
+                  schema={{img: 'profileImage', name: 'firstName'}}
+                  get={asignHouse}
+                  set={setAsignHouse}
                 />
               </View>
             </Accordian>

@@ -22,12 +22,11 @@ const DynamicSelectorList = ({
   schema,
   set,
   get,
+  multiple = false,
 }) => {
   const [search, setSearch] = useState();
   const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
-
-  const [usersSelected, setUsersSelected] = useState({});
 
   useEffect(() => {
     const listUsers = [];
@@ -64,7 +63,13 @@ const DynamicSelectorList = ({
   const renderItem = ({item}) => {
     return (
       <React.Fragment>
-        <ItemList item={item} schema={schema} setter={set} getter={get} />
+        <ItemList
+          item={item}
+          schema={schema}
+          setter={set}
+          getter={get}
+          multiple={multiple}
+        />
         <View style={styles.separator} />
       </React.Fragment>
     );
@@ -78,6 +83,9 @@ const DynamicSelectorList = ({
           onChangeText={handleSearch}
           value={search}
           platform="ios"
+          round
+          containerStyle={{padding: 0}}
+          inputStyle={{fontSize: 14, padding: 0}}
         />
 
         <ScrollView contentContainerStyle={styles.scrollWrapper}>
@@ -112,6 +120,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'red',
   },
   containerSearchBar: {
     backgroundColor: 'white',

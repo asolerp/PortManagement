@@ -4,7 +4,7 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
 import {NewHouseFormContext} from '../context/newHouseFormContext';
 
-const ItemList = ({item, schema, setter, getter}) => {
+const ItemList = ({item, schema, setter, getter, multiple}) => {
   const findItemID = (uid) => {
     return getter?.find((i) => i.id === uid);
   };
@@ -27,11 +27,19 @@ const ItemList = ({item, schema, setter, getter}) => {
           disabled={false}
           value={findItemID(item.id) ? true : false}
           onValueChange={(newValue) => {
-            if (!newValue) {
-              const updatedItemList = getter?.filter((i) => i.id !== item.id);
-              setter(updatedItemList);
+            if (!multiple) {
+              if (!newValue) {
+                setter([]);
+              } else {
+                setter([item]);
+              }
             } else {
-              setter([...getter, item]);
+              if (!newValue) {
+                const updatedItemList = getter?.filter((i) => i.id !== item.id);
+                setter(updatedItemList);
+              } else {
+                setter([...getter, item]);
+              }
             }
           }}
         />
@@ -61,7 +69,6 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
   },
   name: {
-    fontWeight: 'bold',
     fontSize: 15,
   },
 });
