@@ -5,7 +5,13 @@ const TitlePage = ({title, leftSide, color = 'white'}) => {
   return (
     <View style={styles.container}>
       {leftSide}
-      <Text style={{...styles.title, ...{color: color}}}>{title}</Text>
+      <Text
+        style={{
+          ...styles.title,
+          ...{color: color, marginLeft: leftSide ? 20 : 0},
+        }}>
+        {title}
+      </Text>
     </View>
   );
 };
@@ -13,14 +19,15 @@ const TitlePage = ({title, leftSide, color = 'white'}) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 50,
+    marginBottom: 20,
     // justifyContent: 'flex-end',
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: 30,
   },
   title: {
-    fontSize: 35,
-    fontWeight: 'bold',
+    fontSize: 30,
+    fontWeight: '500',
   },
 });
 

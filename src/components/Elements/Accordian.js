@@ -30,6 +30,8 @@ const Accordian = ({
   subtitle,
   iconProps,
   children,
+  switcher,
+  handleSwitch,
   onOpen = () => {},
   onClose = () => {},
 }) => {
@@ -56,21 +58,26 @@ const Accordian = ({
       setExpanded(false);
       onClose();
     }
-    setSwitchStatus(!switchStatus);
+    if (handleSwitch) {
+      handleSwitch(!switcher);
+    }
+    if (switcher === undefined) {
+      setSwitchStatus(!switchStatus);
+    }
   };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          switchStatus && toggleExpand();
+          (switcher || switchStatus) && toggleExpand();
         }}>
         <View style={styles.accordianContainer}>
           <View style={styles.iconContainer}>
             <IconCircle name={iconProps?.name} color={iconProps?.color} />
             <View>
               <Text style={[styles.title, styles.font]}>{title}</Text>
-              {subtitle && switchStatus && (
+              {subtitle && (switcher || switchStatus) && (
                 <Text style={styles.subtitle}>{subtitle}</Text>
               )}
             </View>
@@ -79,10 +86,10 @@ const Accordian = ({
             ref={accordian}
             style={{transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
             trackColor={{false: '#C9C9C9', true: '#81b0ff'}}
-            thumbColor={switchStatus ? '#f5dd4b' : '#f4f3f4'}
+            thumbColor={switcher || switchStatus ? '#f5dd4b' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleExpandWithSwitch}
-            value={switchStatus}
+            value={switcher || switchStatus}
           />
         </View>
       </TouchableOpacity>
