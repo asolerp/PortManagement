@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   inputRecurrente: {
+    paddingVertical: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },

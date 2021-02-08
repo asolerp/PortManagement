@@ -25,7 +25,14 @@ const Colors = {
   OFFLINE_GRAY: '#535353',
 };
 
-const Accordian = ({title, subtitle, iconProps, children}) => {
+const Accordian = ({
+  title,
+  subtitle,
+  iconProps,
+  children,
+  onOpen = () => {},
+  onClose = () => {},
+}) => {
   const [expanded, setExpanded] = useState(false);
   const [switchStatus, setSwitchStatus] = useState(false);
 
@@ -41,9 +48,14 @@ const Accordian = ({title, subtitle, iconProps, children}) => {
   };
 
   const toggleExpandWithSwitch = (event) => {
-    console.log(event);
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    event ? setExpanded(!expanded) : setExpanded(false);
+    if (event) {
+      setExpanded(!expanded);
+      onOpen();
+    } else {
+      setExpanded(false);
+      onClose();
+    }
     setSwitchStatus(!switchStatus);
   };
 
@@ -130,7 +142,7 @@ const styles = StyleSheet.create({
   },
   child: {
     display: 'flex',
-    paddingTop: 10,
+    paddingVertical: 10,
     paddingRight: 20,
   },
 });

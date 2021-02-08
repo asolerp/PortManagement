@@ -12,12 +12,14 @@ const TitlePage = ({title, leftSide, color = 'white'}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2,
-    justifyContent: 'flex-end',
+    marginTop: 50,
+    // justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 30,
   },
   title: {
-    fontSize: 50,
+    fontSize: 35,
     fontWeight: 'bold',
   },
 });

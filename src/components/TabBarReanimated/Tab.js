@@ -6,7 +6,7 @@ const Tab = ({onLayout, title, handleTab, index}) => {
   return (
     <View style={styles.tab} onLayout={onLayout}>
       <TouchableOpacity onPress={() => handleTab(index)}>
-        <Text>{title}</Text>
+        <Text style={styles.tabTitle}>{title}</Text>
       </TouchableOpacity>
     </View>
   );
@@ -20,6 +20,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 50,
     alignSelf: 'stretch',
+  },
+  tabTitle: {
+    fontWeight: 'bold',
   },
 });
 

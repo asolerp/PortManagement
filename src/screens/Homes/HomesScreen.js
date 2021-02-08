@@ -19,8 +19,6 @@ import HouseItemList from '../../components/HouseItemList';
 const HomesScreen = ({navigation}) => {
   const [housesList, setHousesList] = useState([]);
 
-  console.log('lista de casas', housesList);
-
   const onResult = (QuerySnapshot) => {
     setHousesList(QuerySnapshot.docs.map((doc) => doc.data()));
   };

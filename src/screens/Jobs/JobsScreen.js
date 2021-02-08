@@ -3,12 +3,28 @@ import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import AddButton from '../../components/Elements/AddButton';
+import JobItem from '../../components/JobItem';
 import TitlePage from '../../components/TitlePage';
 
+//Firebase
+import {useGetFirebase} from '../../hooks/useGetFirebase';
+
 const JobsScreen = ({navigation}) => {
+  const {list, loading, error} = useGetFirebase('jobs');
+
+  console.log(list, loading);
+
   const handleNewJob = () => {
     navigation.navigate('NewJob');
   };
+
+  if (loading) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
 
   return (
     <React.Fragment>
@@ -20,7 +36,10 @@ const JobsScreen = ({navigation}) => {
       <View style={styles.container}>
         <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
-          <Text>No tienes nigún trabajo activo en este momento</Text>
+          {list.map((item) => (
+            <JobItem key={item.id} job={item} />
+          ))}
+          {/* <Text>No tienes nigún trabajo activo en este momento</Text> */}
         </View>
       </View>
     </React.Fragment>
@@ -34,8 +53,10 @@ const styles = StyleSheet.create({
   },
   jobsScreen: {
     flex: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 30,
+    marginTop: 30,
   },
   addButton: {
     position: 'absolute',
