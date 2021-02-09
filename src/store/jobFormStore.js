@@ -2,10 +2,7 @@ import React, {createContext, useReducer} from 'react';
 import JobFormReducer from './jobFormReducer';
 
 const initialState = {
-  date: {
-    value: new Date(),
-    switch: false,
-  },
+  job: {},
 };
 
 const JobFormStore = ({children}) => {

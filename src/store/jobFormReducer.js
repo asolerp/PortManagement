@@ -1,14 +1,9 @@
 const JobFormReducer = (state, action) => {
   switch (action.type) {
-    case 'SET_DATE':
-      return {
-        ...state,
-        date: action.payload,
-      };
     case 'SET_FORM':
       return {
         ...state,
-        [action.input]: action.payload,
+        job: {...state.job, [action.label]: action.payload},
       };
     default:
       return state;

@@ -88,12 +88,20 @@ const JobForm = () => {
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate || date;
-    dispatch({type: 'SET_DATE', payload: {...state.date, value: currentDate}});
+    dispatch({
+      type: 'SET_FORM',
+      label: 'date',
+      payload: {...state.job.date, value: currentDate},
+    });
   };
 
   const onChangeTime = (event, selectedDate) => {
     const currentDate = selectedDate || time;
-    setTime(currentDate);
+    dispatch({
+      type: 'SET_FORM',
+      label: 'time',
+      payload: {...state.job.time, value: currentDate},
+    });
   };
 
   return (
@@ -111,42 +119,44 @@ const JobForm = () => {
                   payload: text,
                 })
               }
-              value={name}
+              value={state?.job?.name}
             />
             <TextInput
               style={{height: 40}}
               placeholder="Descripción"
-              onChangeText={(text) => setDescription(text)}
+              onChangeText={(text) =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'description',
+                  payload: text,
+                })
+              }
               value={description}
             />
           </InputGroup>
           <InputGroup>
             <Accordian
               title="Fecha"
-              switcher={state?.date.switch}
-              handleSwitch={(s) =>
-                dispatch({
-                  type: 'SET_DATE',
-                  payload: {value: state?.date.value, switch: s},
-                })
-              }
-              subtitle={moment(state?.date.value).format('LL')}
+              switcher={state?.job?.date?.switch}
+              subtitle={moment(state?.job?.date?.value).format('LL')}
               iconProps={{name: 'calendar-today', color: 'red'}}
-              onOpen={() =>
+              onOpen={() => {
                 dispatch({
-                  type: 'SET_DATE',
+                  type: 'SET_FORM',
+                  label: 'date',
                   payload: {value: new Date(), switch: true},
-                })
-              }
+                });
+              }}
               onClose={() =>
                 dispatch({
-                  type: 'SET_DATE',
+                  type: 'SET_FORM',
+                  label: 'date',
                   payload: {value: undefined, switch: false},
                 })
               }>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={state?.date.value}
+                value={state?.job?.date?.value || new Date()}
                 mode={'date'}
                 is24Hour={true}
                 display="inline"
@@ -156,12 +166,25 @@ const JobForm = () => {
             <Accordian
               title="Hora"
               subtitle={moment(time).format('LT')}
+              switcher={state?.job?.time?.switch}
               iconProps={{name: 'alarm', color: 'purple'}}
-              onOpen={() => setTime(new Date())}
-              onClose={() => setTime(undefined)}>
+              onOpen={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'time',
+                  payload: {value: new Date(), switch: true},
+                })
+              }
+              onClose={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'time',
+                  payload: {value: undefined, switch: false},
+                })
+              }>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={time}
+                value={state?.job?.time?.value || new Date()}
                 mode={'time'}
                 is24Hour={true}
                 display="default"
@@ -178,14 +201,35 @@ const JobForm = () => {
           <InputGroup>
             <Accordian
               title="Asignar a..."
-              iconProps={{name: 'person', color: 'blue'}}>
+              switcher={state?.job?.workers?.switch}
+              iconProps={{name: 'person', color: 'blue'}}
+              onOpen={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'workers',
+                  payload: {value: [], switch: true},
+                })
+              }
+              onClose={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'workers',
+                  payload: {value: undefined, switch: false},
+                })
+              }>
               <View style={styles.asignList}>
                 <DynamicSelectorList
                   collection="users"
                   searchBy="firstName"
                   schema={{img: 'profileImage', name: 'firstName'}}
-                  get={asignWorkers}
-                  set={setAsignWorkers}
+                  get={state?.job?.workers?.value || []}
+                  set={(workers) => {
+                    dispatch({
+                      type: 'SET_FORM',
+                      label: 'workers',
+                      payload: {...state.job.workers, value: workers},
+                    });
+                  }}
                   multiple={true}
                 />
               </View>
