@@ -5,6 +5,11 @@ const JobFormReducer = (state, action) => {
         ...state,
         date: action.payload,
       };
+    case 'SET_FORM':
+      return {
+        ...state,
+        [action.input]: action.payload,
+      };
     default:
       return state;
   }

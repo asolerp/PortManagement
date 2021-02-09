@@ -36,19 +36,13 @@ const NewJobScreen = ({navigation}) => {
     <TabBar
       {...props}
       renderLabel={({route, focused, color}) => (
-        <Text style={{color: 'black', fontWeight: 'bold'}}>{route.title}</Text>
+        <Text style={styles.tabBarLabelStyle}>{route.title}</Text>
       )}
-      indicatorStyle={{
-        backgroundColor: '#2A7BA5',
-        width: 10,
-        height: 10,
-        borderRadius: 100,
-        left: Dimensions.get('window').width / (routes.length * 2) - 5,
-      }}
-      style={{
-        backgroundColor: 'transparent',
-        color: 'black',
-      }}
+      indicatorStyle={[
+        styles.tabIndicator,
+        {left: Dimensions.get('window').width / (routes.length * 2) - 5},
+      ]}
+      style={styles.tabBarStyle}
     />
   );
 
@@ -95,6 +89,17 @@ const styles = StyleSheet.create({
   inputRecurrente: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  tabBarStyle: {
+    backgroundColor: 'transparent',
+    color: 'black',
+  },
+  tabBarLabelStyle: {color: 'black', fontWeight: 'bold'},
+  tabIndicator: {
+    backgroundColor: '#2A7BA5',
+    width: 10,
+    height: 10,
+    borderRadius: 100,
   },
 });
 

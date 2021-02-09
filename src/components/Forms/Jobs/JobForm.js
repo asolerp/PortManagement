@@ -72,9 +72,9 @@ const JobForm = () => {
 
   const handleSubmit = () => {
     const job = {
-      name,
-      description,
-      date,
+      name: state?.name,
+      description: state?.description,
+      date: state?.date.value,
       time,
       recurrente,
       workers: asignWorkers,
@@ -92,7 +92,6 @@ const JobForm = () => {
   };
 
   const onChangeTime = (event, selectedDate) => {
-    console.log(event, selectedDate);
     const currentDate = selectedDate || time;
     setTime(currentDate);
   };
@@ -105,7 +104,13 @@ const JobForm = () => {
             <TextInput
               style={{height: 40}}
               placeholder="Nombre"
-              onChangeText={(text) => setName(text)}
+              onChangeText={(text) =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'name',
+                  payload: text,
+                })
+              }
               value={name}
             />
             <TextInput
