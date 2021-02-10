@@ -9,6 +9,7 @@ import TitlePage from '../../components/TitlePage';
 
 import {Text} from 'react-native';
 import JobForm from '../../components/Forms/Jobs/JobForm';
+import TaskForm from '../../components/Forms/Jobs/TaskJob';
 
 const NewJobScreen = ({navigation}) => {
   const [index, setIndex] = React.useState(0);
@@ -18,12 +19,7 @@ const NewJobScreen = ({navigation}) => {
   ]);
 
   const FirstRoute = () => <JobForm />;
-
-  const SecondRoute = () => (
-    <View>
-      <Text>Hola</Text>
-    </View>
-  );
+  const SecondRoute = () => <TaskForm />;
 
   const initialLayout = {width: Dimensions.get('window').width};
 

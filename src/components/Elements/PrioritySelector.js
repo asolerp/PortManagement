@@ -15,23 +15,21 @@ const styles = StyleSheet.create({
   },
 });
 
-const PrioritySelector = ({setter, getter}) => {
+const PrioritySelector = ({set, get}) => {
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => setter('low')}
-        style={styles.labelWrapper}>
-        <Label title="Baja" color="#58BFC0" active={getter === 'low'} />
+      <TouchableOpacity onPress={() => set('low')} style={styles.labelWrapper}>
+        <Label title="Baja" color="#58BFC0" active={get === 'low'} />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => setter('medium')}
+        onPress={() => set('medium')}
         style={styles.labelWrapper}>
-        <Label title="Media" color="#DDD363" active={getter === 'medium'} />
+        <Label title="Media" color="#DDD363" active={get === 'medium'} />
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => setter('height')}
+        onPress={() => set('height')}
         style={styles.labelWrapper}>
-        <Label title="Alta" color="#DB6E6E" active={getter === 'height'} />
+        <Label title="Alta" color="#DB6E6E" active={get === 'height'} />
       </TouchableOpacity>
     </View>
   );

@@ -19,7 +19,6 @@ import {useAddFirebase} from '../../../hooks/useAddFirebase';
 
 // Context
 import {Context} from '../../../store/jobFormStore';
-import Avatar from '../../Avatar';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,48 +49,24 @@ const styles = StyleSheet.create({
 
 const JobForm = () => {
   const {addFirebase, loading, error} = useAddFirebase('jobs');
-  const [activeScreen, setActiveScreen] = useState(0);
   const [state, dispatch] = useContext(Context);
 
-  console.log('globalState', state);
-
   // Form State
-  const [name, setName] = useState();
-  const [description, setDescription] = useState();
-  const [date, setDate] = useState();
-  const [time, setTime] = useState();
   const [recurrente, setRecurrente] = useState(false);
-  const [asignWorkers, setAsignWorkers] = useState([]);
-  const [asignHouse, setAsignHouse] = useState([]);
-  const [priority, setPriority] = useState();
 
   const cleanForm = () => {
-    setTime(undefined);
-    setDate(undefined);
-    setRecurrente(false);
-    setAsignHouse([]);
-    setAsignWorkers([]);
-    setPriority(undefined);
+    dispatch({
+      type: 'RESET_FORM',
+    });
   };
 
   const handleSubmit = () => {
-    const job = {
-      name: state?.name,
-      description: state?.description,
-      date: state?.date.value,
-      time,
-      recurrente,
-      workers: asignWorkers,
-      house: asignHouse,
-      priority,
-    };
-
-    addFirebase(job);
+    addFirebase(state?.job);
     cleanForm();
   };
 
   const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
+    const currentDate = selectedDate;
     dispatch({
       type: 'SET_FORM',
       label: 'date',
@@ -100,7 +75,7 @@ const JobForm = () => {
   };
 
   const onChangeTime = (event, selectedDate) => {
-    const currentDate = selectedDate || time;
+    const currentDate = selectedDate;
     dispatch({
       type: 'SET_FORM',
       label: 'time',
@@ -135,7 +110,7 @@ const JobForm = () => {
                   payload: text,
                 })
               }
-              value={description}
+              value={state?.job?.description}
             />
           </InputGroup>
           <InputGroup>
@@ -205,6 +180,7 @@ const JobForm = () => {
             </Accordian>
             <InputWithSwitch
               title="Recurrente"
+              disabled
               icon={{name: 'alarm', color: 'green'}}
               get={recurrente}
               set={setRecurrente}
@@ -258,14 +234,49 @@ const JobForm = () => {
                 />
               </View>
             </Accordian>
-            <Accordian title="Casa" iconProps={{name: 'house', color: 'brown'}}>
+            <Accordian
+              title="Casa"
+              subtitle={
+                <View style={{flexDirection: 'row'}}>
+                  {state?.job?.house?.value?.map((house, i) => (
+                    <React.Fragment>
+                      <Text style={styles.subtitle}>{house.houseName}</Text>
+                      {state?.job?.house?.value?.length - 1 !== i && (
+                        <Text style={styles.subtitle}> & </Text>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </View>
+              }
+              switcher={state?.job?.house?.switch}
+              iconProps={{name: 'house', color: 'brown'}}
+              onOpen={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'house',
+                  payload: {value: [], switch: true},
+                })
+              }
+              onClose={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'house',
+                  payload: {value: undefined, switch: false},
+                })
+              }>
               <View style={styles.asignList}>
                 <DynamicSelectorList
                   collection="houses"
                   searchBy="houseName"
                   schema={{img: 'houseImage', name: 'houseName'}}
-                  get={asignHouse}
-                  set={setAsignHouse}
+                  get={state?.job?.house?.value || []}
+                  set={(house) => {
+                    dispatch({
+                      type: 'SET_FORM',
+                      label: 'house',
+                      payload: {...state.job.house, value: house},
+                    });
+                  }}
                 />
               </View>
             </Accordian>
@@ -273,12 +284,40 @@ const JobForm = () => {
           <InputGroup>
             <Accordian
               title="Prioridad"
-              // subtitle={parsePriority(priority)}
+              subtitle={[
+                <Text style={styles.subtitle}>
+                  {parsePriority(state?.job?.priority?.value)}
+                </Text>,
+              ]}
+              switcher={state?.job?.priority?.switch}
               iconProps={{name: 'house', color: 'black'}}
-              onClose={() => setPriority(undefined)}>
-              <PrioritySelector setter={setPriority} getter={priority} />
+              onOpen={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'priority',
+                  payload: {value: undefined, switch: true},
+                })
+              }
+              onClose={() =>
+                dispatch({
+                  type: 'SET_FORM',
+                  label: 'priority',
+                  payload: {value: undefined, switch: false},
+                })
+              }>
+              <PrioritySelector
+                get={state?.job?.priority?.value || []}
+                set={(priority) => {
+                  dispatch({
+                    type: 'SET_FORM',
+                    label: 'priority',
+                    payload: {...state.job.priority, value: priority},
+                  });
+                }}
+              />
             </Accordian>
           </InputGroup>
+          <Button type="clear" onPress={cleanForm} title="Limpiar" />
           <Button onPress={handleSubmit} title="Guardar" loading={loading} />
         </View>
       </ScrollView>

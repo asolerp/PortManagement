@@ -72,7 +72,7 @@ const Accordian = ({
         <View style={styles.accordianContainer}>
           <View style={styles.iconContainer}>
             <IconCircle name={iconProps?.name} color={iconProps?.color} />
-            <View>
+            <View style={styles.infoContainer}>
               <Text style={[styles.title, styles.font]}>{title}</Text>
               {subtitle && switcher && subtitle}
             </View>
@@ -80,8 +80,7 @@ const Accordian = ({
           <Switch
             ref={accordian}
             style={{transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
-            trackColor={{false: '#C9C9C9', true: '#81b0ff'}}
-            thumbColor={switcher ? '#f5dd4b' : '#f4f3f4'}
+            trackColor={{true: '#2A7BA5', false: 'grey'}}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleExpandWithSwitch}
             value={switcher}
@@ -122,6 +121,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
   },
+  infoContainer: {},
   separator: {
     borderBottomColor: '#EAEAEA',
     borderBottomWidth: 1,
