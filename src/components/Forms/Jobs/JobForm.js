@@ -1,6 +1,6 @@
 import React, {useState, useContext} from 'react';
 
-import {View, TextInput, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
 
 import {Button} from 'react-native-elements';
 
@@ -19,10 +19,14 @@ import {useAddFirebase} from '../../../hooks/useAddFirebase';
 
 // Context
 import {Context} from '../../../store/jobFormStore';
+import Avatar from '../../Avatar';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  subtitle: {
+    color: '#2A7BA5',
   },
   newJobScreen: {
     flex: 1,
@@ -138,7 +142,11 @@ const JobForm = () => {
             <Accordian
               title="Fecha"
               switcher={state?.job?.date?.switch}
-              subtitle={moment(state?.job?.date?.value).format('LL')}
+              subtitle={[
+                <Text style={styles.subtitle}>
+                  {moment(state?.job?.date?.value).format('LL')}
+                </Text>,
+              ]}
               iconProps={{name: 'calendar-today', color: 'red'}}
               onOpen={() => {
                 dispatch({
@@ -165,7 +173,11 @@ const JobForm = () => {
             </Accordian>
             <Accordian
               title="Hora"
-              subtitle={moment(time).format('LT')}
+              subtitle={[
+                <Text style={styles.subtitle}>
+                  {moment(state?.job?.time?.value).format('LT')}
+                </Text>,
+              ]}
               switcher={state?.job?.time?.switch}
               iconProps={{name: 'alarm', color: 'purple'}}
               onOpen={() =>
@@ -201,6 +213,18 @@ const JobForm = () => {
           <InputGroup>
             <Accordian
               title="Asignar a..."
+              subtitle={
+                <View style={{flexDirection: 'row', paddingBottom: 10}}>
+                  {state?.job?.workers?.value?.map((worker, i) => (
+                    <React.Fragment>
+                      <Text style={styles.subtitle}>{worker.firstName}</Text>
+                      {state?.job?.workers?.value?.length - 1 !== i && (
+                        <Text style={styles.subtitle}> & </Text>
+                      )}
+                    </React.Fragment>
+                  ))}
+                </View>
+              }
               switcher={state?.job?.workers?.switch}
               iconProps={{name: 'person', color: 'blue'}}
               onOpen={() =>
@@ -249,7 +273,7 @@ const JobForm = () => {
           <InputGroup>
             <Accordian
               title="Prioridad"
-              subtitle={parsePriority(priority)}
+              // subtitle={parsePriority(priority)}
               iconProps={{name: 'house', color: 'black'}}
               onClose={() => setPriority(undefined)}>
               <PrioritySelector setter={setPriority} getter={priority} />

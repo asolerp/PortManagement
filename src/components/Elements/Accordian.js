@@ -31,12 +31,11 @@ const Accordian = ({
   iconProps,
   children,
   switcher,
-  handleSwitch,
   onOpen = () => {},
   onClose = () => {},
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [switchStatus, setSwitchStatus] = useState(false);
+  // const [switchStatus, setSwitchStatus] = useState(false);
 
   const accordian = createRef();
 
@@ -60,38 +59,32 @@ const Accordian = ({
       setExpanded(false);
       onClose();
     }
-    // if (handleSwitch) {
-    //   handleSwitch(!switcher);
-    // }
-    if (switcher === undefined) {
-      setSwitchStatus(!switchStatus);
-    }
   };
+
+  console.log(switcher, 'switcher');
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         onPress={() => {
-          (switcher || switchStatus) && toggleExpand();
+          switcher && toggleExpand();
         }}>
         <View style={styles.accordianContainer}>
           <View style={styles.iconContainer}>
             <IconCircle name={iconProps?.name} color={iconProps?.color} />
             <View>
               <Text style={[styles.title, styles.font]}>{title}</Text>
-              {subtitle && (switcher || switchStatus) && (
-                <Text style={styles.subtitle}>{subtitle}</Text>
-              )}
+              {subtitle && switcher && subtitle}
             </View>
           </View>
           <Switch
             ref={accordian}
             style={{transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
             trackColor={{false: '#C9C9C9', true: '#81b0ff'}}
-            thumbColor={switcher || switchStatus ? '#f5dd4b' : '#f4f3f4'}
+            thumbColor={switcher ? '#f5dd4b' : '#f4f3f4'}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleExpandWithSwitch}
-            value={switcher || switchStatus}
+            value={switcher}
           />
         </View>
       </TouchableOpacity>
@@ -110,9 +103,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     color: 'black',
-  },
-  subtitle: {
-    color: '#2A7BA5',
   },
   iconContainer: {
     flexDirection: 'row',
