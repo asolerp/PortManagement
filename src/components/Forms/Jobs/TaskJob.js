@@ -12,6 +12,7 @@ import PrioritySelector from '../../../components/Elements/PrioritySelector';
 import {Context} from '../../../store/jobFormStore';
 
 import {parsePriority} from '../../../utils/parsers';
+import Task from '../../Elements/Task';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +42,7 @@ const TaskForm = () => {
       name: state?.job?.taskName,
       description: state?.job?.taskDescription,
       workers: state?.job?.taskWorkers,
+      priority: state?.job?.taskPriority,
     };
     dispatch({
       type: 'ADD_TASK',
@@ -182,8 +184,8 @@ const TaskForm = () => {
       <Text style={styles.tasksTitle}>Tareas</Text>
       <View style={styles.tasksContainer}>
         <ScrollView>
-          {state?.job?.tasks?.map((task) => (
-            <Text>{task.name}</Text>
+          {state?.job?.tasks?.map((task, i) => (
+            <Task task={task} key={i} />
           ))}
         </ScrollView>
       </View>

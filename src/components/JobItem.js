@@ -54,7 +54,7 @@ const styles = StyleSheet.create({
 });
 
 const JobItem = ({job}) => {
-  console.log('trabajo', job.name);
+  console.log('trabajo', job);
 
   return (
     <View style={styles.container}>
@@ -77,7 +77,7 @@ const JobItem = ({job}) => {
         <Text style={styles.date}>{moment(job.date).format('LL')}</Text>
       </View>
       <View style={styles.workers}>
-        {job.workers.map((worker) => (
+        {job?.workers?.map((worker) => (
           <Avatar uri={worker.profileImage} />
         ))}
       </View>
