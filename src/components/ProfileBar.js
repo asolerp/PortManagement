@@ -1,5 +1,5 @@
 import React, {useEffect, useContext, useState} from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, Dimensions, StyleSheet} from 'react-native';
 
 import {AuthContext} from '../navigation/AuthNavigator';
 
@@ -46,14 +46,15 @@ const ProfileBar = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'center',
     paddingHorizontal: 30,
+    marginTop: Dimensions.get('window').height / 10,
   },
   profileBar: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    alignItems: 'center',
   },
   avatar: {
     width: 75,

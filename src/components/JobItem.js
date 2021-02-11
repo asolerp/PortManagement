@@ -11,7 +11,7 @@ import {parsePriorityColor, percentageOfComplete} from '../utils/parsers';
 
 const styles = StyleSheet.create({
   container: {
-    width: '47%',
+    width: '100%',
     height: 200,
     backgroundColor: 'white',
     alignSelf: 'stretch',
@@ -30,20 +30,21 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   titleSubtitle: {
-    width: '95%',
+    width: '97%',
   },
   priority: {
-    width: '5%',
+    width: '3%',
     height: 50,
     borderRadius: 30,
   },
   title: {
-    fontSize: 14,
+    fontSize: 20,
     marginBottom: 5,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 10,
+    fontSize: 15,
+    marginBottom: 5,
   },
   calendar: {
     flexDirection: 'row',
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   date: {
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 5,
   },
@@ -105,6 +106,7 @@ const JobItem = ({job}) => {
           progress={percentageOfComplete(job.tasks)}
           unfilledColor={'#E2E2E2'}
           borderWidth={0}
+          width={300}
           color={'#126D9B'}
         />
       </View>

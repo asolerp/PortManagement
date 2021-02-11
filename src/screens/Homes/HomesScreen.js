@@ -15,6 +15,7 @@ import firestore from '@react-native-firebase/firestore';
 import AddButton from '../../components/Elements/AddButton';
 import TitlePage from '../../components/TitlePage';
 import HouseItemList from '../../components/HouseItemList';
+import {Dimensions} from 'react-native';
 
 const HomesScreen = ({navigation}) => {
   const [housesList, setHousesList] = useState([]);
@@ -81,6 +82,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    marginTop: Dimensions.get('window').height / 10,
   },
   addButton: {
     position: 'absolute',

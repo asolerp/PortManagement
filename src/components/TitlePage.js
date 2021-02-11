@@ -18,7 +18,7 @@ const TitlePage = ({title, leftSide, color = 'white'}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 50,
+    marginTop: 10,
     marginBottom: 20,
     // justifyContent: 'flex-end',
     flexDirection: 'row',

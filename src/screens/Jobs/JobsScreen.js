@@ -1,4 +1,5 @@
 import React from 'react';
+import {Dimensions} from 'react-native';
 
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
@@ -36,10 +37,10 @@ const JobsScreen = ({navigation}) => {
       <View style={styles.container}>
         <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
-          {list.map((item) => (
+          {list?.map((item, i) => (
             <TouchableOpacity
               style={{width: '100%'}}
-              key={item.id}
+              key={i}
               onPress={() =>
                 navigation.navigate('JobScreen', {
                   jobId: item.id,
@@ -48,7 +49,6 @@ const JobsScreen = ({navigation}) => {
               <JobItem job={item} />
             </TouchableOpacity>
           ))}
-          {/* <Text>No tienes nigún trabajo activo en este momento</Text> */}
         </View>
       </View>
     </React.Fragment>
@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
+    marginTop: Dimensions.get('window').height / 10,
   },
   jobsScreen: {
     flex: 10,
