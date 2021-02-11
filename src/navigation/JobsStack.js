@@ -8,6 +8,7 @@ import JobFormStore from '../store/jobFormStore';
 
 import JobsScreen from '../screens/Jobs/JobsScreen';
 import NewJobScreen from '../screens/Jobs/NewJobScreen';
+import JobScreen from '../screens/Jobs/JobScreen';
 
 const Stack = createStackNavigator();
 
@@ -35,6 +36,7 @@ export default function JobsStack() {
             }}
           />
           <Stack.Screen name="NewJob" component={NewJobScreen} />
+          <Stack.Screen name="JobScreen" component={JobScreen} />
         </Stack.Navigator>
       </NewHouseFormContext.Provider>
     </JobFormStore>

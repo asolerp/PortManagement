@@ -9,7 +9,7 @@ export const useGetFirebase = (coll) => {
 
   const onResult = (QuerySnapshot) => {
     setLoading(false);
-    setList(QuerySnapshot.docs.map((doc) => doc.data()));
+    setList(QuerySnapshot.docs.map((doc) => ({...doc.data(), id: doc.id})));
   };
 
   const onError = (err) => {

@@ -1,12 +1,13 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
+import * as Progress from 'react-native-progress';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import moment from 'moment';
 import Avatar from './Avatar';
 
-import {parsePriorityColor} from '../utils/parsers';
+import {parsePriorityColor, percentageOfComplete} from '../utils/parsers';
 
 const styles = StyleSheet.create({
   container: {
@@ -38,8 +39,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
-    marginBottom: 10,
+    marginBottom: 5,
     fontWeight: 'bold',
+  },
+  subtitle: {
+    fontSize: 10,
   },
   calendar: {
     flexDirection: 'row',
@@ -50,6 +54,14 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: 'bold',
     marginLeft: 5,
+  },
+  percentage: {
+    textAlign: 'right',
+    marginBottom: 5,
+    fontWeight: 'bold',
+  },
+  workers: {
+    flexDirection: 'row',
   },
 });
 
@@ -77,11 +89,25 @@ const JobItem = ({job}) => {
         <Text style={styles.date}>{moment(job.date).format('LL')}</Text>
       </View>
       <View style={styles.workers}>
-        {job?.workers?.map((worker) => (
-          <Avatar uri={worker.profileImage} />
+        {job?.workers?.map((worker, i) => (
+          <Avatar
+            uri={worker.profileImage}
+            overlap={true}
+            position={job.workers.length - i}
+          />
         ))}
       </View>
-      <View styles={styles.progressContainer} />
+      <View styles={styles.progressContainer}>
+        <Text style={styles.percentage}>
+          {Math.round(percentageOfComplete(job.tasks) * 100)}%
+        </Text>
+        <Progress.Bar
+          progress={percentageOfComplete(job.tasks)}
+          unfilledColor={'#E2E2E2'}
+          borderWidth={0}
+          color={'#126D9B'}
+        />
+      </View>
       <View styles={styles.bottomIcons} />
     </View>
   );

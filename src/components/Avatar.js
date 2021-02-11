@@ -10,15 +10,15 @@ const styles = StyleSheet.create({
     width: 25,
     height: 25,
     borderRadius: 100,
-    marginRight: 10,
   },
 });
 
-const Avatar = ({uri, name}) => {
+const Avatar = ({uri, name, overlap, position}) => {
+  console.log(position);
   return (
-    <View style={styles.ownerWrapper}>
+    <View style={[styles.ownerWrapper, {zIndex: position}]}>
       <Image
-        style={styles.ownerImage}
+        style={[styles.ownerImage, {marginRight: overlap ? -10 : 10}]}
         source={{
           uri: uri,
         }}

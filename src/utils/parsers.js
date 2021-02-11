@@ -25,3 +25,9 @@ export const parsePriorityColor = (priority) => {
       return PRIORITY_HEIGHT;
   }
 };
+
+export const percentageOfComplete = (tasks) => {
+  const completedTaks = tasks.filter((task) => task.complete).length;
+  console.log('compoleted', completedTaks);
+  return completedTaks / tasks.length;
+};

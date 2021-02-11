@@ -37,7 +37,16 @@ const JobsScreen = ({navigation}) => {
         <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
           {list.map((item) => (
-            <JobItem key={item.id} job={item} />
+            <TouchableOpacity
+              style={{width: '100%'}}
+              key={item.id}
+              onPress={() =>
+                navigation.navigate('JobScreen', {
+                  jobId: item.id,
+                })
+              }>
+              <JobItem job={item} />
+            </TouchableOpacity>
           ))}
           {/* <Text>No tienes nigún trabajo activo en este momento</Text> */}
         </View>

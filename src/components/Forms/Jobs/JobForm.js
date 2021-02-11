@@ -61,7 +61,23 @@ const JobForm = () => {
   };
 
   const handleSubmit = () => {
-    addFirebase(state?.job);
+    const job = {
+      name: state?.job?.name,
+      description: state?.job?.description,
+      date: state?.job?.date?.value,
+      time: state.job?.time?.value,
+      workers: state?.job?.workers?.value,
+      house: state?.job?.house?.value,
+      priority: state?.job?.priority.value,
+      tasks: state?.job?.tasks.map((task) => ({
+        name: task?.name,
+        description: task?.description,
+        priority: task?.priority?.value,
+        workers: task?.workers?.value,
+      })),
+    };
+
+    addFirebase(job);
     cleanForm();
   };
 
