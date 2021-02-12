@@ -38,16 +38,15 @@ const JobsScreen = ({navigation}) => {
         <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
           {list?.map((item, i) => (
-            <TouchableOpacity
-              style={{width: '100%'}}
+            <JobItem
+              job={item}
               key={i}
               onPress={() =>
                 navigation.navigate('JobScreen', {
                   jobId: item.id,
                 })
-              }>
-              <JobItem job={item} />
-            </TouchableOpacity>
+              }
+            />
           ))}
         </View>
       </View>
@@ -63,8 +62,6 @@ const styles = StyleSheet.create({
   },
   jobsScreen: {
     flex: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     paddingHorizontal: 30,
     marginTop: 30,
   },
@@ -73,6 +70,13 @@ const styles = StyleSheet.create({
     right: 30,
     bottom: 120,
     zIndex: 10,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: '#2d2d2d',
+    shadowOpacity: 0.5,
+    shadowRadius: 2,
   },
 });
 

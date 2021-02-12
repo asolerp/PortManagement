@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  StatusBar,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -43,30 +49,34 @@ const NewJobScreen = ({navigation}) => {
   );
 
   return (
-    <View style={styles.container}>
-      <TitlePage
-        leftSide={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Icon name="arrow-back" size={25} color="black" />
-          </TouchableOpacity>
-        }
-        title="Nuevo Trabajo"
-        color="black"
-      />
-      <TabView
-        navigationState={{index, routes}}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={setIndex}
-        initialLayout={initialLayout}
-      />
-    </View>
+    <React.Fragment>
+      <StatusBar barStyle="default" />
+      <View style={styles.container}>
+        <TitlePage
+          leftSide={
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Icon name="arrow-back" size={25} color="black" />
+            </TouchableOpacity>
+          }
+          title="Nuevo Trabajo"
+          color="black"
+        />
+        <TabView
+          navigationState={{index, routes}}
+          renderScene={renderScene}
+          renderTabBar={renderTabBar}
+          onIndexChange={setIndex}
+          initialLayout={initialLayout}
+        />
+      </View>
+    </React.Fragment>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 40,
   },
   newJobScreen: {
     flex: 1,

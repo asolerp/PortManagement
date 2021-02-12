@@ -19,7 +19,7 @@ const TitlePage = ({title, leftSide, color = 'white'}) => {
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-    marginBottom: 20,
+    marginBottom: 30,
     // justifyContent: 'flex-end',
     flexDirection: 'row',
     alignItems: 'center',
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 30,
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
 });
 

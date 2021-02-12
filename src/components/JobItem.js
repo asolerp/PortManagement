@@ -1,5 +1,12 @@
-import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Platform,
+  UIManager,
+  LayoutAnimation,
+} from 'react-native';
 import * as Progress from 'react-native-progress';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,11 +15,13 @@ import moment from 'moment';
 import Avatar from './Avatar';
 
 import {parsePriorityColor, percentageOfComplete} from '../utils/parsers';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
-    height: 200,
+
+    marginBottom: 20,
     backgroundColor: 'white',
     alignSelf: 'stretch',
     borderRadius: 10,
@@ -34,7 +43,7 @@ const styles = StyleSheet.create({
   },
   priority: {
     width: '3%',
-    height: 50,
+    height: '100%',
     borderRadius: 30,
   },
   title: {
@@ -45,6 +54,7 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 15,
     marginBottom: 5,
+    width: '95%',
   },
   calendar: {
     flexDirection: 'row',
@@ -56,6 +66,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginLeft: 5,
   },
+  progressContainer: {
+    flex: 1,
+  },
+  bottomIcons: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+  },
   percentage: {
     textAlign: 'right',
     marginBottom: 5,
@@ -66,51 +84,73 @@ const styles = StyleSheet.create({
   },
 });
 
-const JobItem = ({job}) => {
-  console.log('trabajo', job);
+const JobItem = ({job, onPress}) => {
+  const [expanded, setExpanded] = useState(false);
+
+  if (Platform.OS === 'android') {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
+  const toggleExpand = () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setExpanded(!expanded);
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.firstSection}>
-        <View style={styles.titleSubtitle}>
-          <Text style={styles.title}>{job.name}</Text>
-          <Text style={styles.subtitle}>{job.description}</Text>
+      <TouchableOpacity onPress={toggleExpand}>
+        <View style={styles.firstSection}>
+          <View style={styles.titleSubtitle}>
+            <Text style={styles.title}>{job.name}</Text>
+            <Text style={styles.subtitle}>{job.description}</Text>
+          </View>
+          {job.priority && (
+            <View
+              style={[
+                styles.priority,
+                {backgroundColor: parsePriorityColor(job.priority)},
+              ]}
+            />
+          )}
         </View>
-        {job.priority && (
-          <View
-            style={[
-              styles.priority,
-              {backgroundColor: parsePriorityColor(job.priority)},
-            ]}
-          />
+        {expanded && (
+          <View>
+            <View style={styles.calendar}>
+              <Icon name="calendar-today" color="black" />
+              <Text style={styles.date}>{moment(job.date).format('LL')}</Text>
+            </View>
+            <View style={styles.workers}>
+              {job?.workers?.map((worker, i) => (
+                <Avatar
+                  uri={worker.profileImage}
+                  overlap={true}
+                  position={job.workers.length - i}
+                  size={'medium'}
+                />
+              ))}
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View style={styles.progressContainer}>
+                <Text style={styles.percentage}>
+                  {Math.round(percentageOfComplete(job.tasks) * 100)}%
+                </Text>
+                <Progress.Bar
+                  progress={percentageOfComplete(job.tasks)}
+                  unfilledColor={'#E2E2E2'}
+                  borderWidth={0}
+                  width={null}
+                  color={'#126D9B'}
+                />
+              </View>
+              <View style={styles.bottomIcons}>
+                <TouchableOpacity onPress={onPress}>
+                  <Icon name="remove-red-eye" size={30} />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
         )}
-      </View>
-      <View style={styles.calendar}>
-        <Icon name="calendar-today" color="black" />
-        <Text style={styles.date}>{moment(job.date).format('LL')}</Text>
-      </View>
-      <View style={styles.workers}>
-        {job?.workers?.map((worker, i) => (
-          <Avatar
-            uri={worker.profileImage}
-            overlap={true}
-            position={job.workers.length - i}
-          />
-        ))}
-      </View>
-      <View styles={styles.progressContainer}>
-        <Text style={styles.percentage}>
-          {Math.round(percentageOfComplete(job.tasks) * 100)}%
-        </Text>
-        <Progress.Bar
-          progress={percentageOfComplete(job.tasks)}
-          unfilledColor={'#E2E2E2'}
-          borderWidth={0}
-          width={300}
-          color={'#126D9B'}
-        />
-      </View>
-      <View styles={styles.bottomIcons} />
+      </TouchableOpacity>
     </View>
   );
 };

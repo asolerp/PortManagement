@@ -13,12 +13,31 @@ const styles = StyleSheet.create({
   },
 });
 
-const Avatar = ({uri, name, overlap, position}) => {
-  console.log(position);
+const Avatar = ({uri, name, overlap, position, size = 'small'}) => {
+  const parseSize = (sizeImage) => {
+    switch (sizeImage) {
+      case 'small': {
+        return 25;
+      }
+      case 'medium': {
+        return 35;
+      }
+      case 'big': {
+        return 45;
+      }
+      default: {
+        return 25;
+      }
+    }
+  };
   return (
     <View style={[styles.ownerWrapper, {zIndex: position}]}>
       <Image
-        style={[styles.ownerImage, {marginRight: overlap ? -10 : 10}]}
+        style={[
+          styles.ownerImage,
+          {width: parseSize(size), height: parseSize(size)},
+          {marginRight: overlap ? -10 : 10},
+        ]}
         source={{
           uri: uri,
         }}
