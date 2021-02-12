@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
   },
   jobsScreen: {
     flex: 10,
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
     marginTop: 30,
   },
   addButton: {

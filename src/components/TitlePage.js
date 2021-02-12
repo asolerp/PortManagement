@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-end',
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
   },
   title: {
     fontSize: 30,

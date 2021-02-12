@@ -35,10 +35,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     backgroundColor: '#F8F8F8',
     position: 'absolute',
-    height: Dimensions.get('window').height / 1.2,
+    height: Dimensions.get('window').height / 1.12,
     width: '100%',
-    borderBottomLeftRadius: 50,
-    borderBottomRightRadius: 50,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
     shadowOffset: {
       height: 0,
       width: 0,
