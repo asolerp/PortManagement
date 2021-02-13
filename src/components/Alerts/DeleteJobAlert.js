@@ -10,7 +10,7 @@ const deleteJobAlert = (action) =>
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'Borrar', onPress: () => action},
+      {text: 'Borrar', onPress: () => action()},
     ],
     {cancelable: false},
   );

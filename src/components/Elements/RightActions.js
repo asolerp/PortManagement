@@ -1,12 +1,12 @@
 import React from 'react';
 import {View, TouchableOpacity, Animated} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import DeleteJobAlert from '../Alerts/DeleteJobAlert';
+import deleteJobAlert from '../Alerts/deleteJobAlert';
 
 const RightActions = (progress, dragX, action) => {
   return (
     <React.Fragment>
-      <TouchableOpacity onPress={() => DeleteJobAlert(action)}>
+      <TouchableOpacity onPress={() => deleteJobAlert(action)}>
         <View
           style={{
             flex: 1,
