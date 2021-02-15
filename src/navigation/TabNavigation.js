@@ -25,7 +25,7 @@ const TabNavigation = () => {
       tabBarOptions={{
         activeTintColor: 'white',
         inactiveTintColor: 'white',
-        activeBackgroundColor: '#126D9B',
+        activeBackgroundColor: '#55A7AE',
         tabStyle: {marginBottom: 20},
       }}
       appearence={{
@@ -65,7 +65,8 @@ const TabNavigation = () => {
       <Tabs.Screen
         name="Casas"
         component={HomesStack}
-        options={{
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisible(route),
           tabBarIcon: ({focused, color, size}) => (
             <Icon
               name="home"
@@ -74,7 +75,7 @@ const TabNavigation = () => {
               focused={focused}
             />
           ),
-        }}
+        })}
       />
       <Tabs.Screen
         name="People"

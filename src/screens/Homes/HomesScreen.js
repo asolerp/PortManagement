@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
     marginTop: Dimensions.get('window').height / 10,
+    marginBottom: 15,
   },
   addButton: {
     position: 'absolute',

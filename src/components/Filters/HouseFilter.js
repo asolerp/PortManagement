@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: 10,
-    width: 60,
+    width: 70,
   },
   avatarContainer: {
     alignItems: 'center',

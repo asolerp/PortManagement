@@ -22,6 +22,7 @@ export const launchImage = (houseSetter) => {
         filePath: response,
         fileData: response.data,
         fileUri: response.uri,
+        fileType: response.type,
       });
     }
   });

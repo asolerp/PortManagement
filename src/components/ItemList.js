@@ -1,12 +1,9 @@
-import React, {useContext} from 'react';
+import React from 'react';
 
 import {View, Text, Image, StyleSheet} from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
-import {NewHouseFormContext} from '../context/newHouseFormContext';
 
 const ItemList = ({item, schema, setter, getter, multiple}) => {
-  console.log('getter', getter);
-
   const findItemID = (uid) => {
     return getter?.find((i) => i.id === uid);
   };

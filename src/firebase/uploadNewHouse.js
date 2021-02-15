@@ -2,6 +2,8 @@
 import storage from '@react-native-firebase/storage';
 import firestore from '@react-native-firebase/firestore';
 
+import {cloudinaryUpload} from '../cloudinary/index';
+
 export const uploadHouseImage = async (houseUID, imageName, uploadUri) => {
   try {
     await storage().ref(`/${houseUID}/${imageName}`).putFile(uploadUri);
@@ -17,11 +19,8 @@ export const uploadHouseImage = async (houseUID, imageName, uploadUri) => {
 export const newHouse = async (data, houseImage, userUID) => {
   try {
     const house = await firestore().collection('houses').add(data);
-    const uploadImage = await uploadHouseImage(
-      house.id,
-      houseImage.fileName,
-      houseImage.fileUri,
-    );
+    const uploadImage = await cloudinaryUpload(houseImage);
+    console.log(uploadImage, 'uploadImage');
     await firestore()
       .collection('houses')
       .doc(house.id)

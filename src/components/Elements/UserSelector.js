@@ -52,14 +52,13 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   avatar: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 100,
     resizeMode: 'cover',
   },
   name: {
-    fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 15,
   },
 });
 

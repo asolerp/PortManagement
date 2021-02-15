@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 
 import {
   View,
@@ -17,6 +17,8 @@ import TitlePage from '../components/TitlePage';
 import {SearchBar} from 'react-native-elements';
 import ItemList from '../components/ItemList';
 
+import {NewHouseFormContext} from '../context/newHouseFormContext';
+
 const UserListSelectorScreen = ({
   navigation,
   userType,
@@ -27,7 +29,7 @@ const UserListSelectorScreen = ({
   const [search, setSearch] = useState();
   const [list, setList] = useState();
 
-  const [usersSelected, setUsersSelected] = useState({});
+  const {users, handleUsers} = useContext(NewHouseFormContext);
 
   useEffect(() => {
     const listUsers = [];
@@ -50,9 +52,11 @@ const UserListSelectorScreen = ({
   const renderItem = ({item}) => {
     return (
       <ItemList
-        user={item}
-        selectedUser={usersSelected}
-        setSelectedUser={setUsersSelected}
+        item={item}
+        schema={{img: 'profileImage', name: 'firstName'}}
+        setter={handleUsers}
+        getter={users}
+        multiple={false}
       />
     );
   };

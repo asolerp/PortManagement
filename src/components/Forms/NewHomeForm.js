@@ -4,6 +4,8 @@ import {useForm, Controller} from 'react-hook-form';
 
 import {
   ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView,
   View,
   StyleSheet,
   ScrollView,
@@ -32,6 +34,8 @@ const NewFormHome = () => {
   const [houseImage, setHouseImage] = useState();
   const [loading, setLoading] = useState(false);
 
+  console.log('users', users);
+
   const onSubmit = async (data) => {
     setLoading(true);
     try {
@@ -51,122 +55,124 @@ const NewFormHome = () => {
   };
 
   return (
-    <ScrollView style={styles.scrollWrapper}>
-      <ImageLoader
-        onPress={() => launchImage(setHouseImage)}
-        image={houseImage}
-      />
-      <Controller
-        control={control}
-        render={({onChange, onBlur, value}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={(v) => onChange(v)}
-            value={value}
-            label="Nombre de la casa"
-            name="houseName"
-            inputStyles={styles.newHomeInput}
-            labelStyle={styles.newHomeLabel}
-            error={errors.houseName}
-          />
-        )}
-        name="houseName"
-        rules={{required: true}}
-        defaultValue=""
-      />
-      <Controller
-        control={control}
-        render={({onChange, onBlur, value}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={(v) => onChange(v)}
-            value={value}
-            label="Calle"
-            name="street"
-            inputStyles={styles.newHomeInput}
-            labelStyle={styles.newHomeLabel}
-            error={errors.street}
-          />
-        )}
-        name="street"
-        rules={{required: true}}
-        defaultValue=""
-      />
-      <Controller
-        control={control}
-        render={({onChange, onBlur, value}) => (
-          <Input
-            onBlur={onBlur}
-            onChangeText={(v) => onChange(v)}
-            value={value}
-            label="Municipio"
-            name="municipio"
-            inputStyles={styles.newHomeInput}
-            labelStyle={styles.newHomeLabel}
-            error={errors.municipio}
-          />
-        )}
-        name="municipio"
-        rules={{required: true}}
-        defaultValue=""
-      />
-      <View style={styles.multipleLineInputs}>
-        <View style={styles.multiLineElementLeft}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                onBlur={onBlur}
-                onChangeText={(v) => onChange(v)}
-                value={value}
-                label="Código postal"
-                name="cp"
-                inputStyles={styles.newHomeInput}
-                labelStyle={styles.newHomeLabel}
-                error={errors.cp}
-              />
-            )}
-            name="cp"
-            rules={{required: true}}
-            defaultValue=""
-          />
-        </View>
-        <View style={styles.multiLineElementRight}>
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <Input
-                onBlur={onBlur}
-                onChangeText={(v) => onChange(v)}
-                value={value}
-                label="Teléfono"
-                name="phone"
-                inputStyles={styles.newHomeInput}
-                labelStyle={styles.newHomeLabel}
-                error={errors.phone}
-              />
-            )}
-            name="phone"
-            rules={{required: true}}
-            defaultValue=""
-          />
-        </View>
-      </View>
-      <UserSelector
-        label="Propietario"
-        onPress={() => navigation.navigate('UserList')}
-        user={users[0]}
-      />
-      {!loading ? (
-        <Button
-          style={{marginBottom: 200}}
-          onPress={handleSubmit(onSubmit)}
-          title="Guardar"
+    <KeyboardAvoidingView enabled behavior="padding">
+      <ScrollView style={styles.scrollWrapper}>
+        <ImageLoader
+          onPress={() => launchImage(setHouseImage)}
+          image={houseImage}
         />
-      ) : (
-        <ActivityIndicator />
-      )}
-    </ScrollView>
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              label="Nombre de la casa"
+              name="houseName"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.houseName}
+            />
+          )}
+          name="houseName"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              label="Calle"
+              name="street"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.street}
+            />
+          )}
+          name="street"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              label="Municipio"
+              name="municipio"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.municipio}
+            />
+          )}
+          name="municipio"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <View style={styles.multipleLineInputs}>
+          <View style={styles.multiLineElementLeft}>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={(v) => onChange(v)}
+                  value={value}
+                  label="Código postal"
+                  name="cp"
+                  inputStyles={styles.newHomeInput}
+                  labelStyle={styles.newHomeLabel}
+                  error={errors.cp}
+                />
+              )}
+              name="cp"
+              rules={{required: true}}
+              defaultValue=""
+            />
+          </View>
+          <View style={styles.multiLineElementRight}>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={(v) => onChange(v)}
+                  value={value}
+                  label="Teléfono"
+                  name="phone"
+                  inputStyles={styles.newHomeInput}
+                  labelStyle={styles.newHomeLabel}
+                  error={errors.phone}
+                />
+              )}
+              name="phone"
+              rules={{required: true}}
+              defaultValue=""
+            />
+          </View>
+        </View>
+        <UserSelector
+          label="Propietario"
+          onPress={() => navigation.navigate('UserList')}
+          user={users[0]}
+        />
+        {!loading ? (
+          <Button
+            style={{marginBottom: 200}}
+            onPress={handleSubmit(onSubmit)}
+            title="Guardar"
+          />
+        ) : (
+          <ActivityIndicator />
+        )}
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 

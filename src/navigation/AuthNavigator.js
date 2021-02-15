@@ -21,11 +21,11 @@ export const AuthContext = createContext(null);
 const styles = StyleSheet.create({
   appBackground: {
     flex: 1,
-    backgroundColor: '#4DAABF',
+    backgroundColor: '#126D9B',
   },
   topBar: {
     height: Dimensions.get('window').height / 10,
-    backgroundColor: '#4DAABF',
+    backgroundColor: '#126D9B',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
