@@ -1,23 +1,49 @@
-import React from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import {Dimensions} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
 import AddButton from '../../components/Elements/AddButton';
+import HouseFilter from '../../components/Filters/HouseFilter';
 import JobItem from '../../components/JobItem';
 import TitlePage from '../../components/TitlePage';
 
 //Firebase
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
-const JobsScreen = ({navigation}) => {
-  const {list, loading, error} = useGetFirebase('jobs');
+// Context
+import {Context} from '../../store/filterStore';
 
-  console.log(list, loading);
+const JobsScreen = () => {
+  const {list, loading, error} = useGetFirebase('jobs');
+  const [state, dispatch] = useContext(Context);
+  const [filteredList, setFilteredList] = useState([]);
+  const navigation = useNavigation();
 
   const handleNewJob = () => {
     navigation.navigate('NewJob');
   };
+
+  useEffect(() => {
+    if (state?.houses === null) {
+      const fList = list.filter((job) => job.house === null);
+      setFilteredList(fList);
+    } else {
+      if (state?.houses?.length === 0) {
+        setFilteredList(list);
+      } else {
+        console.log('hola');
+        const fList = list
+          .filter((j) => j.house !== null)
+          .filter((job) =>
+            state?.houses?.find((houseId) => houseId === job?.house[0]?.id),
+          );
+        console.log('fList', fList);
+        setFilteredList(fList);
+      }
+    }
+  }, [state, list]);
 
   if (loading) {
     return (
@@ -37,7 +63,8 @@ const JobsScreen = ({navigation}) => {
       <View style={styles.container}>
         <TitlePage title="Trabajos" color="black" />
         <View style={styles.jobsScreen}>
-          {list?.map((item, i) => (
+          <HouseFilter />
+          {filteredList?.map((item, i) => (
             <JobItem
               job={item}
               key={i}
@@ -63,7 +90,6 @@ const styles = StyleSheet.create({
   jobsScreen: {
     flex: 10,
     paddingHorizontal: 10,
-    marginTop: 30,
   },
   addButton: {
     position: 'absolute',

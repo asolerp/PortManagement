@@ -6,6 +6,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  withBorder: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 2,
+    borderColor: '#4DAABF',
+    borderRadius: 100,
+    padding: 5,
+  },
   ownerImage: {
     width: 25,
     height: 25,
@@ -13,7 +21,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Avatar = ({uri, name, overlap, position, size = 'small'}) => {
+const Avatar = ({
+  uri,
+  name,
+  overlap,
+  position,
+  border = false,
+  size = 'small',
+}) => {
   const parseSize = (sizeImage) => {
     switch (sizeImage) {
       case 'small': {
@@ -36,7 +51,7 @@ const Avatar = ({uri, name, overlap, position, size = 'small'}) => {
         style={[
           styles.ownerImage,
           {width: parseSize(size), height: parseSize(size)},
-          {marginRight: overlap ? -10 : 10},
+          {marginRight: overlap ? -10 : 0},
         ]}
         source={{
           uri: uri,

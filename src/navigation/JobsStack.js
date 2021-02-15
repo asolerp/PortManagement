@@ -9,6 +9,7 @@ import JobFormStore from '../store/jobFormStore';
 import JobsScreen from '../screens/Jobs/JobsScreen';
 import NewJobScreen from '../screens/Jobs/NewJobScreen';
 import JobScreen from '../screens/Jobs/JobScreen';
+import FilterStore from '../store/filterStore';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,11 @@ export default function JobsStack() {
         <Stack.Navigator headerMode="none">
           <Stack.Screen
             name="Jobs"
-            component={JobsScreen}
+            component={() => (
+              <FilterStore>
+                <JobsScreen />
+              </FilterStore>
+            )}
             options={{
               cardStyle: {backgroundColor: 'transparent'},
             }}
