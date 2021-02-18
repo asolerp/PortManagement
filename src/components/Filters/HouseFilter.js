@@ -11,57 +11,87 @@ import {defaultHouseFilters} from '../../constants/housesFilter';
 // Context
 import {Context} from '../../store/filterStore';
 
+const heightFilter = 113;
+const widthFilter = 90;
+
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 10,
+  filterWrapper: {
     paddingHorizontal: 20,
+    marginTop: 20,
+  },
+  container: {
+    width: '98%',
+    marginTop: 10,
+    paddingLeft: 5,
+  },
+  titleFilter: {
+    color: '#284748',
+    fontSize: 25,
+    fontWeight: 'bold',
   },
   housesWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    paddingVertical: 8,
   },
   houseFilter: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
     marginRight: 20,
-    width: 90,
+    width: widthFilter,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: '#6b6b6b',
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
   avatarContainer: {
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
-    height: 113,
+    height: heightFilter,
     zIndex: 1,
   },
   maskContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
-    height: 100,
+    height: 113,
   },
   activeFilter: {
-    borderWidth: 5,
-    borderColor: '#3E93A8',
-    borderRadius: 100,
-    padding: 3,
+    borderWidth: 4,
+    borderColor: '#EB5B28',
+    borderRadius: 24,
     marginBottom: 0,
   },
   textWrapper: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    padding: 10,
+    position: 'absolute',
+    borderRadius: 20,
+    width: '100%',
+    height: heightFilter,
+    zIndex: 3,
+  },
+  maskWrapper: {
     position: 'absolute',
     backgroundColor: '#54A3AC',
     opacity: 0.56,
     borderRadius: 20,
     width: '100%',
     marginTop: 10,
-    height: 113,
+    height: heightFilter,
     zIndex: 2,
   },
   textStyle: {
-    textAlign: 'center',
-    fontSize: 10,
+    textAlign: 'left',
+    fontSize: 12,
     color: 'white',
     fontWeight: 'bold',
   },
@@ -116,9 +146,11 @@ const HouseFilter = () => {
   };
 
   return (
-    <ScrollView horizontal={true} style={styles.container}>
-      <View style={styles.housesWrapper}>
-        {/* {defaultHouseFilters.map((houseFilter, i) => {
+    <View style={styles.filterWrapper}>
+      <Text style={styles.titleFilter}>Las Casas</Text>
+      <ScrollView horizontal={true} style={styles.container}>
+        <View style={styles.housesWrapper}>
+          {/* {defaultHouseFilters.map((houseFilter, i) => {
           return (
             <TouchableOpacity
               key={i}
@@ -144,36 +176,36 @@ const HouseFilter = () => {
             </TouchableOpacity>
           );
         })} */}
-        {list.map((house, i) => {
-          return (
-            <TouchableOpacity onPress={() => handleSetHouse(house)}>
-              <View style={styles.houseFilter}>
-                <View
-                  style={
-                    ([styles.avatarContainer],
-                    isInArray(house.id) && styles.activeFilter)
-                  }>
-                  <Image
-                    style={[
-                      styles.ownerImage,
-                      {width: 90, height: 113, borderRadius: 20},
-                    ]}
-                    source={{
-                      uri: house.houseImage,
-                    }}
-                  />
-                </View>
-                <View style={styles.textWrapper}>
-                  {/* <View style={styles.textHouse}>
+          {list.map((house, i) => {
+            return (
+              <TouchableOpacity onPress={() => handleSetHouse(house)}>
+                <View style={styles.houseFilter}>
+                  <View
+                    style={
+                      ([styles.avatarContainer],
+                      isInArray(house.id) && styles.activeFilter)
+                    }>
+                    <Image
+                      style={[
+                        styles.ownerImage,
+                        {width: 90, height: 113, borderRadius: 20},
+                      ]}
+                      source={{
+                        uri: house.houseImage,
+                      }}
+                    />
+                  </View>
+                  <View style={styles.maskWrapper} />
+                  <View style={styles.textWrapper}>
                     <Text style={styles.textStyle}>{house.houseName}</Text>
-                  </View> */}
+                  </View>
                 </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    </ScrollView>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 

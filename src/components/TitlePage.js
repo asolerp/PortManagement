@@ -71,11 +71,11 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   title: {
-    fontSize: 30,
+    fontSize: 35,
     fontWeight: 'bold',
   },
   subtitle: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: 'bold',
   },
 });

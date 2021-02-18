@@ -16,9 +16,6 @@ import SignOutStack from './SignOutStack';
 import auth from '@react-native-firebase/auth';
 import {RectButton} from 'react-native-gesture-handler';
 
-// UI
-import LinearGradient from 'react-native-linear-gradient';
-
 export const AuthContext = createContext(null);
 
 const styles = StyleSheet.create({

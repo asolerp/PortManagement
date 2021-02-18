@@ -16,7 +16,11 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import moment from 'moment';
 import Avatar from './Avatar';
 
-import {parsePriorityColor, percentageOfComplete} from '../utils/parsers';
+import {
+  parsePriorityColor,
+  parsePirorityIcon,
+  percentageOfComplete,
+} from '../utils/parsers';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RightActions from './Elements/RightActions';
 
@@ -28,24 +32,49 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'white',
     alignSelf: 'stretch',
-    borderRadius: 10,
+    borderRadius: 20,
     padding: 10,
+    height: 100,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: '#BCBCBC',
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    marginBottom: 20,
+    flex: 1,
+    flexDirection: 'row',
   },
   swipperContainer: {
     borderRadius: 10,
     marginBottom: 10,
   },
+
   firstSection: {
     flexDirection: 'row',
-    marginBottom: 10,
+    height: '100%',
+    alignItems: 'center',
   },
   titleSubtitle: {
     width: '97%',
   },
   priority: {
-    width: '3%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 30,
     height: '100%',
-    borderRadius: 30,
+    borderRadius: 20,
+    marginLeft: 5,
+    marginRight: 15,
+    backgroundColor: 'white',
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: '#BCBCBC',
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
   },
   title: {
     fontSize: 20,
@@ -103,68 +132,40 @@ const JobItem = ({job, onPress}) => {
   };
 
   return (
-    <Swipeable
-      renderRightActions={(progress, dragX) =>
-        RightActions(progress, dragX, onAction)
-      }
-      containerStyle={styles.swipperContainer}
-      childrenContainerStyle={{borderRadius: 10}}>
-      <View style={styles.container}>
-        <TouchableOpacity onPress={toggleExpand}>
-          <View style={styles.firstSection}>
-            <View style={styles.titleSubtitle}>
-              <Text style={styles.title}>{job.name}</Text>
-              <Text style={styles.subtitle}>{job.description}</Text>
-            </View>
-            {job.priority && (
-              <View
-                style={[
-                  styles.priority,
-                  {backgroundColor: parsePriorityColor(job.priority)},
-                ]}
-              />
-            )}
+    // <Swipeable
+    //   renderRightActions={(progress, dragX) =>
+    //     RightActions(progress, dragX, onAction)
+    //   }
+    //   containerStyle={styles.swipperContainer}
+    //   childrenContainerStyle={{borderRadius: 10}}>
+    <View style={styles.container}>
+      <View style={styles.firstSection}>
+        {job.priority && (
+          <View style={[styles.priority]}>
+            <Icon
+              name={parsePirorityIcon(job.priority).name}
+              color={parsePirorityIcon(job.priority).color}
+              size={25}
+            />
           </View>
-          {expanded && (
-            <View>
-              <View style={styles.calendar}>
-                <Icon name="calendar-today" color="black" />
-                <Text style={styles.date}>{moment(job.date).format('LL')}</Text>
-              </View>
-              <View style={styles.workers}>
-                {job?.workers?.map((worker, i) => (
-                  <Avatar
-                    uri={worker.profileImage}
-                    overlap={true}
-                    position={job.workers.length - i}
-                    size={'medium'}
-                  />
-                ))}
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <View style={styles.progressContainer}>
-                  <Text style={styles.percentage}>
-                    {Math.round(percentageOfComplete(job.tasks) * 100)}%
-                  </Text>
-                  <Progress.Bar
-                    progress={percentageOfComplete(job.tasks)}
-                    unfilledColor={'#E2E2E2'}
-                    borderWidth={0}
-                    width={null}
-                    color={'#126D9B'}
-                  />
-                </View>
-                <View style={styles.bottomIcons}>
-                  <TouchableOpacity onPress={onPress}>
-                    <Icon name="remove-red-eye" size={30} />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </View>
+        )}
+        <View style={styles.titleSubtitle}>
+          <Text style={styles.title}>{job.name}</Text>
+          {job.description && (
+            <Text style={styles.subtitle}>{job.description}</Text>
           )}
-        </TouchableOpacity>
+          <Progress.Bar
+            progress={0.5}
+            unfilledColor={'#E2E2E2'}
+            borderWidth={0}
+            width={200}
+            height={10}
+            color={parsePriorityColor(job.priority)}
+          />
+        </View>
       </View>
-    </Swipeable>
+    </View>
+    // </Swipeable>
   );
 };
 

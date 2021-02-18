@@ -27,7 +27,8 @@ const TabNavigation = () => {
         inactiveTintColor: 'white',
         activeBackgroundColor: '#3E93A8',
         tabStyle: {
-          marginTop: 10,
+          marginTop: 0,
+          marginBottom: 20,
           borderTopWidth: 1,
           borderTopColor: '#dbdbdb',
         },

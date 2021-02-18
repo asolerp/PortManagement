@@ -19,6 +19,9 @@ import {ScrollView} from 'react-native-gesture-handler';
 // UI
 import LinearGradient from 'react-native-linear-gradient';
 
+// Styles
+import {defaultTextTitle} from '../../styles/common';
+
 const JobsScreen = () => {
   const {list, loading, error} = useGetFirebase('jobs');
   const [state, dispatch] = useContext(Context);
@@ -64,39 +67,42 @@ const JobsScreen = () => {
           <AddButton />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <TitlePage
-          title="Listado de trabajos"
-          subtitle="En esta semana"
-          color="white"
-        />
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.jobsBackScreen}>
-          <View style={styles.jobsScreen}>
-            <View style={styles.housesWrapper}>
-              <HouseFilter />
-            </View>
-            <ScrollView style={styles.jobsWrapper}>
-              <View>
-                {filteredList?.map((item, i) => (
-                  <JobItem
-                    job={item}
-                    key={i}
-                    onPress={() =>
-                      navigation.navigate('JobScreen', {
-                        jobId: item.id,
-                      })
-                    }
-                  />
-                ))}
+      <ScrollView style={styles.jobsWrapper}>
+        <View style={styles.container}>
+          <TitlePage
+            title="Listado de trabajos"
+            subtitle="En esta semana"
+            color="white"
+          />
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#126D9B', '#67B26F']}
+            style={styles.jobsBackScreen}>
+            <View style={styles.jobsScreen}>
+              <View style={styles.housesWrapper}>
+                <HouseFilter />
               </View>
-            </ScrollView>
-          </View>
-        </LinearGradient>
-      </View>
+              <View style={styles.jobsListWrapper}>
+                <Text style={defaultTextTitle}>Trabajos activos</Text>
+                <View style={{marginTop: 20}}>
+                  {filteredList?.map((item, i) => (
+                    <JobItem
+                      job={item}
+                      key={i}
+                      onPress={() =>
+                        navigation.navigate('JobScreen', {
+                          jobId: item.id,
+                        })
+                      }
+                    />
+                  ))}
+                </View>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+      </ScrollView>
     </React.Fragment>
   );
 };
@@ -115,14 +121,14 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 50,
   },
   housesWrapper: {
-    height: 130,
+    height: 200,
   },
   jobsWrapper: {
     backgroundColor: 'white',
-    marginHorizontal: 20,
-    marginBottom: 20,
     borderRadius: 20,
-    paddingHorizontal: 10,
+  },
+  jobsListWrapper: {
+    paddingHorizontal: 20,
   },
   addButton: {
     position: 'absolute',

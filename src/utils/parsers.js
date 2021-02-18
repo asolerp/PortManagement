@@ -1,3 +1,4 @@
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import {
   PRIORITY_LOW,
   PRIORITY_MEDIUM,
@@ -23,6 +24,28 @@ export const parsePriorityColor = (priority) => {
       return PRIORITY_MEDIUM;
     case 'height':
       return PRIORITY_HEIGHT;
+  }
+};
+
+export const parsePirorityIcon = (priority) => {
+  switch (priority) {
+    case 'low':
+      return {
+        name: 'arrow-downward',
+        color: PRIORITY_LOW,
+      };
+    case 'medium':
+      return {
+        name: 'arrow-forward',
+        color: PRIORITY_MEDIUM,
+      };
+    case 'height':
+      return {
+        name: 'arrow-upward',
+        color: PRIORITY_HEIGHT,
+      };
+    default:
+      break;
   }
 };
 
