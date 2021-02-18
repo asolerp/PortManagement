@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 const AddButton = () => {
   return (
     <View style={styles.container}>
-      <Icon name="add" size={40} color={'white'} />
+      <Icon name="add" size={30} color={'white'} />
     </View>
   );
 };
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#58BFC0',
+    backgroundColor: '#3E93A8',
     zIndex: 100,
   },
 });

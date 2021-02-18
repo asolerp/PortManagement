@@ -48,7 +48,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 30,
-    marginTop: Dimensions.get('window').height / 10,
   },
   profileBar: {
     flex: 1,

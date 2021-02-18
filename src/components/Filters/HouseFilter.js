@@ -4,7 +4,7 @@ import {View, StyleSheet, Text} from 'react-native';
 import Avatar from '../Avatar';
 
 import {useGetFirebase} from '../../hooks/useGetFirebase';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {defaultHouseFilters} from '../../constants/housesFilter';
 
@@ -13,10 +13,16 @@ import {Context} from '../../store/filterStore';
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    marginTop: 10,
+
+    paddingHorizontal: 10,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
+  },
+  housesWrapper: {
     flexDirection: 'row',
     alignItems: 'center',
-    height: 100,
+    justifyContent: 'center',
   },
   houseFilter: {
     alignItems: 'center',
@@ -28,18 +34,38 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
+    height: 100,
   },
   activeFilter: {
-    borderWidth: 2,
-    borderColor: '#4DAABF',
+    borderWidth: 5,
+    borderColor: '#3E93A8',
     borderRadius: 100,
     padding: 3,
+    marginBottom: 0,
   },
-  textHouse: {
-    textAlign: 'center',
-    fontSize: 10,
+  textWrapper: {
     width: '100%',
     height: 50,
+    marginTop: 10,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: '#6b6b6b',
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+  },
+  textHouse: {
+    backgroundColor: 'white',
+    borderRadius: 8,
+    padding: 5,
+    width: '100%',
+  },
+  textStyle: {
+    textAlign: 'center',
+    fontSize: 10,
+    color: '#3E93A8',
+    fontWeight: 'bold',
   },
 });
 
@@ -92,42 +118,55 @@ const HouseFilter = () => {
   };
 
   return (
-    <View style={styles.container}>
-      {defaultHouseFilters.map((houseFilter, i) => {
-        return (
-          <TouchableOpacity
-            key={i}
-            onPress={() => handleSetLocalFilter(houseFilter.filter)}>
-            <View style={styles.houseFilter}>
-              <View
-                style={
-                  ([styles.avatarContainer],
-                  localFilterActive(houseFilter.filter) && styles.activeFilter)
-                }>
-                <Avatar border size="big" uri={houseFilter.houseImage} />
+    <ScrollView horizontal={true} style={styles.container}>
+      <View style={styles.housesWrapper}>
+        {defaultHouseFilters.map((houseFilter, i) => {
+          return (
+            <TouchableOpacity
+              key={i}
+              onPress={() => handleSetLocalFilter(houseFilter.filter)}>
+              <View style={styles.houseFilter}>
+                <View
+                  style={
+                    ([styles.avatarContainer],
+                    localFilterActive(houseFilter.filter) &&
+                      styles.activeFilter)
+                  }>
+                  <Avatar border size="big" uri={houseFilter.houseImage} />
+                </View>
+                <View style={styles.textWrapper}>
+                  <View style={styles.textHouse}>
+                    <Text style={styles.textStyle}>
+                      {houseFilter.houseName}
+                    </Text>
+                  </View>
+                </View>
               </View>
-              <Text style={styles.textHouse}>{houseFilter.houseName}</Text>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-      {list.map((house, i) => {
-        return (
-          <TouchableOpacity onPress={() => handleSetHouse(house)}>
-            <View style={styles.houseFilter}>
-              <View
-                style={
-                  ([styles.avatarContainer],
-                  isInArray(house.id) && styles.activeFilter)
-                }>
-                <Avatar border size="big" uri={house.houseImage} />
+            </TouchableOpacity>
+          );
+        })}
+        {list.map((house, i) => {
+          return (
+            <TouchableOpacity onPress={() => handleSetHouse(house)}>
+              <View style={styles.houseFilter}>
+                <View
+                  style={
+                    ([styles.avatarContainer],
+                    isInArray(house.id) && styles.activeFilter)
+                  }>
+                  <Avatar border size="big" uri={house.houseImage} />
+                </View>
+                <View style={styles.textWrapper}>
+                  <View style={styles.textHouse}>
+                    <Text style={styles.textStyle}>{house.houseName}</Text>
+                  </View>
+                </View>
               </View>
-              <Text style={styles.textHouse}>{house.houseName}</Text>
-            </View>
-          </TouchableOpacity>
-        );
-      })}
-    </View>
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    </ScrollView>
   );
 };
 

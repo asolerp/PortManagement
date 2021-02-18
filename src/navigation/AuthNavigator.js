@@ -16,16 +16,18 @@ import SignOutStack from './SignOutStack';
 import auth from '@react-native-firebase/auth';
 import {RectButton} from 'react-native-gesture-handler';
 
+// UI
+import LinearGradient from 'react-native-linear-gradient';
+
 export const AuthContext = createContext(null);
 
 const styles = StyleSheet.create({
   appBackground: {
     flex: 1,
-    backgroundColor: '#126D9B',
   },
   topBar: {
     height: Dimensions.get('window').height / 10,
-    backgroundColor: '#126D9B',
+    backgroundColor: 'transparent',
     justifyContent: 'flex-start',
     alignItems: 'center',
   },
@@ -33,19 +35,15 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'flex-start',
-    backgroundColor: '#F8F8F8',
+    backgroundColor: 'transparent',
     position: 'absolute',
-    height: Dimensions.get('window').height / 1.12,
+    height: '100%',
     width: '100%',
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#6b6b6b',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
+  },
+  contentWrapper: {
+    flex: 1,
   },
   logo: {
     flex: 1,
@@ -88,18 +86,19 @@ export default function AuthNavigator() {
       <AuthContext.Provider value={user}>
         <View style={styles.appBackground}>
           <View style={styles.background}>
-            <View style={styles.topBar}>
+            {/* <View style={styles.topBar}>
               <View style={styles.logoContainer}>
-                {/* <Text>Hola</Text> */}
                 <Image
                   style={styles.logo}
                   source={require('../assets/images/logo_pm_servicios.png')}
                 />
               </View>
-            </View>
+            </View> */}
             <View />
+            <View style={styles.contentWrapper}>
+              <SignInStack />
+            </View>
           </View>
-          <SignInStack />
         </View>
       </AuthContext.Provider>
     </React.Fragment>

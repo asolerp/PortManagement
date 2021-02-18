@@ -14,6 +14,10 @@ import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // Context
 import {Context} from '../../store/filterStore';
+import {ScrollView} from 'react-native-gesture-handler';
+
+// UI
+import LinearGradient from 'react-native-linear-gradient';
 
 const JobsScreen = () => {
   const {list, loading, error} = useGetFirebase('jobs');
@@ -61,21 +65,37 @@ const JobsScreen = () => {
         </TouchableOpacity>
       </View>
       <View style={styles.container}>
-        <TitlePage title="Trabajos" color="black" />
-        <View style={styles.jobsScreen}>
-          <HouseFilter />
-          {filteredList?.map((item, i) => (
-            <JobItem
-              job={item}
-              key={i}
-              onPress={() =>
-                navigation.navigate('JobScreen', {
-                  jobId: item.id,
-                })
-              }
-            />
-          ))}
-        </View>
+        <TitlePage
+          title="Listado de trabajos"
+          subtitle="En esta semana"
+          color="white"
+        />
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#126D9B', '#67B26F']}
+          style={styles.jobsBackScreen}>
+          <View style={styles.jobsScreen}>
+            <View style={styles.housesWrapper}>
+              <HouseFilter />
+            </View>
+            <ScrollView style={styles.jobsWrapper}>
+              <View>
+                {filteredList?.map((item, i) => (
+                  <JobItem
+                    job={item}
+                    key={i}
+                    onPress={() =>
+                      navigation.navigate('JobScreen', {
+                        jobId: item.id,
+                      })
+                    }
+                  />
+                ))}
+              </View>
+            </ScrollView>
+          </View>
+        </LinearGradient>
       </View>
     </React.Fragment>
   );
@@ -85,16 +105,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 10,
+  },
+  jobsBackScreen: {
+    flex: 10,
   },
   jobsScreen: {
-    flex: 10,
+    flex: 1,
+    backgroundColor: 'white',
+    borderTopRightRadius: 50,
+  },
+  housesWrapper: {
+    height: 130,
+  },
+  jobsWrapper: {
+    backgroundColor: 'white',
+    marginHorizontal: 20,
+    marginBottom: 20,
+    borderRadius: 20,
     paddingHorizontal: 10,
   },
   addButton: {
     position: 'absolute',
     right: 30,
-    bottom: 120,
+    bottom: 30,
     zIndex: 10,
     shadowOffset: {
       height: 0,

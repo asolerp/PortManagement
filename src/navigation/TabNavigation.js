@@ -23,10 +23,10 @@ const TabNavigation = () => {
   return (
     <Tabs.Navigator
       tabBarOptions={{
-        activeTintColor: 'white',
+        activeTintColor: '#3E93A8',
         inactiveTintColor: 'white',
-        activeBackgroundColor: '#55A7AE',
-        tabStyle: {marginBottom: 20},
+        activeBackgroundColor: 'white',
+        tabStyle: {marginTop: 10},
       }}
       appearence={{
         floating: false,
