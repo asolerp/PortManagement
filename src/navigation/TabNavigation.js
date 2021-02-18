@@ -23,10 +23,14 @@ const TabNavigation = () => {
   return (
     <Tabs.Navigator
       tabBarOptions={{
-        activeTintColor: '#3E93A8',
+        activeTintColor: 'white',
         inactiveTintColor: 'white',
-        activeBackgroundColor: 'white',
-        tabStyle: {marginTop: 10},
+        activeBackgroundColor: '#3E93A8',
+        tabStyle: {
+          marginTop: 10,
+          borderTopWidth: 1,
+          borderTopColor: '#dbdbdb',
+        },
       }}
       appearence={{
         floating: false,
@@ -41,7 +45,7 @@ const TabNavigation = () => {
             <Icon
               name="dashboard"
               size={size ? size : 24}
-              color={focused ? color : 'white'}
+              color={focused ? color : '#3E93A8'}
               focused={focused}
             />
           ),
@@ -56,7 +60,7 @@ const TabNavigation = () => {
             <Icon
               name="format-list-bulleted"
               size={size ? size : 24}
-              color={focused ? color : 'white'}
+              color={focused ? color : '#3E93A8'}
               focused={focused}
             />
           ),
@@ -71,7 +75,7 @@ const TabNavigation = () => {
             <Icon
               name="home"
               size={size ? size : 24}
-              color={focused ? color : 'white'}
+              color={focused ? color : '#3E93A8'}
               focused={focused}
             />
           ),
@@ -85,7 +89,7 @@ const TabNavigation = () => {
             <Icon
               name="person"
               size={size ? size : 24}
-              color={focused ? color : 'white'}
+              color={focused ? color : '#3E93A8'}
               focused={focused}
             />
           ),
@@ -99,7 +103,7 @@ const TabNavigation = () => {
             <Icon
               name="settings"
               size={size ? size : 24}
-              color={focused ? color : 'white'}
+              color={focused ? color : '#3E93A8'}
               focused={focused}
             />
           ),

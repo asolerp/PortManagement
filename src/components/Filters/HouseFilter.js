@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, Image, StyleSheet, Text} from 'react-native';
 
 import Avatar from '../Avatar';
 
@@ -14,10 +14,7 @@ import {Context} from '../../store/filterStore';
 const styles = StyleSheet.create({
   container: {
     marginTop: 10,
-
-    paddingHorizontal: 10,
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20,
+    paddingHorizontal: 20,
   },
   housesWrapper: {
     flexDirection: 'row',
@@ -27,10 +24,19 @@ const styles = StyleSheet.create({
   houseFilter: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
-    width: 70,
+    position: 'relative',
+    marginRight: 20,
+    width: 90,
   },
   avatarContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    height: 113,
+    zIndex: 1,
+  },
+  maskContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 5,
@@ -44,27 +50,19 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   textWrapper: {
+    position: 'absolute',
+    backgroundColor: '#54A3AC',
+    opacity: 0.56,
+    borderRadius: 20,
     width: '100%',
-    height: 50,
     marginTop: 10,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#6b6b6b',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-  },
-  textHouse: {
-    backgroundColor: 'white',
-    borderRadius: 8,
-    padding: 5,
-    width: '100%',
+    height: 113,
+    zIndex: 2,
   },
   textStyle: {
     textAlign: 'center',
     fontSize: 10,
-    color: '#3E93A8',
+    color: 'white',
     fontWeight: 'bold',
   },
 });
@@ -120,7 +118,7 @@ const HouseFilter = () => {
   return (
     <ScrollView horizontal={true} style={styles.container}>
       <View style={styles.housesWrapper}>
-        {defaultHouseFilters.map((houseFilter, i) => {
+        {/* {defaultHouseFilters.map((houseFilter, i) => {
           return (
             <TouchableOpacity
               key={i}
@@ -134,6 +132,7 @@ const HouseFilter = () => {
                   }>
                   <Avatar border size="big" uri={houseFilter.houseImage} />
                 </View>
+                <View />
                 <View style={styles.textWrapper}>
                   <View style={styles.textHouse}>
                     <Text style={styles.textStyle}>
@@ -144,7 +143,7 @@ const HouseFilter = () => {
               </View>
             </TouchableOpacity>
           );
-        })}
+        })} */}
         {list.map((house, i) => {
           return (
             <TouchableOpacity onPress={() => handleSetHouse(house)}>
@@ -154,12 +153,20 @@ const HouseFilter = () => {
                     ([styles.avatarContainer],
                     isInArray(house.id) && styles.activeFilter)
                   }>
-                  <Avatar border size="big" uri={house.houseImage} />
+                  <Image
+                    style={[
+                      styles.ownerImage,
+                      {width: 90, height: 113, borderRadius: 20},
+                    ]}
+                    source={{
+                      uri: house.houseImage,
+                    }}
+                  />
                 </View>
                 <View style={styles.textWrapper}>
-                  <View style={styles.textHouse}>
+                  {/* <View style={styles.textHouse}>
                     <Text style={styles.textStyle}>{house.houseName}</Text>
-                  </View>
+                  </View> */}
                 </View>
               </View>
             </TouchableOpacity>
