@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from 'react';
-import {Dimensions} from 'react-native';
+import {StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
@@ -62,6 +62,7 @@ const JobsScreen = () => {
 
   return (
     <React.Fragment>
+      <StatusBar barStyle="default" />
       <View style={styles.addButton}>
         <TouchableOpacity onPress={() => handleNewJob()}>
           <AddButton />

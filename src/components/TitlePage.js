@@ -4,34 +4,48 @@ import {Image, View, Text, StyleSheet} from 'react-native';
 // UI
 import LinearGradient from 'react-native-linear-gradient';
 
-const TitlePage = ({title, subtitle, leftSide, children, color = 'white'}) => {
+const TitlePage = ({
+  title,
+  subtitle,
+  leftSide,
+  children,
+  subPage = false,
+  color = 'white',
+}) => {
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
       colors={['#4D84A0', '#55A7AE', '#67B26F']}
-      style={styles.container}>
+      style={{...styles.container, ...{height: subPage ? 100 : 200}}}>
       <View style={styles.titleWrapper}>
         {title ? (
           <React.Fragment>
-            <View style={{flexDirection: 'row', alignContent: 'center'}}>
-              <View>{leftSide}</View>
-              <View>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              {leftSide && <View style={{flex: 1}}>{leftSide}</View>}
+              <View style={{flex: 1}}>
                 <Text
                   style={{
                     ...styles.title,
-                    ...{color: color, marginLeft: leftSide ? 20 : 0},
+                    ...{
+                      color: color,
+                      fontSize: leftSide ? 15 : 35,
+                      textAlign: leftSide ? 'center' : 'left',
+                    },
                   }}>
                   {title}
                 </Text>
-                <Text
-                  style={{
-                    ...styles.subtitle,
-                    ...{color: color, marginLeft: leftSide ? 20 : 0},
-                  }}>
-                  {subtitle}
-                </Text>
+                {subtitle && (
+                  <Text
+                    style={{
+                      ...styles.subtitle,
+                      ...{color: color, marginLeft: leftSide ? 0 : 0},
+                    }}>
+                    {subtitle}
+                  </Text>
+                )}
               </View>
+              {leftSide && <View style={{flex: 1}} />}
             </View>
           </React.Fragment>
         ) : (
@@ -60,12 +74,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 20,
     borderBottomLeftRadius: 50,
-    height: 200,
   },
   titleWrapper: {
-    flex: 2,
+    flex: 3,
     justifyContent: 'flex-end',
-    alignItems: 'center',
+    alignItems: 'flex-start',
   },
   childrenWrapper: {
     flex: 1,
