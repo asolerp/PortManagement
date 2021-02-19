@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
   StatusBar,
+  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 
@@ -18,12 +19,16 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
 
+// Context
+import {Context} from '../../store/jobFormStore';
+
 // UI
 import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    height: Dimensions.get('window').height,
     backgroundColor: 'white',
   },
   tabBarStyle: {
@@ -44,6 +49,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderTopRightRadius: 50,
+    height: '100%',
   },
   iconWrapper: {
     width: 30,
@@ -66,6 +72,8 @@ const JobScreen = ({route, navigation}) => {
   const {jobId} = route.params;
   const {document: job, loading, error} = useGetDocFirebase('jobs', jobId);
 
+  const [state, dispatch] = useContext(Context);
+
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
     {key: 'tasks', title: 'TAREAS'},
@@ -73,7 +81,7 @@ const JobScreen = ({route, navigation}) => {
     {key: 'photos', title: 'FOTOS'},
   ]);
 
-  const FirstRoute = () => <Tasks />;
+  const FirstRoute = () => <Tasks job={job} tasks={job?.tasks} />;
   const SecondRoute = () => <Messages />;
   const ThirdRoute = () => <Photos />;
 
@@ -101,35 +109,43 @@ const JobScreen = ({route, navigation}) => {
   return (
     <React.Fragment>
       <StatusBar barStyle="default" />
-      <View style={styles.container}>
-        <TitlePage
-          leftSide={
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <View style={styles.iconWrapper}>
-                <Icon name="arrow-back" size={25} color="#5090A5" />
-              </View>
-            </TouchableOpacity>
-          }
-          subPage
-          title={job?.name}
-          color="white"
-        />
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.jobBackScreen}>
-          <View style={styles.jobScreen}>
-            <TabView
-              navigationState={{index, routes}}
-              renderScene={renderScene}
-              renderTabBar={renderTabBar}
-              onIndexChange={setIndex}
-              initialLayout={initialLayout}
-            />
-          </View>
-        </LinearGradient>
-      </View>
+      <ScrollView style={{}}>
+        <View style={styles.container}>
+          <TitlePage
+            leftSide={
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch({
+                    type: 'RESET_FORM',
+                  });
+                  navigation.goBack();
+                }}>
+                <View style={styles.iconWrapper}>
+                  <Icon name="arrow-back" size={25} color="#5090A5" />
+                </View>
+              </TouchableOpacity>
+            }
+            subPage
+            title={job?.name}
+            color="white"
+          />
+          <LinearGradient
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#126D9B', '#67B26F']}
+            style={styles.jobBackScreen}>
+            <View style={styles.jobScreen}>
+              <TabView
+                navigationState={{index, routes}}
+                renderScene={renderScene}
+                renderTabBar={renderTabBar}
+                onIndexChange={setIndex}
+                initialLayout={initialLayout}
+              />
+            </View>
+          </LinearGradient>
+        </View>
+      </ScrollView>
     </React.Fragment>
   );
 };

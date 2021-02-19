@@ -9,6 +9,8 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 30,
     paddingBottom: 10,
+    borderWidth: 1,
+    borderColor: '#EAEAEA',
   },
   inputContainer: {},
   separator: {
