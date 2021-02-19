@@ -52,18 +52,20 @@ const styles = StyleSheet.create({
   },
 
   firstSection: {
+    flex: 1,
     flexDirection: 'row',
     height: '100%',
     alignItems: 'center',
   },
   titleSubtitle: {
-    width: '97%',
+    flex: 1,
+    justifyContent: 'space-between',
   },
   priority: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 30,
-    height: '100%',
+    height: '60%',
     borderRadius: 20,
     marginLeft: 5,
     marginRight: 15,
@@ -80,11 +82,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
     fontWeight: 'bold',
+    color: '#284748',
   },
   subtitle: {
     fontSize: 15,
     marginBottom: 5,
     width: '95%',
+    color: '#284748',
   },
   calendar: {
     flexDirection: 'row',
@@ -138,33 +142,42 @@ const JobItem = ({job, onPress}) => {
     //   }
     //   containerStyle={styles.swipperContainer}
     //   childrenContainerStyle={{borderRadius: 10}}>
-    <View style={styles.container}>
-      <View style={styles.firstSection}>
-        {job.priority && (
-          <View style={[styles.priority]}>
-            <Icon
-              name={parsePirorityIcon(job.priority).name}
-              color={parsePirorityIcon(job.priority).color}
-              size={25}
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.container}>
+        <View style={styles.firstSection}>
+          {job.priority && (
+            <View
+              style={[
+                styles.priority,
+                {backgroundColor: parsePriorityColor(job.priority)},
+              ]}>
+              <Icon
+                name={parsePirorityIcon(job.priority).name}
+                color="white"
+                size={25}
+              />
+            </View>
+          )}
+          <View style={styles.titleSubtitle}>
+            <Text style={styles.title}>{job.name}</Text>
+            {job.description && (
+              <Text style={styles.subtitle}>{job.description}</Text>
+            )}
+            <Progress.Bar
+              progress={0.5}
+              unfilledColor={'#E2E2E2'}
+              borderWidth={0}
+              width={200}
+              height={10}
+              color={parsePriorityColor(job.priority)}
             />
           </View>
-        )}
-        <View style={styles.titleSubtitle}>
-          <Text style={styles.title}>{job.name}</Text>
-          {job.description && (
-            <Text style={styles.subtitle}>{job.description}</Text>
-          )}
-          <Progress.Bar
-            progress={0.5}
-            unfilledColor={'#E2E2E2'}
-            borderWidth={0}
-            width={200}
-            height={10}
-            color={parsePriorityColor(job.priority)}
-          />
+          <View>
+            <Icon name="keyboard-arrow-right" color="#284748" size={30} />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
     // </Swipeable>
   );
 };

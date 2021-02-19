@@ -14,21 +14,25 @@ const TitlePage = ({title, subtitle, leftSide, children, color = 'white'}) => {
       <View style={styles.titleWrapper}>
         {title ? (
           <React.Fragment>
-            {leftSide}
-            <Text
-              style={{
-                ...styles.title,
-                ...{color: color, marginLeft: leftSide ? 20 : 0},
-              }}>
-              {title}
-            </Text>
-            <Text
-              style={{
-                ...styles.subtitle,
-                ...{color: color, marginLeft: leftSide ? 20 : 0},
-              }}>
-              {subtitle}
-            </Text>
+            <View style={{flexDirection: 'row', alignContent: 'center'}}>
+              <View>{leftSide}</View>
+              <View>
+                <Text
+                  style={{
+                    ...styles.title,
+                    ...{color: color, marginLeft: leftSide ? 20 : 0},
+                  }}>
+                  {title}
+                </Text>
+                <Text
+                  style={{
+                    ...styles.subtitle,
+                    ...{color: color, marginLeft: leftSide ? 20 : 0},
+                  }}>
+                  {subtitle}
+                </Text>
+              </View>
+            </View>
           </React.Fragment>
         ) : (
           <View
@@ -58,7 +62,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
     height: 200,
   },
-  titleWrapper: {flex: 2, justifyContent: 'flex-end'},
+  titleWrapper: {
+    flex: 2,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   childrenWrapper: {
     flex: 1,
     justifyContent: 'center',

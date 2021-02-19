@@ -102,8 +102,6 @@ const HouseFilter = () => {
   const [state, dispatch] = useContext(Context);
   const [localFilter, setLocalFilter] = useState('all_houses');
 
-  console.log(state);
-
   const isInArray = (id) => {
     return state?.houses?.find((idHouse) => idHouse === id);
   };

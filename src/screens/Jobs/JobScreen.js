@@ -21,7 +21,6 @@ import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 40,
   },
   tabBarStyle: {
     backgroundColor: 'transparent',
@@ -79,11 +78,11 @@ const JobScreen = ({route, navigation}) => {
         <TitlePage
           leftSide={
             <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Icon name="arrow-back" size={25} color="black" />
+              <Icon name="arrow-back" size={35} color="white" />
             </TouchableOpacity>
           }
           title={job?.name}
-          color="black"
+          color="white"
         />
         <TabView
           navigationState={{index, routes}}
