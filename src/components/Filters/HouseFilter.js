@@ -1,5 +1,6 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useCallback} from 'react';
 import {View, Image, StyleSheet, Text} from 'react-native';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
 import Avatar from '../Avatar';
 
@@ -7,9 +8,6 @@ import {useGetFirebase} from '../../hooks/useGetFirebase';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {defaultHouseFilters} from '../../constants/housesFilter';
-
-// Context
-import {Context} from '../../store/filterStore';
 
 const heightFilter = 113;
 const widthFilter = 90;
@@ -98,12 +96,25 @@ const styles = StyleSheet.create({
 });
 
 const HouseFilter = () => {
+  const dispatch = useDispatch();
   const {list, loading, error} = useGetFirebase('houses');
-  const [state, dispatch] = useContext(Context);
   const [localFilter, setLocalFilter] = useState('all_houses');
+  const {houses} = useSelector(
+    ({filters: {houses}}) => ({houses}),
+    shallowEqual,
+  );
+
+  const addHouse = useCallback(
+    (payload) =>
+      dispatch({
+        type: 'ADD_HOUSE',
+        payload: payload,
+      }),
+    [dispatch],
+  );
 
   const isInArray = (id) => {
-    return state?.houses?.find((idHouse) => idHouse === id);
+    return houses?.find((idHouse) => idHouse === id);
   };
 
   const localFilterActive = (filter) => {
@@ -113,31 +124,22 @@ const HouseFilter = () => {
   const handleSetLocalFilter = (filter) => {
     setLocalFilter(filter);
     if (filter === 'all_houses') {
-      dispatch({
-        type: 'ADD_HOUSE',
-        payload: [],
-      });
+      addHouse([]);
     } else {
-      dispatch({
-        type: 'ADD_HOUSE',
-        payload: null,
-      });
+      addHouse(null);
     }
   };
 
   const handleSetHouse = (house) => {
     if (isInArray(house.id)) {
-      const housesWithoutID = state?.houses?.filter((id) => {
+      const housesWithoutID = houses?.filter((id) => {
         return id !== house.id;
       });
-      dispatch({
-        type: 'ADD_HOUSE',
-        payload: housesWithoutID,
-      });
+      addHouse(housesWithoutID);
     } else {
       dispatch({
         type: 'ADD_HOUSE',
-        payload: [...(state?.houses || []), house.id],
+        payload: [...(houses || []), house.id],
       });
     }
     setLocalFilter(undefined);

@@ -1,9 +1,6 @@
 import React, {useContext} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 
-// Context
-import {Context} from '../../../store/jobFormStore';
-
 import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
 

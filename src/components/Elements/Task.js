@@ -3,9 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 import Avatar from '../Avatar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-// Context
-import {Context} from '../../store/jobFormStore';
-
 //Utils
 import {parsePriorityColor, parsePirorityIcon} from '../../utils/parsers';
 import {TouchableOpacity} from 'react-native';
@@ -84,8 +81,6 @@ const styles = StyleSheet.create({
 });
 
 const Task = ({onSelect, onItemClick, onDelete, job, task, index}) => {
-  const [state, dispatch] = useContext(Context);
-
   const workers = Array.isArray(task?.workers)
     ? task?.workers
     : task?.workers?.value;

@@ -67,7 +67,7 @@ const TabNavigation = () => {
           ),
         })}
       />
-      <Tabs.Screen
+      {/*<Tabs.Screen
         name="Casas"
         component={HomesStack}
         options={({route}) => ({
@@ -109,7 +109,7 @@ const TabNavigation = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Tabs.Navigator>
   );
 };

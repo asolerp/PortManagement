@@ -1,4 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {
   View,
   Text,
@@ -10,9 +11,6 @@ import {
 // Firebase
 import {useUpdateFirebase} from '../../hooks/useUpdateFirebase';
 import {useDeleteFirebase} from '../../hooks/useDeleteFirebase';
-
-// Context
-import {Context} from '../../store/jobFormStore';
 
 import Task from '../Elements/Task';
 import {deleteTaskAlert} from '../Alerts/deleteJobAlert';
@@ -49,14 +47,48 @@ const styles = StyleSheet.create({
 });
 
 const Tasks = ({job, tasks}) => {
-  const [state, dispatch] = useContext(Context);
+  const dispatch = useDispatch();
+  const [expanded, setExpanded] = useState(false);
+
+  const {job: jobFormState} = useSelector(
+    ({jobForm: {job}}) => ({job}),
+    shallowEqual,
+  );
   const {updateFirebase, loading, error} = useUpdateFirebase('jobs');
+
   const {
     deleteFirebase,
     loading: loadingDelete,
     error: errorDelete,
   } = useDeleteFirebase();
-  const [expanded, setExpanded] = useState(false);
+
+  const editForm = useCallback(
+    (task) =>
+      dispatch({
+        type: 'EDIT_FORM',
+        payload: {
+          jobId: job.id,
+          taskId: task.id,
+          taskName: task.name,
+          taskDescription: task.description,
+          taskWorkers: {value: task.workers, switch: true},
+          taskPriority: {value: task.priority, switch: true},
+          mode: 'edit',
+        },
+      }),
+    [dispatch, job],
+  );
+
+  const resetTask = useCallback(
+    () =>
+      dispatch({
+        type: 'RESET_TASK',
+        label: 'tasks',
+      }),
+    [dispatch],
+  );
+
+  console.log('state', jobFormState);
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
@@ -68,34 +100,20 @@ const Tasks = ({job, tasks}) => {
   };
 
   const handleItemSelect = (task) => {
-    dispatch({
-      type: 'EDIT_FORM',
-      payload: {
-        jobId: job.id,
-        taskId: task.id,
-        taskName: task.name,
-        taskDescription: task.description,
-        taskWorkers: {value: task.workers, switch: true},
-        taskPriority: {value: task.priority, switch: true},
-        mode: 'edit',
-      },
-    });
+    editForm(task);
   };
 
   useEffect(() => {
-    if (state?.job?.mode === 'edit') {
+    if (jobFormState.mode === 'edit') {
       setExpanded(true);
     }
-  }, [state.job]);
+  }, [jobFormState]);
 
   useEffect(() => {
     if (!expanded) {
-      dispatch({
-        type: 'RESET_TASK',
-        label: 'tasks',
-      });
+      resetTask();
     }
-  }, [expanded, dispatch]);
+  }, [resetTask, expanded]);
 
   const handleTaskSelector = (taskId, update) => {
     updateFirebase(`${job.id}/tasks/${taskId}`, update);
@@ -103,13 +121,13 @@ const Tasks = ({job, tasks}) => {
 
   const handleEditTask = () => {
     const editedTask = {
-      name: state?.job?.taskName,
-      description: state?.job?.taskDescription,
-      priority: state?.job?.taskPriority?.value,
-      workers: state?.job?.taskWorkers?.value,
+      name: jobFormState.taskName,
+      description: jobFormState.taskDescription,
+      priority: jobFormState.taskPriority?.value,
+      workers: jobFormState.taskWorkers?.value,
     };
     updateFirebase(
-      `${state?.job?.jobId}/tasks/${state?.job?.taskId}`,
+      `${jobFormState.jobId}/tasks/${jobFormState.taskId}`,
       editedTask,
     );
     dispatch({

@@ -1,4 +1,5 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useSelector, shallowEqual} from 'react-redux';
 import {StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -12,8 +13,6 @@ import TitlePage from '../../components/TitlePage';
 //Firebase
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
-// Context
-import {Context} from '../../store/filterStore';
 import {ScrollView} from 'react-native-gesture-handler';
 
 // UI
@@ -24,7 +23,10 @@ import {defaultTextTitle} from '../../styles/common';
 
 const JobsScreen = () => {
   const {list, loading, error} = useGetFirebase('jobs');
-  const [state, dispatch] = useContext(Context);
+  const {houses} = useSelector(
+    ({filters: {houses}}) => ({houses}),
+    shallowEqual,
+  );
   const [filteredList, setFilteredList] = useState([]);
   const navigation = useNavigation();
 
@@ -33,24 +35,24 @@ const JobsScreen = () => {
   };
 
   useEffect(() => {
-    if (state?.houses === null) {
+    if (houses === null) {
       const fList = list.filter((job) => job.house === null);
       setFilteredList(fList);
     } else {
-      if (state?.houses?.length === 0) {
+      if (houses?.length === 0) {
         setFilteredList(list);
       } else {
         console.log('hola');
         const fList = list
           .filter((j) => j.house !== null)
           .filter((job) =>
-            state?.houses?.find((houseId) => houseId === job?.house[0]?.id),
+            houses?.find((houseId) => houseId === job?.house[0]?.id),
           );
         console.log('fList', fList);
         setFilteredList(fList);
       }
     }
-  }, [state, list]);
+  }, [houses, list]);
 
   if (loading) {
     return (

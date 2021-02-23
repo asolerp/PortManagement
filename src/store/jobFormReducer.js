@@ -1,4 +1,10 @@
-const JobFormReducer = (state, action) => {
+const INITIAL_JOB_FORM_STATE = {
+  job: {
+    mode: 'new',
+  },
+};
+
+export const jobFormReducer = (state = INITIAL_JOB_FORM_STATE, action) => {
   switch (action.type) {
     case 'EDIT_FORM':
       console.log(action.payload);
@@ -65,5 +71,3 @@ const JobFormReducer = (state, action) => {
       return state;
   }
 };
-
-export default JobFormReducer;

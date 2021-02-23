@@ -18,9 +18,6 @@ import {parsePriority} from '../../../utils/parsers';
 import {useAddFirebase} from '../../../hooks/useAddFirebase';
 import {newJob} from '../../../firebase/newJob';
 
-// Context
-import {Context} from '../../../store/jobFormStore';
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,

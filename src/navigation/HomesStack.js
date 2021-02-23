@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 
-import {ImageBackground, StyleSheet} from 'react-native';
+import {Provider} from 'react-redux';
+import store from '../store/store';
 
 import {createStackNavigator} from '@react-navigation/stack';
 import HomesScreen from '../screens/Homes/HomesScreen';
@@ -24,7 +25,7 @@ export default function HomesStack() {
   };
 
   return (
-    <NewHouseFormContext.Provider value={value}>
+    <Provider store={store}>
       <Stack.Navigator headerMode="none">
         <Stack.Screen
           name="Homes"
@@ -36,6 +37,6 @@ export default function HomesStack() {
         <Stack.Screen name="NewHome" component={NewHomeScreen} />
         <Stack.Screen name="UserList" component={UserListSelectorScreen} />
       </Stack.Navigator>
-    </NewHouseFormContext.Provider>
+    </Provider>
   );
 }

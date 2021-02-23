@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -20,12 +20,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
-// Context
-import {Context} from '../../store/jobFormStore';
-
 // UI
 import LinearGradient from 'react-native-linear-gradient';
-import NewEditTask from '../../components/Forms/Jobs/NewEditTask';
 
 const styles = StyleSheet.create({
   container: {

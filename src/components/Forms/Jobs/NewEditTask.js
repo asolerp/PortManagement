@@ -1,15 +1,12 @@
-import React, {useContext} from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 
-import {Button} from 'react-native-elements';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
 import Accordian from '../../../components/Elements/Accordian';
 import InputGroup from '../../../components/Elements/InputGroup';
 import DynamicSelectorList from '../../../components/DynamicSelectorList';
 import PrioritySelector from '../../../components/Elements/PrioritySelector';
-
-// Context
-import {Context} from '../../../store/jobFormStore';
 
 // Utils
 import {parsePriority} from '../../../utils/parsers';
@@ -41,7 +38,17 @@ const styles = StyleSheet.create({
 });
 
 const NewEditTask = ({onSubmit, onEdit}) => {
-  const [state, dispatch] = useContext(Context);
+  const dispatch = useDispatch();
+
+  const setInputForm = useCallback(
+    (label, value) =>
+      dispatch({
+        type: 'SET_FORM',
+        label: label,
+        payload: value,
+      }),
+    [dispatch],
+  );
 
   return (
     <View style={{marginBottom: 20}}>
@@ -49,25 +56,13 @@ const NewEditTask = ({onSubmit, onEdit}) => {
         <TextInput
           style={{height: 40}}
           placeholder="Tarea"
-          onChangeText={(text) =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskName',
-              payload: text,
-            })
-          }
+          onChangeText={(text) => setInputForm('taskName', text)}
           value={state?.job?.taskName}
         />
         <TextInput
           style={{height: 40}}
           placeholder="Descripción"
-          onChangeText={(text) =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskDescription',
-              payload: text,
-            })
-          }
+          onChangeText={(text) => setInputForm('taskDescription', text)}
           value={state?.job?.taskDescription}
         />
       </InputGroup>
@@ -88,19 +83,9 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           }
           switcher={state?.job?.taskWorkers?.switch}
           iconProps={{name: 'person', color: '#55A5AD'}}
-          onOpen={() =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskWorkers',
-              payload: {value: [], switch: true},
-            })
-          }
+          onOpen={() => setInputForm('taskWorkers', {value: [], switch: true})}
           onClose={() =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskWorkers',
-              payload: {value: undefined, switch: false},
-            })
+            setInputForm('taskWorkers', {value: undefined, switch: false})
           }>
           <View style={styles.asignList}>
             <DynamicSelectorList
@@ -109,10 +94,9 @@ const NewEditTask = ({onSubmit, onEdit}) => {
               schema={{img: 'profileImage', name: 'firstName'}}
               get={state?.job?.taskWorkers?.value || []}
               set={(workers) => {
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'taskWorkers',
-                  payload: {...state.job.taskWorkers, value: workers},
+                setInputForm('taskWorkers', {
+                  ...state.job.taskWorkers,
+                  value: workers,
                 });
               }}
               multiple={true}
@@ -131,11 +115,7 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           switcher={state?.job?.taskPriority?.switch}
           iconProps={{name: 'house', color: '#55A5AD'}}
           onOpen={() =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskPriority',
-              payload: {value: undefined, switch: true},
-            })
+            setInputForm('taskPriority', {value: undefined, switch: true})
           }
           onClose={() =>
             dispatch({

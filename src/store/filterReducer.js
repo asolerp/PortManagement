@@ -1,4 +1,8 @@
-const FilterReducer = (state, action) => {
+const INITIAL_FILTER_STATE = {
+  houses: [],
+};
+
+export const filterReducer = (state = INITIAL_FILTER_STATE, action) => {
   switch (action.type) {
     case 'ADD_HOUSE':
       return {
@@ -10,4 +14,4 @@ const FilterReducer = (state, action) => {
   }
 };
 
-export default FilterReducer;
+export default filterReducer;
