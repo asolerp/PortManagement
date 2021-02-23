@@ -32,25 +32,25 @@ const JobsScreen = () => {
     navigation.navigate('NewJob');
   };
 
-  useEffect(() => {
-    if (state?.houses === null) {
-      const fList = list.filter((job) => job.house === null);
-      setFilteredList(fList);
-    } else {
-      if (state?.houses?.length === 0) {
-        setFilteredList(list);
-      } else {
-        console.log('hola');
-        const fList = list
-          .filter((j) => j.house !== null)
-          .filter((job) =>
-            state?.houses?.find((houseId) => houseId === job?.house[0]?.id),
-          );
-        console.log('fList', fList);
-        setFilteredList(fList);
-      }
-    }
-  }, [state, list]);
+  // useEffect(() => {
+  //   if (state?.houses === null) {
+  //     const fList = list.filter((job) => job.house === null);
+  //     setFilteredList(fList);
+  //   } else {
+  //     if (state?.houses?.length === 0) {
+  //       setFilteredList(list);
+  //     } else {
+  //       console.log('hola');
+  //       const fList = list
+  //         .filter((j) => j.house !== null)
+  //         .filter((job) =>
+  //           state?.houses?.find((houseId) => houseId === job?.house[0]?.id),
+  //         );
+  //       console.log('fList', fList);
+  //       setFilteredList(fList);
+  //     }
+  //   }
+  // }, [state, list]);
 
   if (loading) {
     return (
@@ -87,7 +87,7 @@ const JobsScreen = () => {
               <View style={styles.jobsListWrapper}>
                 <Text style={defaultTextTitle}>Trabajos activos</Text>
                 <View style={{marginTop: 20}}>
-                  {filteredList?.map((item, i) => (
+                  {list?.map((item, i) => (
                     <JobItem
                       job={item}
                       key={i}

@@ -50,7 +50,6 @@ export const parsePirorityIcon = (priority) => {
 };
 
 export const percentageOfComplete = (tasks) => {
-  const completedTaks = tasks?.filter((task) => task.complete).length;
-  console.log('compoleted', completedTaks);
-  return completedTaks / tasks?.length;
+  const completedTasks = tasks?.filter((task) => task.complete).length;
+  return completedTasks / tasks?.length;
 };

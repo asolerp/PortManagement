@@ -6,9 +6,6 @@ import {View, Text, StyleSheet} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-// Firebase
-import {useUpdateFirebase} from '../../hooks/useUpdateFirebase';
-
 // Context
 import {Context} from '../../store/jobFormStore';
 
@@ -85,55 +82,35 @@ const styles = StyleSheet.create({
   },
 });
 
-const Task = ({job, task, index}) => {
-  const {updateFirebase, loading, error} = useUpdateFirebase('jobs');
-  const workers = task?.workers || task?.workers.value;
+const Task = ({onSelect, onItemClick, job, task, index}) => {
   const [state, dispatch] = useContext(Context);
 
-  const handleEditTask = () => {
-    dispatch({
-      type: 'SET_FORM',
-      label: 'taskName',
-      payload: task.name,
-    });
-    dispatch({
-      type: 'SET_FORM',
-      label: 'taskDescription',
-      payload: task.description,
-    });
-    dispatch({
-      type: 'SET_FORM',
-      label: 'taskWorkers',
-      payload: {value: task.workers, switch: true},
-    });
-    dispatch({
-      type: 'SET_FORM',
-      label: 'taskPriority',
-      payload: {value: task.priority, switch: true},
-    });
-  };
+  const workers = Array.isArray(task?.workers)
+    ? task?.workers
+    : task?.workers?.value;
+  const priority =
+    typeof task?.priority === 'string' ? task?.priority : task?.priority?.value;
 
   const handleTaskSelector = () => {
-    const tasks = job.tasks;
-    tasks[index] = {...tasks[index], done: !tasks[index].done};
-    updateFirebase(job.id, {...job, tasks: tasks});
+    console.log(task.done);
+    onSelect(task?.id, {done: !task.done});
   };
 
   return (
-    <TouchableOpacity onPress={() => handleEditTask()}>
+    <TouchableOpacity onPress={() => onItemClick(task)}>
       <View style={styles.container}>
         <View style={styles.leftContainer}>
           <TouchableOpacity onPress={() => handleTaskSelector()}>
             <View
               style={{
                 ...styles.selector,
-                ...{borderColor: parsePriorityColor(task?.priority)},
+                ...{borderColor: parsePriorityColor(priority)},
               }}>
               {task?.done && (
                 <View
                   style={{
                     ...styles.selectorActive,
-                    ...{backgroundColor: parsePriorityColor(task?.priority)},
+                    ...{backgroundColor: parsePriorityColor(priority)},
                   }}
                 />
               )}
@@ -148,7 +125,7 @@ const Task = ({job, task, index}) => {
         </View>
         <View style={styles.rightContainer}>
           <View style={styles.avatarContainer}>
-            {workers.map((worker, i) => (
+            {workers?.map((worker, i) => (
               <Avatar
                 key={i}
                 uri={worker?.profileImage}
@@ -162,13 +139,11 @@ const Task = ({job, task, index}) => {
               style={[
                 styles.priority,
                 {
-                  backgroundColor: parsePriorityColor(
-                    task?.priority || task?.priority.value,
-                  ),
+                  backgroundColor: parsePriorityColor(priority),
                 },
               ]}>
               <Icon
-                name={parsePirorityIcon(task?.priority).name}
+                name={parsePirorityIcon(priority)?.name}
                 color="white"
                 size={25}
               />

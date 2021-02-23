@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const NewEditTask = ({onSubmit, mode = 'new'}) => {
+const NewEditTask = ({onSubmit, onEdit}) => {
   const [state, dispatch] = useContext(Context);
 
   return (
@@ -150,7 +150,10 @@ const NewEditTask = ({onSubmit, mode = 'new'}) => {
           />
         </Accordian>
       </InputGroup>
-      <Button onPress={onSubmit} title="Guardar" />
+      <Button
+        onPress={state.job.mode === 'new' ? onSubmit : onEdit}
+        title={state.job.mode === 'new' ? 'Guardar' : 'Editar'}
+      />
     </View>
   );
 };

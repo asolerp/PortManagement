@@ -25,10 +25,10 @@ const InputGroup = ({children}) => {
       {Array.isArray(children) ? (
         <View style={styles.inputContainer}>
           {children.map((elemnt, i) => (
-            <React.Fragment>
+            <View key={i}>
               {elemnt}
               {i !== children.length - 1 && <View style={styles.separator} />}
-            </React.Fragment>
+            </View>
           ))}
         </View>
       ) : (

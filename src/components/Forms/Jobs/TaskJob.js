@@ -7,6 +7,8 @@ import {Context} from '../../../store/jobFormStore';
 import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
 
+import {v4 as uuidv4} from 'uuid';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -27,7 +29,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const TaskForm = () => {
+const TaskForm = ({onNew, onEdit}) => {
+  console.log('Render Task Form');
   const [state, dispatch] = useContext(Context);
 
   const addTask = () => {
@@ -51,16 +54,22 @@ const TaskForm = () => {
     });
   };
 
-  const handleSubmit = () => {
+  const handleSubmitNew = () => {
     addTask();
     cleanTask();
   };
+
+  const handleSubmitEdit = () => {};
 
   return (
     <View style={styles.container}>
       <View>
         <ScrollView>
-          <NewEditTask onSubmit={handleSubmit} />
+          <NewEditTask
+            onSubmit={
+              state.job.mode === 'new' ? handleSubmitNew : handleSubmitEdit
+            }
+          />
         </ScrollView>
       </View>
       <Text style={styles.tasksTitle}>Tareas</Text>

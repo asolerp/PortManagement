@@ -2,7 +2,9 @@ import React, {createContext, useReducer} from 'react';
 import JobFormReducer from './jobFormReducer';
 
 const initialState = {
-  job: {},
+  job: {
+    mode: 'new',
+  },
 };
 
 const JobFormStore = ({children}) => {

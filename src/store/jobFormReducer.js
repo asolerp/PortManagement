@@ -1,5 +1,22 @@
 const JobFormReducer = (state, action) => {
   switch (action.type) {
+    case 'EDIT_FORM':
+      console.log(action.payload);
+      return {
+        ...state,
+        job: {
+          ...state.job,
+          ...action.payload,
+        },
+      };
+    case 'CHANGE_FORM_MODE':
+      return {
+        ...state,
+        job: {
+          ...state.job,
+          mode: action.payload,
+        },
+      };
     case 'SET_FORM':
       return {
         ...state,
@@ -19,13 +36,16 @@ const JobFormReducer = (state, action) => {
     case 'RESET_FORM':
       return {
         ...state,
-        job: {},
+        job: {
+          mode: 'new',
+        },
       };
     case 'RESET_TASK':
       return {
         ...state,
         job: {
           ...state.job,
+          mode: 'new',
           taskName: undefined,
           taskWorkers: undefined,
           taskDescription: undefined,

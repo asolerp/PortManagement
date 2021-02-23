@@ -27,23 +27,21 @@ export default function JobsStack() {
 
   return (
     <JobFormStore>
-      <NewHouseFormContext.Provider value={value}>
-        <Stack.Navigator headerMode="none">
-          <Stack.Screen
-            name="Jobs"
-            component={() => (
-              <FilterStore>
-                <JobsScreen />
-              </FilterStore>
-            )}
-            options={{
-              cardStyle: {backgroundColor: 'transparent'},
-            }}
-          />
-          <Stack.Screen name="NewJob" component={NewJobScreen} />
-          <Stack.Screen name="JobScreen" component={JobScreen} />
-        </Stack.Navigator>
-      </NewHouseFormContext.Provider>
+      <Stack.Navigator headerMode="none">
+        <Stack.Screen
+          name="Jobs"
+          component={() => (
+            <FilterStore>
+              <JobsScreen />
+            </FilterStore>
+          )}
+          options={{
+            cardStyle: {backgroundColor: 'transparent'},
+          }}
+        />
+        <Stack.Screen name="NewJob" component={NewJobScreen} />
+        <Stack.Screen name="JobScreen" component={JobScreen} />
+      </Stack.Navigator>
     </JobFormStore>
   );
 }

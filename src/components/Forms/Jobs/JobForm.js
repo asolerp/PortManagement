@@ -16,6 +16,7 @@ import {parsePriority} from '../../../utils/parsers';
 
 // Firebase
 import {useAddFirebase} from '../../../hooks/useAddFirebase';
+import {newJob} from '../../../firebase/newJob';
 
 // Context
 import {Context} from '../../../store/jobFormStore';
@@ -48,7 +49,11 @@ const styles = StyleSheet.create({
 });
 
 const JobForm = () => {
-  const {addFirebase, loading, error} = useAddFirebase('jobs');
+  const {addFirebase: addJob, loading, error} = useAddFirebase('jobs');
+  const {addFirebase: addTask, loading: loadingTask, result} = useAddFirebase(
+    'tasks',
+  );
+
   const [state, dispatch] = useContext(Context);
 
   // Form State
@@ -68,16 +73,14 @@ const JobForm = () => {
       time: state.job?.time?.value,
       workers: state?.job?.workers?.value,
       house: state?.job?.house?.value,
-      priority: state?.job?.priority.value,
-      tasks: state?.job?.tasks.map((task) => ({
-        name: task?.name,
-        description: task?.description,
-        priority: task?.priority?.value,
-        workers: task?.workers?.value,
-      })),
+      priority: state?.job?.priority?.value,
+      stats: {
+        done: 0,
+        total: state?.job?.tasks?.length,
+      },
     };
 
-    addFirebase(job);
+    newJob(job, state?.job?.tasks);
     cleanForm();
   };
 
@@ -138,7 +141,7 @@ const JobForm = () => {
                   {moment(state?.job?.date?.value).format('LL')}
                 </Text>,
               ]}
-              iconProps={{name: 'calendar-today', color: 'red'}}
+              iconProps={{name: 'calendar-today', color: '#55A5AD'}}
               onOpen={() => {
                 dispatch({
                   type: 'SET_FORM',
@@ -170,7 +173,7 @@ const JobForm = () => {
                 </Text>,
               ]}
               switcher={state?.job?.time?.switch}
-              iconProps={{name: 'alarm', color: 'purple'}}
+              iconProps={{name: 'alarm', color: '#55A5AD'}}
               onOpen={() =>
                 dispatch({
                   type: 'SET_FORM',
@@ -197,7 +200,7 @@ const JobForm = () => {
             <InputWithSwitch
               title="Recurrente"
               disabled
-              icon={{name: 'alarm', color: 'green'}}
+              icon={{name: 'alarm', color: '#55A5AD'}}
               get={recurrente}
               set={setRecurrente}
             />
@@ -218,7 +221,7 @@ const JobForm = () => {
                 </View>
               }
               switcher={state?.job?.workers?.switch}
-              iconProps={{name: 'person', color: 'blue'}}
+              iconProps={{name: 'person', color: '#55A5AD'}}
               onOpen={() =>
                 dispatch({
                   type: 'SET_FORM',
@@ -265,7 +268,7 @@ const JobForm = () => {
                 </View>
               }
               switcher={state?.job?.house?.switch}
-              iconProps={{name: 'house', color: 'brown'}}
+              iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
                 dispatch({
                   type: 'SET_FORM',
@@ -306,7 +309,7 @@ const JobForm = () => {
                 </Text>,
               ]}
               switcher={state?.job?.priority?.switch}
-              iconProps={{name: 'house', color: 'black'}}
+              iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
                 dispatch({
                   type: 'SET_FORM',

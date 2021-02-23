@@ -51,17 +51,13 @@ const Accordian = ({
   const toggleExpandWithSwitch = (event) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     if (event) {
-      console.log('on open..');
       setExpanded(!expanded);
       onOpen();
     } else {
-      console.log('on close..');
       setExpanded(false);
       onClose();
     }
   };
-
-  console.log(switcher, 'switcher');
 
   return (
     <View style={styles.container}>

@@ -176,7 +176,9 @@ const HouseFilter = () => {
         })} */}
           {list.map((house, i) => {
             return (
-              <TouchableOpacity onPress={() => handleSetHouse(house)}>
+              <TouchableOpacity
+                key={house.id}
+                onPress={() => handleSetHouse(house)}>
                 <View style={styles.houseFilter}>
                   <View
                     style={

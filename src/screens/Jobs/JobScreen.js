@@ -18,12 +18,14 @@ import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
+import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // Context
 import {Context} from '../../store/jobFormStore';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
+import NewEditTask from '../../components/Forms/Jobs/NewEditTask';
 
 const styles = StyleSheet.create({
   container: {
@@ -71,24 +73,23 @@ const styles = StyleSheet.create({
 const JobScreen = ({route, navigation}) => {
   const {jobId} = route.params;
   const {document: job, loading, error} = useGetDocFirebase('jobs', jobId);
-
-  const [state, dispatch] = useContext(Context);
+  const {list: tasks} = useGetFirebase(`jobs/${jobId}/tasks`);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
-    {key: 'tasks', title: 'TAREAS'},
+    {key: 'jobTasks', title: 'TAREAS'},
     {key: 'messages', title: 'MENSAJES'},
     {key: 'photos', title: 'FOTOS'},
   ]);
 
-  const FirstRoute = () => <Tasks job={job} tasks={job?.tasks} />;
+  const FirstRoute = () => <Tasks job={job} tasks={tasks} />;
   const SecondRoute = () => <Messages />;
   const ThirdRoute = () => <Photos />;
 
   const initialLayout = {width: Dimensions.get('window').width};
 
   const renderScene = SceneMap({
-    tasks: FirstRoute,
+    jobTasks: FirstRoute,
     messages: SecondRoute,
     photos: ThirdRoute,
   });
@@ -109,15 +110,12 @@ const JobScreen = ({route, navigation}) => {
   return (
     <React.Fragment>
       <StatusBar barStyle="default" />
-      <ScrollView style={{}}>
+      <ScrollView>
         <View style={styles.container}>
           <TitlePage
             leftSide={
               <TouchableOpacity
                 onPress={() => {
-                  dispatch({
-                    type: 'RESET_FORM',
-                  });
                   navigation.goBack();
                 }}>
                 <View style={styles.iconWrapper}>

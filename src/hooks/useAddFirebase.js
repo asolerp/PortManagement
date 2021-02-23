@@ -4,12 +4,14 @@ import {useState} from 'react';
 
 export const useAddFirebase = (coll) => {
   const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState();
   const [error, setError] = useState();
 
   const addFirebase = async (document) => {
     setLoading(true);
     try {
-      await firestore().collection(coll).add(document);
+      const res = await firestore().collection(coll).add(document);
+      setResult(res);
       setLoading(false);
     } catch (err) {
       setError(err);
@@ -19,6 +21,7 @@ export const useAddFirebase = (coll) => {
 
   return {
     addFirebase,
+    result,
     loading,
     error,
   };

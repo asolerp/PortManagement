@@ -18,7 +18,11 @@ const TitlePage = ({
       end={{x: 1, y: 0}}
       colors={['#4D84A0', '#55A7AE', '#67B26F']}
       style={{...styles.container, ...{height: subPage ? 100 : 200}}}>
-      <View style={styles.titleWrapper}>
+      <View
+        style={{
+          ...styles.titleWrapper,
+          ...{justifyContent: !children && 'center'},
+        }}>
         {title ? (
           <React.Fragment>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -62,7 +66,7 @@ const TitlePage = ({
           </View>
         )}
       </View>
-      <View style={styles.childrenWrapper}>{children}</View>
+      {children && <View style={styles.childrenWrapper}>{children}</View>}
     </LinearGradient>
   );
 };
@@ -76,12 +80,13 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
   },
   titleWrapper: {
-    flex: 3,
+    flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
   },
   childrenWrapper: {
     flex: 1,
+    width: '100%',
     justifyContent: 'center',
   },
   logo: {

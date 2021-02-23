@@ -8,6 +8,9 @@ import {AuthContext} from '../navigation/AuthNavigator';
 import ProfileBar from '../components/ProfileBar';
 import TitlePage from '../components/TitlePage';
 
+// UI
+import LinearGradient from 'react-native-linear-gradient';
+
 const DashboardScreen = () => {
   const user = useContext(AuthContext);
   console.log(user);
@@ -22,13 +25,20 @@ const DashboardScreen = () => {
 
   return (
     <View style={styles.container}>
-      <TitlePage />
-      <View style={styles.home}>
+      <TitlePage>
         <ProfileBar />
-        <View style={styles.content}>
-          <Button title="Logout" onPress={logOut} />
+      </TitlePage>
+      <LinearGradient
+        start={{x: 0, y: 0}}
+        end={{x: 1, y: 0}}
+        colors={['#126D9B', '#67B26F']}
+        style={styles.homeBackScreen}>
+        <View style={styles.home}>
+          <View style={styles.content}>
+            <Button title="Logout" onPress={logOut} />
+          </View>
         </View>
-      </View>
+      </LinearGradient>
     </View>
   );
 };
@@ -37,9 +47,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  homeBackScreen: {
+    flex: 1,
+  },
   home: {
-    backgroundColor: '#F2F2F2',
-    borderRadius: 50,
+    backgroundColor: 'white',
+    borderTopRightRadius: 50,
     flex: 5,
   },
   content: {

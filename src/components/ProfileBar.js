@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    paddingHorizontal: 30,
+
+    backgroundColor: 'red',
   },
   profileBar: {
     flex: 1,
@@ -63,12 +64,12 @@ const styles = StyleSheet.create({
   },
   welcome: {
     fontSize: 30,
-    color: 'black',
+    color: 'white',
   },
   userName: {
     fontSize: 30,
     fontWeight: 'bold',
-    color: 'black',
+    color: 'white',
   },
 });
 

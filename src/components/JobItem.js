@@ -135,6 +135,8 @@ const JobItem = ({job, onPress}) => {
     deleteFirebase();
   };
 
+  console.log(job, 'job');
+
   return (
     // <Swipeable
     //   renderRightActions={(progress, dragX) =>
@@ -164,7 +166,7 @@ const JobItem = ({job, onPress}) => {
               <Text style={styles.subtitle}>{job.description}</Text>
             )}
             <Progress.Bar
-              progress={0.5}
+              progress={job.stats.done / job.stats.total}
               unfilledColor={'#E2E2E2'}
               borderWidth={0}
               width={200}
