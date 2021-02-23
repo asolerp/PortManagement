@@ -76,7 +76,7 @@ const Accordian = ({
           <Switch
             ref={accordian}
             style={{transform: [{scaleX: 0.8}, {scaleY: 0.8}]}}
-            trackColor={{true: '#2A7BA5', false: 'grey'}}
+            trackColor={{true: '#60AD88', false: 'grey'}}
             ios_backgroundColor="#3e3e3e"
             onValueChange={toggleExpandWithSwitch}
             value={switcher}

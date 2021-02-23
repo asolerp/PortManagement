@@ -9,11 +9,13 @@ import {
 
 // Firebase
 import {useUpdateFirebase} from '../../hooks/useUpdateFirebase';
+import {useDeleteFirebase} from '../../hooks/useDeleteFirebase';
 
 // Context
 import {Context} from '../../store/jobFormStore';
 
 import Task from '../Elements/Task';
+import {deleteTaskAlert} from '../Alerts/deleteJobAlert';
 
 // Styles
 import {defaultTextTitle} from '../../styles/common';
@@ -49,11 +51,20 @@ const styles = StyleSheet.create({
 const Tasks = ({job, tasks}) => {
   const [state, dispatch] = useContext(Context);
   const {updateFirebase, loading, error} = useUpdateFirebase('jobs');
+  const {
+    deleteFirebase,
+    loading: loadingDelete,
+    error: errorDelete,
+  } = useDeleteFirebase();
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
+  };
+
+  const handleDeleteTask = (jobId, taskId) => {
+    deleteFirebase(`jobs/${jobId}/tasks`, taskId);
   };
 
   const handleItemSelect = (task) => {
@@ -138,6 +149,9 @@ const Tasks = ({job, tasks}) => {
             key={task.id}
             onItemClick={handleItemSelect}
             onSelect={handleTaskSelector}
+            onDelete={() =>
+              deleteTaskAlert(() => handleDeleteTask(task.jobId, task.id))
+            }
           />
         ))}
       </View>

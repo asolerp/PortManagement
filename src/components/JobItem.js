@@ -23,9 +23,7 @@ import {
 } from '../utils/parsers';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RightActions from './Elements/RightActions';
-
-// Firebase
-import {useDeleteFirebase} from '../hooks/useDeleteFirebase';
+import {deleteJobAlert} from './Alerts/deleteJobAlert';
 
 const styles = StyleSheet.create({
   container: {
@@ -120,7 +118,7 @@ const styles = StyleSheet.create({
 
 const JobItem = ({job, onPress}) => {
   const [expanded, setExpanded] = useState(false);
-  const {deleteFirebase, loading, error} = useDeleteFirebase('jobs', job.id);
+  // const {deleteFirebase, loading, error} = useDeleteFirebase('jobs', job.id);
 
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -131,9 +129,9 @@ const JobItem = ({job, onPress}) => {
     setExpanded(!expanded);
   };
 
-  const onAction = () => {
-    deleteFirebase();
-  };
+  // const onAction = () => {
+  //   deleteFirebase();
+  // };
 
   console.log(job, 'job');
 
@@ -166,7 +164,7 @@ const JobItem = ({job, onPress}) => {
               <Text style={styles.subtitle}>{job.description}</Text>
             )}
             <Progress.Bar
-              progress={job.stats.done / job.stats.total}
+              progress={job?.stats?.done / job?.stats?.total}
               unfilledColor={'#E2E2E2'}
               borderWidth={0}
               width={200}

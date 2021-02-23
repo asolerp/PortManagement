@@ -7,7 +7,7 @@ import {Context} from '../../../store/jobFormStore';
 import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
 
-import {v4 as uuidv4} from 'uuid';
+import {deleteTaskAlert} from '../../Alerts/deleteJobAlert';
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +32,18 @@ const styles = StyleSheet.create({
 const TaskForm = ({onNew, onEdit}) => {
   console.log('Render Task Form');
   const [state, dispatch] = useContext(Context);
+
+  const onDeleteTask = (taskId) => {
+    console.log(taskId);
+    const oldState = state?.job?.tasks;
+    console.log('old state', oldState);
+    const newTasks = state?.job?.tasks?.splice(taskId, 1);
+    console.log('new state', newTasks);
+    // dispatch({
+    //   type: 'REMOVE_TASK',
+    //   payload: newTasks,
+    // });
+  };
 
   const addTask = () => {
     const task = {
@@ -76,7 +88,11 @@ const TaskForm = ({onNew, onEdit}) => {
       <View style={styles.tasksContainer}>
         <ScrollView>
           {state?.job?.tasks?.map((task, i) => (
-            <Task task={task} key={i} />
+            <Task
+              task={task}
+              key={i}
+              onDelete={() => deleteTaskAlert(() => onDeleteTask(i))}
+            />
           ))}
         </ScrollView>
       </View>

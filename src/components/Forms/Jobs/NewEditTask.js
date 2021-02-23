@@ -32,6 +32,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginVertical: 20,
   },
+  addEditButton: {
+    textAlign: 'right',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4F8AA3',
+  },
 });
 
 const NewEditTask = ({onSubmit, onEdit}) => {
@@ -71,17 +77,17 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           subtitle={
             <View style={{flexDirection: 'row'}}>
               {state?.job?.taskWorkers?.value?.map((worker, i) => (
-                <React.Fragment>
+                <View key={i}>
                   <Text style={styles.subtitle}>{worker.firstName}</Text>
                   {state?.job?.taskWorkers?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
                   )}
-                </React.Fragment>
+                </View>
               ))}
             </View>
           }
           switcher={state?.job?.taskWorkers?.switch}
-          iconProps={{name: 'person', color: 'blue'}}
+          iconProps={{name: 'person', color: '#55A5AD'}}
           onOpen={() =>
             dispatch({
               type: 'SET_FORM',
@@ -123,7 +129,7 @@ const NewEditTask = ({onSubmit, onEdit}) => {
             </Text>,
           ]}
           switcher={state?.job?.taskPriority?.switch}
-          iconProps={{name: 'house', color: 'black'}}
+          iconProps={{name: 'house', color: '#55A5AD'}}
           onOpen={() =>
             dispatch({
               type: 'SET_FORM',
@@ -150,10 +156,11 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           />
         </Accordian>
       </InputGroup>
-      <Button
-        onPress={state.job.mode === 'new' ? onSubmit : onEdit}
-        title={state.job.mode === 'new' ? 'Guardar' : 'Editar'}
-      />
+      <Text
+        style={styles.addEditButton}
+        onPress={state.job.mode === 'new' ? onSubmit : onEdit}>
+        {state.job.mode === 'new' ? 'Añadir' : 'Editar'}
+      </Text>
     </View>
   );
 };

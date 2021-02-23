@@ -47,8 +47,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-
-    backgroundColor: 'red',
   },
   profileBar: {
     flex: 1,

@@ -1,9 +1,6 @@
-import Avatar from '../Avatar';
-
 import React, {useContext} from 'react';
-
 import {View, Text, StyleSheet} from 'react-native';
-
+import Avatar from '../Avatar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Context
@@ -12,6 +9,10 @@ import {Context} from '../../store/jobFormStore';
 //Utils
 import {parsePriorityColor, parsePirorityIcon} from '../../utils/parsers';
 import {TouchableOpacity} from 'react-native';
+
+// Swipeable
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import RightActions from '../Elements/RightActions';
 
 const styles = StyleSheet.create({
   container: {
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Task = ({onSelect, onItemClick, job, task, index}) => {
+const Task = ({onSelect, onItemClick, onDelete, job, task, index}) => {
   const [state, dispatch] = useContext(Context);
 
   const workers = Array.isArray(task?.workers)
@@ -97,61 +98,68 @@ const Task = ({onSelect, onItemClick, job, task, index}) => {
   };
 
   return (
-    <TouchableOpacity onPress={() => onItemClick(task)}>
-      <View style={styles.container}>
-        <View style={styles.leftContainer}>
-          <TouchableOpacity onPress={() => handleTaskSelector()}>
-            <View
-              style={{
-                ...styles.selector,
-                ...{borderColor: parsePriorityColor(priority)},
-              }}>
-              {task?.done && (
-                <View
-                  style={{
-                    ...styles.selectorActive,
-                    ...{backgroundColor: parsePriorityColor(priority)},
-                  }}
-                />
+    <Swipeable
+      renderRightActions={(progress, dragX) =>
+        RightActions(progress, dragX, onDelete)
+      }
+      containerStyle={styles.swipperContainer}
+      childrenContainerStyle={{borderRadius: 10}}>
+      <TouchableOpacity onPress={() => onItemClick(task)}>
+        <View style={styles.container}>
+          <View style={styles.leftContainer}>
+            <TouchableOpacity onPress={() => handleTaskSelector()}>
+              <View
+                style={{
+                  ...styles.selector,
+                  ...{borderColor: parsePriorityColor(priority)},
+                }}>
+                {task?.done && (
+                  <View
+                    style={{
+                      ...styles.selectorActive,
+                      ...{backgroundColor: parsePriorityColor(priority)},
+                    }}
+                  />
+                )}
+              </View>
+            </TouchableOpacity>
+            <View>
+              <Text>{task?.name}</Text>
+              {task?.description && (
+                <Text style={styles.description}>{task?.description}</Text>
               )}
             </View>
-          </TouchableOpacity>
-          <View>
-            <Text>{task?.name}</Text>
-            {task?.description && (
-              <Text style={styles.description}>{task?.description}</Text>
+          </View>
+          <View style={styles.rightContainer}>
+            <View style={styles.avatarContainer}>
+              {workers?.map((worker, i) => (
+                <Avatar
+                  key={i}
+                  uri={worker?.profileImage}
+                  overlap
+                  size="medium"
+                />
+              ))}
+            </View>
+            {task?.priority && (
+              <View
+                style={[
+                  styles.priority,
+                  {
+                    backgroundColor: parsePriorityColor(priority),
+                  },
+                ]}>
+                <Icon
+                  name={parsePirorityIcon(priority)?.name}
+                  color="white"
+                  size={25}
+                />
+              </View>
             )}
           </View>
         </View>
-        <View style={styles.rightContainer}>
-          <View style={styles.avatarContainer}>
-            {workers?.map((worker, i) => (
-              <Avatar
-                key={i}
-                uri={worker?.profileImage}
-                overlap
-                size="medium"
-              />
-            ))}
-          </View>
-          {task?.priority && (
-            <View
-              style={[
-                styles.priority,
-                {
-                  backgroundColor: parsePriorityColor(priority),
-                },
-              ]}>
-              <Icon
-                name={parsePirorityIcon(priority)?.name}
-                color="white"
-                size={25}
-              />
-            </View>
-          )}
-        </View>
-      </View>
-    </TouchableOpacity>
+      </TouchableOpacity>
+    </Swipeable>
   );
 };
 

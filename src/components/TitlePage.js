@@ -26,14 +26,17 @@ const TitlePage = ({
         {title ? (
           <React.Fragment>
             <View style={{flexDirection: 'row', alignItems: 'center'}}>
-              {leftSide && <View style={{flex: 1}}>{leftSide}</View>}
+              {leftSide && (
+                <View style={{flex: 1, marginTop: 40}}>{leftSide}</View>
+              )}
               <View style={{flex: 1}}>
                 <Text
                   style={{
                     ...styles.title,
                     ...{
                       color: color,
-                      fontSize: leftSide ? 15 : 35,
+                      marginTop: leftSide ? 40 : 0,
+                      fontSize: leftSide ? 14 : 35,
                       textAlign: leftSide ? 'center' : 'left',
                     },
                   }}>
@@ -55,9 +58,9 @@ const TitlePage = ({
         ) : (
           <View
             style={{
-              flex: 1,
               justifyContent: 'center',
               alignItems: 'center',
+              width: '100%',
             }}>
             <Image
               style={styles.logo}
@@ -74,7 +77,6 @@ const TitlePage = ({
 const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
-    backgroundColor: 'red',
     alignItems: 'flex-start',
     paddingHorizontal: 20,
     borderBottomLeftRadius: 50,
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
     alignItems: 'flex-start',
+    width: '100%',
   },
   childrenWrapper: {
     flex: 1,
@@ -92,7 +95,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 80,
     height: 80,
-    marginTop: 10,
+    marginTop: 40,
     resizeMode: 'contain',
     margin: 0,
   },

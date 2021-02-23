@@ -40,6 +40,15 @@ const JobFormReducer = (state, action) => {
           mode: 'new',
         },
       };
+    case 'REMOVE_TASK':
+      console.log(state);
+      return {
+        ...state,
+        job: {
+          ...state.job,
+          tasks: action.payload,
+        },
+      };
     case 'RESET_TASK':
       return {
         ...state,

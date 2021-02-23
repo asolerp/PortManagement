@@ -15,4 +15,19 @@ const deleteJobAlert = (action) =>
     {cancelable: false},
   );
 
-export default deleteJobAlert;
+const deleteTaskAlert = (action) =>
+  Alert.alert(
+    '!Atención!',
+    '¿Vas a eliminar la tarea?',
+    [
+      {
+        text: 'Cancelar',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'Borrar', onPress: () => action()},
+    ],
+    {cancelable: false},
+  );
+
+export {deleteJobAlert, deleteTaskAlert};

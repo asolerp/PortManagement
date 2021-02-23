@@ -32,3 +32,32 @@ exports.editJobTaskStatus = functions.firestore
         .update({'stats.done': taskAfter.done ? increment : decrement});
     }
   });
+
+exports.onDeleteTask = functions.firestore
+  .document('jobs/{jobId}/tasks/{taskId}')
+  .onDelete((snap, context) => {
+    const decrement = FieldValue.increment(-1);
+    const taskDeleted = snap.data();
+
+    admin
+      .firestore()
+      .collection(`jobs`)
+      .doc(taskDeleted.jobId)
+      .update({
+        'stats.total': decrement,
+        'stats.done': taskDeleted.done && decrement,
+      });
+  });
+
+exports.onCreateTask = functions.firestore
+  .document('jobs/{jobId}/tasks/{taskId}')
+  .onCreate((snap, context) => {
+    const increment = FieldValue.increment(1);
+    const taskCreated = snap.data();
+
+    admin
+      .firestore()
+      .collection(`jobs`)
+      .doc(taskCreated.jobId)
+      .update({'stats.total': increment});
+  });
