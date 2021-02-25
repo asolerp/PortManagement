@@ -1,20 +1,15 @@
 import React, {useState, useEffect, useCallback, createContext} from 'react';
 
-import {
-  View,
-  Image,
-  Text,
-  StyleSheet,
-  StatusBar,
-  Dimensions,
-} from 'react-native';
+// Redux
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+
+import {View, StyleSheet, StatusBar, Dimensions} from 'react-native';
 
 import SignInStack from './SignInStack';
 import SignOutStack from './SignOutStack';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
-import {RectButton} from 'react-native-gesture-handler';
 
 export const AuthContext = createContext(null);
 
@@ -53,7 +48,21 @@ const styles = StyleSheet.create({
 
 export default function AuthNavigator() {
   const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+
+  const {user} = useSelector(
+    ({userLoggedIn: {user}}) => ({user}),
+    shallowEqual,
+  );
+
+  const setUser = useCallback(
+    (user) =>
+      dispatch({
+        type: 'SET_LOGED_USER',
+        payload: user,
+      }),
+    [dispatch],
+  );
 
   // Handle user state changes
   const onAuthStateChanged = useCallback(
@@ -63,7 +72,7 @@ export default function AuthNavigator() {
         setInitializing(false);
       }
     },
-    [initializing],
+    [initializing, setUser],
   );
 
   useEffect(() => {
@@ -80,24 +89,13 @@ export default function AuthNavigator() {
   return user ? (
     <React.Fragment>
       <StatusBar barStyle="light-content" />
-      <AuthContext.Provider value={user}>
-        <View style={styles.appBackground}>
-          <View style={styles.background}>
-            {/* <View style={styles.topBar}>
-              <View style={styles.logoContainer}>
-                <Image
-                  style={styles.logo}
-                  source={require('../assets/images/logo_pm_servicios.png')}
-                />
-              </View>
-            </View> */}
-            <View />
-            <View style={styles.contentWrapper}>
-              <SignInStack />
-            </View>
+      <View style={styles.appBackground}>
+        <View style={styles.background}>
+          <View style={styles.contentWrapper}>
+            <SignInStack />
           </View>
         </View>
-      </AuthContext.Provider>
+      </View>
     </React.Fragment>
   ) : (
     <SignOutStack />

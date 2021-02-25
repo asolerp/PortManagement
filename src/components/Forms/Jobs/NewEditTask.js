@@ -40,6 +40,8 @@ const styles = StyleSheet.create({
 const NewEditTask = ({onSubmit, onEdit}) => {
   const dispatch = useDispatch();
 
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
+
   const setInputForm = useCallback(
     (label, value) =>
       dispatch({
@@ -57,13 +59,13 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           style={{height: 40}}
           placeholder="Tarea"
           onChangeText={(text) => setInputForm('taskName', text)}
-          value={state?.job?.taskName}
+          value={job.taskName}
         />
         <TextInput
           style={{height: 40}}
           placeholder="Descripción"
           onChangeText={(text) => setInputForm('taskDescription', text)}
-          value={state?.job?.taskDescription}
+          value={job.taskDescription}
         />
       </InputGroup>
       <InputGroup>
@@ -71,17 +73,17 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           title="Asignar a..."
           subtitle={
             <View style={{flexDirection: 'row'}}>
-              {state?.job?.taskWorkers?.value?.map((worker, i) => (
+              {job.taskWorkers?.value?.map((worker, i) => (
                 <View key={i}>
                   <Text style={styles.subtitle}>{worker.firstName}</Text>
-                  {state?.job?.taskWorkers?.value?.length - 1 !== i && (
+                  {job.taskWorkers?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
                   )}
                 </View>
               ))}
             </View>
           }
-          switcher={state?.job?.taskWorkers?.switch}
+          switcher={job.taskWorkers?.switch}
           iconProps={{name: 'person', color: '#55A5AD'}}
           onOpen={() => setInputForm('taskWorkers', {value: [], switch: true})}
           onClose={() =>
@@ -92,10 +94,10 @@ const NewEditTask = ({onSubmit, onEdit}) => {
               collection="users"
               searchBy="firstName"
               schema={{img: 'profileImage', name: 'firstName'}}
-              get={state?.job?.taskWorkers?.value || []}
+              get={job.taskWorkers?.value || []}
               set={(workers) => {
                 setInputForm('taskWorkers', {
-                  ...state.job.taskWorkers,
+                  ...job.taskWorkers,
                   value: workers,
                 });
               }}
@@ -109,28 +111,23 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           title="Prioridad"
           subtitle={[
             <Text style={styles.subtitle}>
-              {parsePriority(state?.job?.taskPriority?.value)}
+              {parsePriority(job.taskPriority?.value)}
             </Text>,
           ]}
-          switcher={state?.job?.taskPriority?.switch}
+          switcher={job.taskPriority?.switch}
           iconProps={{name: 'house', color: '#55A5AD'}}
           onOpen={() =>
             setInputForm('taskPriority', {value: undefined, switch: true})
           }
           onClose={() =>
-            dispatch({
-              type: 'SET_FORM',
-              label: 'taskPriority',
-              payload: {value: undefined, switch: false},
-            })
+            setInputForm('taskPriority', {value: undefined, switch: false})
           }>
           <PrioritySelector
-            get={state?.job?.taskPriority?.value || []}
+            get={job.taskPriority?.value || []}
             set={(priority) => {
-              dispatch({
-                type: 'SET_FORM',
-                label: 'taskPriority',
-                payload: {...state.job.taskPriority, value: priority},
+              setInputForm('taskPriority', {
+                ...job.taskPriority,
+                value: priority,
               });
             }}
           />
@@ -138,8 +135,8 @@ const NewEditTask = ({onSubmit, onEdit}) => {
       </InputGroup>
       <Text
         style={styles.addEditButton}
-        onPress={state.job.mode === 'new' ? onSubmit : onEdit}>
-        {state.job.mode === 'new' ? 'Añadir' : 'Editar'}
+        onPress={job.mode === 'new' ? onSubmit : onEdit}>
+        {job.mode === 'new' ? 'Añadir' : 'Editar'}
       </Text>
     </View>
   );

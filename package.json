@@ -28,6 +28,7 @@
     "react-native": "0.63.4",
     "react-native-animated-nav-tab-bar": "^3.0.5",
     "react-native-elements": "^3.1.0",
+    "react-native-flipper": "^0.76.0",
     "react-native-gesture-handler": "^1.10.0",
     "react-native-image-picker": "^3.1.2",
     "react-native-linear-gradient": "^2.5.6",
@@ -42,6 +43,7 @@
     "react-redux": "^7.2.2",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "redux-flipper": "^1.4.2",
     "uuid": "^8.3.2",
     "uuidv4": "^6.2.6"
   },

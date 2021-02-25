@@ -2,18 +2,17 @@ import firestore from '@react-native-firebase/firestore';
 
 import {useState} from 'react';
 
-export const useAddFirebase = (coll) => {
+export const useAddFirebase = () => {
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState();
   const [error, setError] = useState();
 
-  const addFirebase = async (document) => {
+  const addFirebase = async (coll, document) => {
     setLoading(true);
     try {
-      const res = await firestore().collection(coll).add(document);
-      setResult(res);
+      await firestore().collection(coll).add(document);
       setLoading(false);
     } catch (err) {
+      console.log(err);
       setError(err);
       setLoading(false);
     }
@@ -21,7 +20,6 @@ export const useAddFirebase = (coll) => {
 
   return {
     addFirebase,
-    result,
     loading,
     error,
   };

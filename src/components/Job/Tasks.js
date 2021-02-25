@@ -10,6 +10,7 @@ import {
 
 // Firebase
 import {useUpdateFirebase} from '../../hooks/useUpdateFirebase';
+import {useAddFirebase} from '../../hooks/useAddFirebase';
 import {useDeleteFirebase} from '../../hooks/useDeleteFirebase';
 
 import Task from '../Elements/Task';
@@ -49,13 +50,16 @@ const styles = StyleSheet.create({
 const Tasks = ({job, tasks}) => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
-
   const {job: jobFormState} = useSelector(
     ({jobForm: {job}}) => ({job}),
     shallowEqual,
   );
   const {updateFirebase, loading, error} = useUpdateFirebase('jobs');
-
+  const {
+    addFirebase: addTask,
+    loading: loadingTask,
+    error: addTaskError,
+  } = useAddFirebase();
   const {
     deleteFirebase,
     loading: loadingDelete,
@@ -88,16 +92,30 @@ const Tasks = ({job, tasks}) => {
     [dispatch],
   );
 
-  console.log('state', jobFormState);
-
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
+    if (expanded) {
+      resetTask();
+    }
   };
 
   const handleDeleteTask = (jobId, taskId) => {
     deleteFirebase(`jobs/${jobId}/tasks`, taskId);
   };
+
+  const handleNewTask = useCallback(() => {
+    const newTask = {
+      name: jobFormState.taskName,
+      description: jobFormState.taskDescription,
+      priority: jobFormState.taskPriority?.value,
+      workers: jobFormState.taskWorkers?.value,
+      jobId: jobFormState.jobId,
+    };
+    console.log(newTask);
+    addTask(`jobs/${jobFormState.jobId}/tasks`, newTask);
+    resetTask();
+  }, [jobFormState, addTask, resetTask]);
 
   const handleItemSelect = (task) => {
     editForm(task);
@@ -109,17 +127,11 @@ const Tasks = ({job, tasks}) => {
     }
   }, [jobFormState]);
 
-  useEffect(() => {
-    if (!expanded) {
-      resetTask();
-    }
-  }, [resetTask, expanded]);
-
   const handleTaskSelector = (taskId, update) => {
     updateFirebase(`${job.id}/tasks/${taskId}`, update);
   };
 
-  const handleEditTask = () => {
+  const handleEditTask = useCallback(() => {
     const editedTask = {
       name: jobFormState.taskName,
       description: jobFormState.taskDescription,
@@ -130,11 +142,8 @@ const Tasks = ({job, tasks}) => {
       `${jobFormState.jobId}/tasks/${jobFormState.taskId}`,
       editedTask,
     );
-    dispatch({
-      type: 'RESET_TASK',
-      label: 'tasks',
-    });
-  };
+    resetTask();
+  }, [jobFormState, resetTask, updateFirebase]);
 
   return (
     <View style={styles.container}>
@@ -153,7 +162,7 @@ const Tasks = ({job, tasks}) => {
         </TouchableOpacity>
         {expanded && (
           <ScrollView style={styles.formWrapper}>
-            <NewEditTask onEdit={handleEditTask} />
+            <NewEditTask onSubmit={handleNewTask} onEdit={handleEditTask} />
           </ScrollView>
         )}
       </View>
@@ -177,4 +186,4 @@ const Tasks = ({job, tasks}) => {
   );
 };
 
-export default Tasks;
+export default React.memo(Tasks);

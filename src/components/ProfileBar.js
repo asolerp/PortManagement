@@ -1,13 +1,16 @@
 import React, {useEffect, useContext, useState} from 'react';
 import {View, Text, Image, Dimensions, StyleSheet} from 'react-native';
 
-import {AuthContext} from '../navigation/AuthNavigator';
+import {useSelector, shallowEqual} from 'react-redux';
 
 // Firebase
 import firestore from '@react-native-firebase/firestore';
 
 const ProfileBar = () => {
-  const user = useContext(AuthContext);
+  const {user} = useSelector(
+    ({userLoggedIn: {user}}) => ({user}),
+    shallowEqual,
+  );
   const [userProfile, setUserProfile] = useState();
 
   useEffect(() => {

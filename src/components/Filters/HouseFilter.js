@@ -131,16 +131,14 @@ const HouseFilter = () => {
   };
 
   const handleSetHouse = (house) => {
+    console.log('hola');
     if (isInArray(house.id)) {
       const housesWithoutID = houses?.filter((id) => {
         return id !== house.id;
       });
       addHouse(housesWithoutID);
     } else {
-      dispatch({
-        type: 'ADD_HOUSE',
-        payload: [...(houses || []), house.id],
-      });
+      addHouse([...(houses || []), house.id]);
     }
     setLocalFilter(undefined);
   };
