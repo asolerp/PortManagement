@@ -1,4 +1,7 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useCallback} from 'react';
+
+import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+import {setInputForm, resetForm} from '../../../store/jobFormActions';
 
 import {View, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
 
@@ -46,57 +49,56 @@ const styles = StyleSheet.create({
 });
 
 const JobForm = () => {
+  const dispatch = useDispatch();
+
   const {addFirebase: addJob, loading, error} = useAddFirebase('jobs');
   const {addFirebase: addTask, loading: loadingTask, result} = useAddFirebase(
     'tasks',
   );
 
-  const [state, dispatch] = useContext(Context);
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
+
+  const setInputFormAction = useCallback(
+    (label, value) => dispatch(setInputForm(label, value)),
+    [dispatch],
+  );
+
+  const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
 
   // Form State
   const [recurrente, setRecurrente] = useState(false);
 
   const cleanForm = () => {
-    dispatch({
-      type: 'RESET_FORM',
-    });
+    resetFormAction();
   };
 
   const handleSubmit = () => {
-    const job = {
-      name: state?.job?.name,
-      description: state?.job?.description,
-      date: state?.job?.date?.value,
-      time: state.job?.time?.value,
-      workers: state?.job?.workers?.value,
-      house: state?.job?.house?.value,
-      priority: state?.job?.priority?.value,
+    const newJob = {
+      name: job.name,
+      description: job.description,
+      date: job.date?.value,
+      time: job.time?.value,
+      workers: job.workers?.value,
+      house: job.house?.value,
+      priority: job.priority?.value,
       stats: {
         done: 0,
-        total: state?.job?.tasks?.length,
+        total: job.tasks?.length,
       },
     };
 
-    newJob(job, state?.job?.tasks);
+    newJob(newJob, job.tasks);
     cleanForm();
   };
 
   const onChangeDate = (event, selectedDate) => {
     const currentDate = selectedDate;
-    dispatch({
-      type: 'SET_FORM',
-      label: 'date',
-      payload: {...state.job.date, value: currentDate},
-    });
+    setInputFormAction('date', {...job.date, value: currentDate});
   };
 
   const onChangeTime = (event, selectedDate) => {
     const currentDate = selectedDate;
-    dispatch({
-      type: 'SET_FORM',
-      label: 'time',
-      payload: {...state.job.time, value: currentDate},
-    });
+    setInputFormAction('time', {...job.time, value: currentDate});
   };
 
   return (
@@ -107,55 +109,35 @@ const JobForm = () => {
             <TextInput
               style={{height: 40}}
               placeholder="Nombre"
-              onChangeText={(text) =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'name',
-                  payload: text,
-                })
-              }
-              value={state?.job?.name}
+              onChangeText={(text) => setInputFormAction('name', text)}
+              value={job.name}
             />
             <TextInput
               style={{height: 40}}
               placeholder="Descripción"
-              onChangeText={(text) =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'description',
-                  payload: text,
-                })
-              }
-              value={state?.job?.description}
+              onChangeText={(text) => setInputFormAction('description', text)}
+              value={job.description}
             />
           </InputGroup>
           <InputGroup>
             <Accordian
               title="Fecha"
-              switcher={state?.job?.date?.switch}
+              switcher={job.date?.switch}
               subtitle={[
                 <Text style={styles.subtitle}>
-                  {moment(state?.job?.date?.value).format('LL')}
+                  {moment(job.date?.value).format('LL')}
                 </Text>,
               ]}
               iconProps={{name: 'calendar-today', color: '#55A5AD'}}
               onOpen={() => {
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'date',
-                  payload: {value: new Date(), switch: true},
-                });
+                setInputFormAction('date', {value: new Date(), switch: true});
               }}
               onClose={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'date',
-                  payload: {value: undefined, switch: false},
-                })
+                setInputFormAction('date', {value: undefined, switch: false})
               }>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={state?.job?.date?.value || new Date()}
+                value={job.date?.value || new Date()}
                 mode={'date'}
                 is24Hour={true}
                 display="inline"
@@ -166,28 +148,20 @@ const JobForm = () => {
               title="Hora"
               subtitle={[
                 <Text style={styles.subtitle}>
-                  {moment(state?.job?.time?.value).format('LT')}
+                  {moment(job.time?.value).format('LT')}
                 </Text>,
               ]}
-              switcher={state?.job?.time?.switch}
+              switcher={job.time?.switch}
               iconProps={{name: 'alarm', color: '#55A5AD'}}
               onOpen={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'time',
-                  payload: {value: new Date(), switch: true},
-                })
+                setInputFormAction('date', {value: new Date(), switch: true})
               }
               onClose={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'time',
-                  payload: {value: undefined, switch: false},
-                })
+                setInputFormAction('time', {value: undefined, switch: false})
               }>
               <DateTimePicker
                 testID="dateTimePicker"
-                value={state?.job?.time?.value || new Date()}
+                value={job.time?.value || new Date()}
                 mode={'time'}
                 is24Hour={true}
                 display="default"
@@ -207,43 +181,34 @@ const JobForm = () => {
               title="Asignar a..."
               subtitle={
                 <View style={{flexDirection: 'row', paddingBottom: 10}}>
-                  {state?.job?.workers?.value?.map((worker, i) => (
+                  {job.workers?.value?.map((worker, i) => (
                     <React.Fragment>
                       <Text style={styles.subtitle}>{worker.firstName}</Text>
-                      {state?.job?.workers?.value?.length - 1 !== i && (
+                      {job.workers?.value?.length - 1 !== i && (
                         <Text style={styles.subtitle}> & </Text>
                       )}
                     </React.Fragment>
                   ))}
                 </View>
               }
-              switcher={state?.job?.workers?.switch}
+              switcher={job.workers?.switch}
               iconProps={{name: 'person', color: '#55A5AD'}}
               onOpen={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'workers',
-                  payload: {value: [], switch: true},
-                })
+                setInputFormAction('workers', {value: [], switch: true})
               }
               onClose={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'workers',
-                  payload: {value: undefined, switch: false},
-                })
+                setInputFormAction('workers', {value: undefined, switch: false})
               }>
               <View style={styles.asignList}>
                 <DynamicSelectorList
                   collection="users"
                   searchBy="firstName"
                   schema={{img: 'profileImage', name: 'firstName'}}
-                  get={state?.job?.workers?.value || []}
+                  get={job.workers?.value || []}
                   set={(workers) => {
-                    dispatch({
-                      type: 'SET_FORM',
-                      label: 'workers',
-                      payload: {...state.job.workers, value: workers},
+                    setInputFormAction('workers', {
+                      ...job.workers,
+                      value: workers,
                     });
                   }}
                   multiple={true}
@@ -254,44 +219,32 @@ const JobForm = () => {
               title="Casa"
               subtitle={
                 <View style={{flexDirection: 'row'}}>
-                  {state?.job?.house?.value?.map((house, i) => (
+                  {job.house?.value?.map((house, i) => (
                     <React.Fragment>
                       <Text style={styles.subtitle}>{house.houseName}</Text>
-                      {state?.job?.house?.value?.length - 1 !== i && (
+                      {job.house?.value?.length - 1 !== i && (
                         <Text style={styles.subtitle}> & </Text>
                       )}
                     </React.Fragment>
                   ))}
                 </View>
               }
-              switcher={state?.job?.house?.switch}
+              switcher={job.house?.switch}
               iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'house',
-                  payload: {value: [], switch: true},
-                })
+                setInputFormAction('house', {value: [], switch: true})
               }
               onClose={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'house',
-                  payload: {value: undefined, switch: false},
-                })
+                setInputFormAction('house', {value: undefined, switch: false})
               }>
               <View style={styles.asignList}>
                 <DynamicSelectorList
                   collection="houses"
                   searchBy="houseName"
                   schema={{img: 'houseImage', name: 'houseName'}}
-                  get={state?.job?.house?.value || []}
+                  get={job.house?.value || []}
                   set={(house) => {
-                    dispatch({
-                      type: 'SET_FORM',
-                      label: 'house',
-                      payload: {...state.job.house, value: house},
-                    });
+                    setInputFormAction('house', {...job.house, value: house});
                   }}
                 />
               </View>
@@ -302,32 +255,23 @@ const JobForm = () => {
               title="Prioridad"
               subtitle={[
                 <Text style={styles.subtitle}>
-                  {parsePriority(state?.job?.priority?.value)}
+                  {parsePriority(job.priority?.value)}
                 </Text>,
               ]}
-              switcher={state?.job?.priority?.switch}
+              switcher={job.priority?.switch}
               iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'priority',
-                  payload: {value: undefined, switch: true},
-                })
+                setInputFormAction('house', {value: undefined, switch: true})
               }
               onClose={() =>
-                dispatch({
-                  type: 'SET_FORM',
-                  label: 'priority',
-                  payload: {value: undefined, switch: false},
-                })
+                setInputFormAction('house', {value: undefined, switch: false})
               }>
               <PrioritySelector
-                get={state?.job?.priority?.value || []}
+                get={job.priority?.value || []}
                 set={(priority) => {
-                  dispatch({
-                    type: 'SET_FORM',
-                    label: 'priority',
-                    payload: {...state.job.priority, value: priority},
+                  setInputFormAction('house', {
+                    ...job.priority,
+                    value: priority,
                   });
                 }}
               />

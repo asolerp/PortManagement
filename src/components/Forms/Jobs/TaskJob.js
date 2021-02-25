@@ -1,5 +1,9 @@
-import React, {useContext} from 'react';
+import React, {useCallback} from 'react';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
+
+// Redux
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {resetTask, addTask} from '../../../store/jobFormActions';
 
 import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
@@ -27,44 +31,43 @@ const styles = StyleSheet.create({
 });
 
 const TaskForm = ({onNew, onEdit}) => {
-  console.log('Render Task Form');
-  const [state, dispatch] = useContext(Context);
+  const dispatch = useDispatch();
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
+
+  const addTaskAction = useCallback((task) => dispatch(addTask(task)), [
+    dispatch,
+  ]);
+
+  const resetTaskAction = useCallback(() => dispatch(resetTask()), [dispatch]);
 
   const onDeleteTask = (taskId) => {
     console.log(taskId);
-    const oldState = state?.job?.tasks;
-    console.log('old state', oldState);
-    const newTasks = state?.job?.tasks?.splice(taskId, 1);
-    console.log('new state', newTasks);
+    // const oldState = state?.job?.tasks;
+    // console.log('old state', oldState);
+    // const newTasks = state?.job?.tasks?.splice(taskId, 1);
+    // console.log('new state', newTasks);
     // dispatch({
     //   type: 'REMOVE_TASK',
     //   payload: newTasks,
     // });
   };
 
-  const addTask = () => {
+  const addTaskHandler = () => {
     const task = {
-      name: state?.job?.taskName,
-      description: state?.job?.taskDescription,
-      workers: state?.job?.taskWorkers,
-      priority: state?.job?.taskPriority,
+      name: job.taskName,
+      description: job.taskDescription,
+      workers: job.taskWorkers,
+      priority: job.taskPriority,
     };
-    dispatch({
-      type: 'ADD_TASK',
-      label: 'tasks',
-      payload: task,
-    });
+    addTaskAction(task);
   };
 
   const cleanTask = () => {
-    dispatch({
-      type: 'RESET_TASK',
-      label: 'tasks',
-    });
+    resetTaskAction();
   };
 
   const handleSubmitNew = () => {
-    addTask();
+    addTaskHandler();
     cleanTask();
   };
 
@@ -75,16 +78,14 @@ const TaskForm = ({onNew, onEdit}) => {
       <View>
         <ScrollView>
           <NewEditTask
-            onSubmit={
-              state.job.mode === 'new' ? handleSubmitNew : handleSubmitEdit
-            }
+            onSubmit={job.mode === 'new' ? handleSubmitNew : handleSubmitEdit}
           />
         </ScrollView>
       </View>
       <Text style={styles.tasksTitle}>Tareas</Text>
       <View style={styles.tasksContainer}>
         <ScrollView>
-          {state?.job?.tasks?.map((task, i) => (
+          {job.tasks?.map((task, i) => (
             <Task
               task={task}
               key={i}
