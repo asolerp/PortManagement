@@ -14,6 +14,28 @@ export const addTask = (task) => {
   };
 };
 
+export const editForm = (task, job) => {
+  return {
+    type: 'EDIT_FORM',
+    payload: {
+      jobId: job.id,
+      taskId: task.id,
+      taskName: task.name,
+      taskDescription: task.description,
+      taskWorkers: {value: task.workers, switch: true},
+      taskPriority: {value: task.priority, switch: true},
+      mode: 'edit',
+    },
+  };
+};
+
+export const removeTask = (taskId) => {
+  return {
+    type: 'REMOVE_TASK',
+    payload: taskId,
+  };
+};
+
 export const resetTask = () => {
   return {
     type: 'RESET_TASK',

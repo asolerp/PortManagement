@@ -46,6 +46,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
+  cleanButton: {
+    textAlign: 'right',
+    fontSize: 15,
+    fontWeight: 'bold',
+    color: '#4F8AA3',
+  },
+  newJob: {
+    textAlign: 'right',
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#4F8AA3',
+  },
 });
 
 const JobForm = () => {
@@ -277,8 +289,17 @@ const JobForm = () => {
               />
             </Accordian>
           </InputGroup>
-          <Button type="clear" onPress={cleanForm} title="Limpiar" />
-          <Button onPress={handleSubmit} title="Guardar" loading={loading} />
+          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+            <Text style={styles.cleanButton} type="clear" onPress={cleanForm}>
+              Limpiar
+            </Text>
+            <Text
+              style={styles.newJob}
+              onPress={handleSubmit}
+              loading={loading}>
+              Guardar
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </View>

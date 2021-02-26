@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, ScrollView} from 'react-native';
 
 // Redux
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {resetTask, addTask} from '../../../store/jobFormActions';
+import {resetTask, removeTask, addTask} from '../../../store/jobFormActions';
 
 import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
@@ -39,17 +39,13 @@ const TaskForm = ({onNew, onEdit}) => {
   ]);
 
   const resetTaskAction = useCallback(() => dispatch(resetTask()), [dispatch]);
+  const removeTaskAction = useCallback(
+    (taskId) => dispatch(removeTask(taskId)),
+    [dispatch],
+  );
 
   const onDeleteTask = (taskId) => {
-    console.log(taskId);
-    // const oldState = state?.job?.tasks;
-    // console.log('old state', oldState);
-    // const newTasks = state?.job?.tasks?.splice(taskId, 1);
-    // console.log('new state', newTasks);
-    // dispatch({
-    //   type: 'REMOVE_TASK',
-    //   payload: newTasks,
-    // });
+    removeTaskAction(taskId);
   };
 
   const addTaskHandler = () => {

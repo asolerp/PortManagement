@@ -47,12 +47,11 @@ export const jobFormReducer = (state = INITIAL_JOB_FORM_STATE, action) => {
         },
       };
     case 'REMOVE_TASK':
-      console.log(state);
       return {
         ...state,
         job: {
           ...state.job,
-          tasks: action.payload,
+          tasks: state.job.tasks.splice(action.payload, 1),
         },
       };
     case 'RESET_TASK':
