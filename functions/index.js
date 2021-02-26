@@ -24,13 +24,43 @@ exports.editJobTaskStatus = functions.firestore
     const taskBefore = change.before.data();
     const taskAfter = change.after.data();
 
-    if (taskBefore.done !== taskAfter.done) {
+    let promises = [];
+
+    let incrementOrDecrementStats = () => {
       admin
         .firestore()
         .collection(`jobs`)
         .doc(taskAfter.jobId)
         .update({'stats.done': taskAfter.done ? increment : decrement});
+    };
+
+    let updateTaskStat = (taskId) => {
+      admin
+        .firestore()
+        .collection('stats')
+        .where('taskId', '==', taskId)
+        .update({
+          taskPriority: taskAfter.priority,
+          date: taskAfter.date,
+          done: taskAfter.done,
+        });
+    };
+
+    if (taskBefore.workers.length > taskAfter.workers.length) {
+      const workersUnAsigned = taskBefore.workers.filter(
+        (oldWorker) =>
+          !taskAfter.workers.some((newWorker) => oldWorker.id === newWorker.id),
+      );
+      console.log('UnAsigned Worker', workersUnAsigned);
     }
+
+    if (taskBefore.done !== taskAfter.done) {
+      promises.push(incrementOrDecrementStats());
+    }
+
+    promises.push(updateTaskStat(taskAfter.id));
+
+    return Promise.all(promises);
   });
 
 exports.onDeleteTask = functions.firestore
@@ -39,14 +69,22 @@ exports.onDeleteTask = functions.firestore
     const decrement = FieldValue.increment(-1);
     const taskDeleted = snap.data();
 
-    admin
-      .firestore()
-      .collection(`jobs`)
-      .doc(taskDeleted.jobId)
-      .update({
-        'stats.total': decrement,
-        'stats.done': taskDeleted.done && decrement,
-      });
+    const deleteTaskStat = () => {
+      admin.firestore().collection('stats').where('taskId', '==', snap.id);
+    };
+
+    const decrementStats = () => {
+      admin
+        .firestore()
+        .collection(`jobs`)
+        .doc(taskDeleted.jobId)
+        .update({
+          'stats.total': decrement,
+          'stats.done': taskDeleted.done && decrement,
+        });
+    };
+
+    return Promise.all([deleteTaskStat(), decrementStats()]);
   });
 
 exports.onCreateTask = functions.firestore
@@ -55,9 +93,23 @@ exports.onCreateTask = functions.firestore
     const increment = FieldValue.increment(1);
     const taskCreated = snap.data();
 
-    admin
-      .firestore()
-      .collection(`jobs`)
-      .doc(taskCreated.jobId)
-      .update({'stats.total': increment});
+    const addNewStats = () => {
+      admin.firestore().collection('stats').add({
+        taskId: snap.id,
+        jobId: taskCreated.jobId,
+        taskPriority: taskCreated.priority,
+        date: taskCreated.date,
+        done: false,
+      });
+    };
+
+    const incrementStats = () => {
+      admin
+        .firestore()
+        .collection(`jobs`)
+        .doc(taskCreated.jobId)
+        .update({'stats.total': increment});
+    };
+
+    return Promise.all([addNewStats(), incrementStats()]);
   });

@@ -27,8 +27,6 @@ const NewJobScreen = ({navigation}) => {
     {key: 'tasks', title: 'TAREAS'},
   ]);
 
-  console.log('NewJobScreen');
-
   const FirstRoute = () => <JobForm />;
   const SecondRoute = () => <TaskForm />;
 
@@ -96,6 +94,7 @@ const NewJobScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   newJobScreen: {
     flex: 1,

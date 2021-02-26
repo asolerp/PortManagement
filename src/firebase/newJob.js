@@ -12,6 +12,7 @@ export const newJob = async (job, tasks) => {
       const newTask = {
         name: task.name,
         jobId: result.id,
+        date: task.date.value,
         description: task.description,
         priority: task.priority.value,
         workers: task.workers.value,

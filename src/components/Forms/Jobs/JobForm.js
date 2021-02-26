@@ -5,8 +5,6 @@ import {setInputForm, resetForm} from '../../../store/jobFormActions';
 
 import {View, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
 
-import {Button} from 'react-native-elements';
-
 import Accordian from '../../../components/Elements/Accordian';
 import InputGroup from '../../../components/Elements/InputGroup';
 import InputWithSwitch from '../../../components/Elements/InputWithSwitch';
@@ -18,7 +16,6 @@ import moment from 'moment';
 import {parsePriority} from '../../../utils/parsers';
 
 // Firebase
-import {useAddFirebase} from '../../../hooks/useAddFirebase';
 import {newJob} from '../../../firebase/newJob';
 
 const styles = StyleSheet.create({
@@ -63,11 +60,6 @@ const styles = StyleSheet.create({
 const JobForm = () => {
   const dispatch = useDispatch();
 
-  const {addFirebase: addJob, loading, error} = useAddFirebase('jobs');
-  const {addFirebase: addTask, loading: loadingTask, result} = useAddFirebase(
-    'tasks',
-  );
-
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
   const setInputFormAction = useCallback(
@@ -85,21 +77,21 @@ const JobForm = () => {
   };
 
   const handleSubmit = () => {
-    const newJob = {
-      name: job.name,
-      description: job.description,
-      date: job.date?.value,
-      time: job.time?.value,
-      workers: job.workers?.value,
-      house: job.house?.value,
-      priority: job.priority?.value,
+    const newJobForm = {
+      name: job?.name,
+      description: job?.description,
+      date: job?.date?.value,
+      time: job?.time?.value,
+      workers: job?.workers?.value,
+      house: job?.house?.value,
+      priority: job?.priority?.value,
       stats: {
         done: 0,
-        total: job.tasks?.length,
+        total: job?.tasks?.length,
       },
     };
 
-    newJob(newJob, job.tasks);
+    newJob(newJobForm, job.tasks);
     cleanForm();
   };
 
@@ -231,17 +223,17 @@ const JobForm = () => {
               title="Casa"
               subtitle={
                 <View style={{flexDirection: 'row'}}>
-                  {job.house?.value?.map((house, i) => (
+                  {job?.house?.value?.map((house, i) => (
                     <React.Fragment>
                       <Text style={styles.subtitle}>{house.houseName}</Text>
-                      {job.house?.value?.length - 1 !== i && (
+                      {job?.house?.value?.length - 1 !== i && (
                         <Text style={styles.subtitle}> & </Text>
                       )}
                     </React.Fragment>
                   ))}
                 </View>
               }
-              switcher={job.house?.switch}
+              switcher={job?.house?.switch}
               iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
                 setInputFormAction('house', {value: [], switch: true})
@@ -267,21 +259,24 @@ const JobForm = () => {
               title="Prioridad"
               subtitle={[
                 <Text style={styles.subtitle}>
-                  {parsePriority(job.priority?.value)}
+                  {parsePriority(job?.priority?.value)}
                 </Text>,
               ]}
               switcher={job.priority?.switch}
               iconProps={{name: 'house', color: '#55A5AD'}}
               onOpen={() =>
-                setInputFormAction('house', {value: undefined, switch: true})
+                setInputFormAction('priority', {value: undefined, switch: true})
               }
               onClose={() =>
-                setInputFormAction('house', {value: undefined, switch: false})
+                setInputFormAction('priority', {
+                  value: undefined,
+                  switch: false,
+                })
               }>
               <PrioritySelector
                 get={job.priority?.value || []}
                 set={(priority) => {
-                  setInputFormAction('house', {
+                  setInputFormAction('priority', {
                     ...job.priority,
                     value: priority,
                   });
@@ -293,10 +288,7 @@ const JobForm = () => {
             <Text style={styles.cleanButton} type="clear" onPress={cleanForm}>
               Limpiar
             </Text>
-            <Text
-              style={styles.newJob}
-              onPress={handleSubmit}
-              loading={loading}>
+            <Text style={styles.newJob} onPress={handleSubmit}>
               Guardar
             </Text>
           </View>

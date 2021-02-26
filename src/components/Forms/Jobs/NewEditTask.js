@@ -72,18 +72,18 @@ const NewEditTask = ({onSubmit, onEdit}) => {
         <Accordian
           title="Asignar a..."
           subtitle={
-            <View style={{flexDirection: 'row'}}>
-              {job.taskWorkers?.value?.map((worker, i) => (
-                <View key={i}>
+            <View>
+              {job?.taskWorkers?.value?.map((worker, i) => (
+                <View key={i} style={{flexDirection: 'row'}}>
                   <Text style={styles.subtitle}>{worker.firstName}</Text>
-                  {job.taskWorkers?.value?.length - 1 !== i && (
+                  {job?.taskWorkers?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
                   )}
                 </View>
               ))}
             </View>
           }
-          switcher={job.taskWorkers?.switch}
+          switcher={job?.taskWorkers?.switch}
           iconProps={{name: 'person', color: '#55A5AD'}}
           onOpen={() => setInputForm('taskWorkers', {value: [], switch: true})}
           onClose={() =>
@@ -133,6 +133,7 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           />
         </Accordian>
       </InputGroup>
+      <Text>{job.mode}</Text>
       <Text
         style={styles.addEditButton}
         onPress={job.mode === 'new' ? onSubmit : onEdit}>

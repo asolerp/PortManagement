@@ -95,6 +95,9 @@ const Accordian = ({
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   title: {
     fontSize: 14,
     color: 'black',
@@ -111,6 +114,7 @@ const styles = StyleSheet.create({
   },
   iconStyle: {},
   accordianContainer: {
+    flex: 1,
     height: 40,
     paddingRight: 10,
     flexDirection: 'row',

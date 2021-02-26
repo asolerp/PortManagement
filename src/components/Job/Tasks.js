@@ -94,17 +94,19 @@ const Tasks = ({job, tasks}) => {
     deleteFirebase(`jobs/${jobId}/tasks`, taskId);
   };
 
-  const handleNewTask = useCallback(() => {
+  const handleNewTask = () => {
     const newTask = {
       name: jobFormState.taskName,
+      date: job.date,
       description: jobFormState.taskDescription,
       priority: jobFormState.taskPriority?.value,
       workers: jobFormState.taskWorkers?.value,
-      jobId: jobFormState.jobId,
+      jobId: job.id,
     };
-    addTask(`jobs/${jobFormState.jobId}/tasks`, newTask);
+    console.log(job.id, newTask);
+    addTask(`jobs/${job.id}/tasks`, newTask);
     resetTaskAction();
-  }, [jobFormState, addTask, resetTaskAction]);
+  };
 
   const handleItemSelect = (task) => {
     editFormAaction(task);
