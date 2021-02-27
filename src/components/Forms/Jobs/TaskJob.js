@@ -15,7 +15,7 @@ import Task from '../../Elements/Task';
 import NewEditTask from './NewEditTask';
 
 import {deleteTaskAlert} from '../../Alerts/deleteJobAlert';
-import {v4 as uuidv4} from 'uuid';
+import {v1 as uuidv1} from 'uuid';
 
 const styles = StyleSheet.create({
   container: {
@@ -79,7 +79,7 @@ const TaskForm = ({onNew, onEdit}) => {
       description: job.taskDescription,
       workers: job.taskWorkers,
       priority: job.taskPriority,
-      internalUUID: uuidv4(),
+      internalUUID: Date.now(),
     };
     addTaskAction(task);
   };

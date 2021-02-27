@@ -24,6 +24,8 @@ exports.editJobTaskStatus = functions.firestore
     const taskBefore = change.before.data();
     const taskAfter = change.after.data();
 
+    console.log(context.params.taskId);
+
     let promises = [];
 
     let incrementOrDecrementStats = () => {
@@ -34,16 +36,22 @@ exports.editJobTaskStatus = functions.firestore
         .update({'stats.done': taskAfter.done ? increment : decrement});
     };
 
-    let updateTaskStat = (taskId) => {
+    let updateTaskStat = () => {
       admin
         .firestore()
         .collection('stats')
-        .where('taskId', '==', taskId)
-        .update({
-          taskPriority: taskAfter.priority,
-          date: taskAfter.date,
-          done: taskAfter.done,
-        });
+        .where('taskId', '==', context.params.taskId)
+        .limit(1)
+        .get()
+        .then((query) => {
+          const stat = query.docs[0];
+          return stat.ref.update({
+            taskPriority: taskAfter.priority,
+            date: taskAfter.date,
+            done: taskAfter.done,
+          });
+        })
+        .catch((err) => console.log(err));
     };
 
     if (taskBefore.workers.length > taskAfter.workers.length) {
@@ -58,9 +66,9 @@ exports.editJobTaskStatus = functions.firestore
       promises.push(incrementOrDecrementStats());
     }
 
-    promises.push(updateTaskStat(taskAfter.id));
+    promises.push(updateTaskStat());
 
-    return Promise.all(promises);
+    return Promise.all(promises).catch((err) => console.log(err));
   });
 
 exports.onDeleteTask = functions.firestore
