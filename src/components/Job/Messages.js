@@ -6,6 +6,7 @@ import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {useAddFirebase} from '../../hooks/useAddFirebase';
 
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
+import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,7 +17,9 @@ const styles = StyleSheet.create({
 });
 
 const Messages = ({job}) => {
-  const [messages, setMessages] = useState([]);
+  const {list: messages, loading: loadingMessages} = useGetFirebase(
+    `jobs/${job.id}/messages`,
+  );
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
     shallowEqual,
@@ -31,29 +34,26 @@ const Messages = ({job}) => {
     error: addMessageError,
   } = useAddFirebase();
 
-  useEffect(() => {
-    setMessages([
-      {
-        _id: 1,
-        text: 'Hello developer',
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: 'React Native',
-          avatar: 'https://placeimg.com/140/140/any',
-        },
-      },
-    ]);
-  }, []);
-
   console.log(userLoggedIn);
 
-  const onSend = useCallback((messages = []) => {
-    // addMessage(`jobs/${job.id}/tasks`, newTask);
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages),
+  const onSend = useCallback(
+    (messages = []) => {
+      console.log(messages);
+      addMessage(`jobs/${job.id}/messages`, messages[0]);
+      // setMessages((previousMessages) =>
+      //   GiftedChat.append(previousMessages, messages),
+      // );
+    },
+    [addMessage, job],
+  );
+
+  if (loadingMessages) {
+    return (
+      <View>
+        <Text>Cargando mensajes</Text>
+      </View>
     );
-  }, []);
+  }
 
   return (
     <GiftedChat

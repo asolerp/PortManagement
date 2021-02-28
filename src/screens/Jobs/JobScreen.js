@@ -79,7 +79,7 @@ const JobScreen = ({route, navigation}) => {
   ]);
 
   const FirstRoute = () => <Tasks job={job} tasks={tasks} />;
-  const SecondRoute = () => <Messages />;
+  const SecondRoute = () => <Messages job={job} />;
   const ThirdRoute = () => <Photos />;
 
   const initialLayout = {width: Dimensions.get('window').width};
