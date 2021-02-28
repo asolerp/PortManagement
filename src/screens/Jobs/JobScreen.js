@@ -121,6 +121,7 @@ const JobScreen = ({route, navigation}) => {
             }
             subPage
             title={job?.name}
+            subtitle={job?.description}
             color="white"
           />
           <LinearGradient

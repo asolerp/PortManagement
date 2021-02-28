@@ -42,11 +42,19 @@ const TitlePage = ({
                   }}>
                   {title}
                 </Text>
-                {subtitle && (
+                {subtitle && !subPage && (
                   <Text
                     style={{
                       ...styles.subtitle,
                       ...{color: color, marginLeft: leftSide ? 0 : 0},
+                    }}>
+                    {subtitle}
+                  </Text>
+                )}
+                {subtitle && subPage && (
+                  <Text
+                    style={{
+                      ...{color: color, textAlign: 'center'},
                     }}>
                     {subtitle}
                   </Text>

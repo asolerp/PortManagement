@@ -133,7 +133,6 @@ const NewEditTask = ({onSubmit, onEdit}) => {
           />
         </Accordian>
       </InputGroup>
-      <Text>{job.mode}</Text>
       <Text
         style={styles.addEditButton}
         onPress={job.mode === 'new' ? onSubmit : onEdit}>

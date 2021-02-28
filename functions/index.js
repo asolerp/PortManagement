@@ -77,8 +77,20 @@ exports.onDeleteTask = functions.firestore
     const decrement = FieldValue.increment(-1);
     const taskDeleted = snap.data();
 
+    let promises = [];
+
     const deleteTaskStat = () => {
-      admin.firestore().collection('stats').where('taskId', '==', snap.id);
+      admin
+        .firestore()
+        .collection('stats')
+        .where('taskId', '==', context.params.taskId)
+        .limit(1)
+        .get()
+        .then((query) => {
+          const stat = query.docs[0];
+          return stat.ref.delete();
+        })
+        .catch((err) => console.log(err));
     };
 
     const decrementStats = () => {
@@ -88,11 +100,14 @@ exports.onDeleteTask = functions.firestore
         .doc(taskDeleted.jobId)
         .update({
           'stats.total': decrement,
-          'stats.done': taskDeleted.done && decrement,
+          'stats.done': taskDeleted.done ? decrement : FieldValue.increment(0),
         });
     };
 
-    return Promise.all([deleteTaskStat(), decrementStats()]);
+    promises.push(deleteTaskStat());
+    promises.push(decrementStats());
+
+    return Promise.all(promises);
   });
 
 exports.onCreateTask = functions.firestore

@@ -164,7 +164,9 @@ const JobItem = ({job, onPress}) => {
               <Text style={styles.subtitle}>{job.description}</Text>
             )}
             <Progress.Bar
-              progress={job?.stats?.done / job?.stats?.total}
+              progress={
+                job?.stats?.done > 0 && job?.stats?.done / job?.stats?.total
+              }
               unfilledColor={'#E2E2E2'}
               borderWidth={0}
               width={200}
