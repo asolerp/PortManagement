@@ -9,6 +9,11 @@ export const userReducer = (state = INITIAL_FILTER_STATE, action) => {
         ...state,
         user: action.payload,
       };
+    case 'LOGOUT_USER':
+      return {
+        ...state,
+        user: null,
+      };
     default:
       return state;
   }

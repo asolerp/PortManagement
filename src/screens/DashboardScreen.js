@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
+import React, {useCallback} from 'react';
 import {View, StyleSheet, Text, Button} from 'react-native';
+
+import {useDispatch} from 'react-redux';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
 
-import {AuthContext} from '../navigation/AuthNavigator';
 import ProfileBar from '../components/ProfileBar';
 import TitlePage from '../components/TitlePage';
 
@@ -12,8 +13,15 @@ import TitlePage from '../components/TitlePage';
 import LinearGradient from 'react-native-linear-gradient';
 
 const DashboardScreen = () => {
-  const user = useContext(AuthContext);
-  console.log(user);
+  const dispatch = useDispatch();
+
+  const logUser = useCallback(
+    () =>
+      dispatch({
+        type: 'LOGOUT_USER',
+      }),
+    [dispatch],
+  );
 
   const logOut = async () => {
     try {

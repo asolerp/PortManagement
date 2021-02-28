@@ -10,6 +10,7 @@ import SignOutStack from './SignOutStack';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
+import {getUser} from '../firebase/getUser';
 
 export const AuthContext = createContext(null);
 
@@ -63,6 +64,8 @@ export default function AuthNavigator() {
       }),
     [dispatch],
   );
+
+  useEffect(() => {}, []);
 
   // Handle user state changes
   const onAuthStateChanged = useCallback(
