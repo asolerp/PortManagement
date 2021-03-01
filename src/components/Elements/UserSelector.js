@@ -4,7 +4,6 @@ import {View, Text, Image, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const UserSelector = ({label, onPress, user}) => {
-  console.log('user', user);
   return (
     <View>
       <Text style={styles.label}>{label}</Text>

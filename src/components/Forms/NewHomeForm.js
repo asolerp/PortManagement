@@ -1,4 +1,7 @@
 import React, {useContext, useState} from 'react';
+
+import {useSelector, shallowEqual} from 'react-redux';
+
 import {useNavigation} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 
@@ -27,22 +30,22 @@ import {NewHouseFormContext} from '../../context/newHouseFormContext';
 import {AuthContext} from '../../navigation/AuthNavigator';
 
 const NewFormHome = () => {
-  const user = useContext(AuthContext);
-  const {users, handleUsers} = useContext(NewHouseFormContext);
+  const {users} = useSelector(
+    ({houseForm: {users}}) => ({users}),
+    shallowEqual,
+  );
+
   const {control, handleSubmit, errors, reset} = useForm();
   const navigation = useNavigation();
   const [houseImage, setHouseImage] = useState();
   const [loading, setLoading] = useState(false);
 
-  console.log('users', users);
-
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await newHouse({...data, owner: users[0]}, houseImage, user.uid);
+      await newHouse({...data, owner: users[0]}, houseImage, users[0].uid);
       reset();
       setHouseImage(null);
-      handleUsers([]);
       Alert.alert(
         'Nueva casa registrada',
         'Se ha registrado una nueva casa :)!',

@@ -17,26 +17,33 @@ const TitlePage = ({
       start={{x: 0, y: 0}}
       end={{x: 1, y: 0}}
       colors={['#4D84A0', '#55A7AE', '#67B26F']}
-      style={{...styles.container, ...{height: subPage ? 100 : 200}}}>
+      style={{
+        ...styles.container,
+        ...{height: subPage ? 100 : 250, paddingTop: children ? 50 : 0},
+      }}>
       <View
         style={{
           ...styles.titleWrapper,
-          ...{justifyContent: !children && 'center'},
+          ...{justifyContent: 'center'},
         }}>
         {title ? (
           <React.Fragment>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}>
               {leftSide && (
                 <View style={{flex: 1, marginTop: 40}}>{leftSide}</View>
               )}
-              <View style={{flex: 1}}>
+              <View style={{flex: 6}}>
                 <Text
                   style={{
                     ...styles.title,
                     ...{
                       color: color,
                       marginTop: leftSide ? 40 : 0,
-                      fontSize: leftSide ? 14 : 35,
+                      fontSize: leftSide ? 20 : 35,
                       textAlign: leftSide ? 'center' : 'left',
                     },
                   }}>
@@ -54,7 +61,7 @@ const TitlePage = ({
                 {subtitle && subPage && (
                   <Text
                     style={{
-                      ...{color: color, textAlign: 'center'},
+                      ...{color: color, textAlign: 'center', fontSize: 12},
                     }}>
                     {subtitle}
                   </Text>
@@ -92,8 +99,8 @@ const styles = StyleSheet.create({
   titleWrapper: {
     flex: 1,
     justifyContent: 'flex-end',
-    alignItems: 'flex-start',
     width: '100%',
+    marginBottom: 0,
   },
   childrenWrapper: {
     flex: 1,

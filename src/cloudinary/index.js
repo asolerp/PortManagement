@@ -1,6 +1,6 @@
 import {Alert} from 'react-native';
 
-export const cloudinaryUpload = (photo) => {
+export const cloudinaryUpload = (photo, folder = '/') => {
   const source = {
     uri: photo.fileUri,
     type: photo.fileType,
@@ -10,6 +10,7 @@ export const cloudinaryUpload = (photo) => {
   data.append('file', source);
   data.append('upload_preset', 'port_management');
   data.append('cloud_name', 'enalbis');
+  data.append('folder', folder);
   const url = fetch('https://api.cloudinary.com/v1_1/enalbis/upload', {
     method: 'post',
     body: data,

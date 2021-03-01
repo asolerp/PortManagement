@@ -1,4 +1,7 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+
+import {setUsers} from '../store/houseFormActions';
 
 import {
   View,
@@ -17,8 +20,6 @@ import TitlePage from '../components/TitlePage';
 import {SearchBar} from 'react-native-elements';
 import ItemList from '../components/ItemList';
 
-import {NewHouseFormContext} from '../context/newHouseFormContext';
-
 const UserListSelectorScreen = ({
   navigation,
   userType,
@@ -28,8 +29,16 @@ const UserListSelectorScreen = ({
 }) => {
   const [search, setSearch] = useState();
   const [list, setList] = useState();
+  const dispatch = useDispatch();
 
-  const {users, handleUsers} = useContext(NewHouseFormContext);
+  const {users} = useSelector(
+    ({houseForm: {users}}) => ({users}),
+    shallowEqual,
+  );
+
+  const setUsersAction = useCallback((users) => dispatch(setUsers(users)), [
+    dispatch,
+  ]);
 
   useEffect(() => {
     const listUsers = [];
@@ -54,7 +63,7 @@ const UserListSelectorScreen = ({
       <ItemList
         item={item}
         schema={{img: 'profileImage', name: 'firstName'}}
-        setter={handleUsers}
+        setter={setUsersAction}
         getter={users}
         multiple={false}
       />

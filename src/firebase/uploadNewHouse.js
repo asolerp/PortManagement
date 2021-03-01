@@ -19,7 +19,10 @@ export const uploadHouseImage = async (houseUID, imageName, uploadUri) => {
 export const newHouse = async (data, houseImage, userUID) => {
   try {
     const house = await firestore().collection('houses').add(data);
-    const uploadImage = await cloudinaryUpload(houseImage);
+    const uploadImage = await cloudinaryUpload(
+      houseImage,
+      `/PortManagement/Houses/${house.id}`,
+    );
     console.log(uploadImage, 'uploadImage');
     await firestore()
       .collection('houses')

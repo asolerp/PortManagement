@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderTopRightRadius: 50,
-    height: '100%',
+    // height: '100%',
   },
   iconWrapper: {
     width: 30,
@@ -80,7 +80,7 @@ const JobScreen = ({route, navigation}) => {
 
   const FirstRoute = () => <Tasks job={job} tasks={tasks} />;
   const SecondRoute = () => <Messages job={job} />;
-  const ThirdRoute = () => <Photos />;
+  const ThirdRoute = () => <Photos job={job} />;
 
   const initialLayout = {width: Dimensions.get('window').width};
 

@@ -1,18 +1,38 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+import GridImageView from 'react-native-grid-image-viewer';
+
+import {useGetFirebase} from '../../hooks/useGetFirebase';
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingVertical: 20,
+    paddingHorizontal: 20,
   },
 });
 
-const Photos = () => {
+const Photos = ({job}) => {
+  const {list: photos, loading: loadingPhotos} = useGetFirebase(
+    `jobs/${job.id}/photos`,
+    {
+      field: 'createdAt',
+      type: 'desc',
+    },
+  );
+
+  if (loadingPhotos) {
+    return (
+      <View vtyle={styles.container}>
+        <Text>Cargando imágenes..</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      <Text>FOTOS</Text>
+      <GridImageView data={photos} />
     </View>
   );
 };
