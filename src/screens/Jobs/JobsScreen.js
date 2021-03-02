@@ -1,32 +1,36 @@
 import React, {useState, useEffect, useCallback} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
+import {StatusBar} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 // Redux
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {setFilterDate} from '../../store/filterActions';
 
-import {StatusBar} from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+// UI
 import Icon from 'react-native-vector-icons/MaterialIcons';
-
+import LinearGradient from 'react-native-linear-gradient';
 import AddButton from '../../components/Elements/AddButton';
 import HouseFilter from '../../components/Filters/HouseFilter';
 import JobItem from '../../components/JobItem';
 import TitlePage from '../../components/TitlePage';
-
 import CalendarStrip from 'react-native-calendar-strip';
 
 //Firebase
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
-import {ScrollView} from 'react-native-gesture-handler';
-
-// UI
-import LinearGradient from 'react-native-linear-gradient';
-
 // Styles
 import {defaultTextTitle} from '../../styles/common';
+
+// Utils
+import moment from 'moment';
+import {generateCalendarDots} from '../../utils/parsers';
 
 const JobsScreen = () => {
   const dispatch = useDispatch();
@@ -47,21 +51,37 @@ const JobsScreen = () => {
     [dispatch],
   );
 
+  console.log('Dots generados', generateCalendarDots(list));
+
   useEffect(() => {
     if (houses === null) {
       const fList = list
         .filter((job) => job.house === null)
-        .filter((job) => job.date === filterDate);
+        .filter(
+          (job) =>
+            moment(job?.date?.toDate()).format('DD-MM-YY') ===
+            moment(filterDate).format('DD-MM-YY'),
+        );
       setFilteredList(fList);
     } else {
       if (houses?.length === 0) {
-        setFilteredList(list);
+        setFilteredList(
+          list.filter(
+            (job) =>
+              moment(job?.date?.toDate()).format('DD-MM-YY') ===
+              moment(filterDate).format('DD-MM-YY'),
+          ),
+        );
       } else {
         const fList = list
           .filter((j) => j.house !== null)
-          .filter((job) => job.date === filterDate)
           .filter((job) =>
             houses?.find((houseId) => houseId === job?.house[0]?.id),
+          )
+          .filter(
+            (job) =>
+              moment(job?.date?.toDate()).format('DD-MM-YY') ===
+              moment(filterDate).format('DD-MM-YY'),
           );
         setFilteredList(fList);
       }
@@ -92,6 +112,9 @@ const JobsScreen = () => {
             color="white">
             <View style={{flex: 1}}>
               <CalendarStrip
+                startingDate={moment(new Date())}
+                markedDates={generateCalendarDots(list)}
+                selectedDate={moment(filterDate) || moment(new Date())}
                 onDateSelected={(date) => setFilterDateAction(date)}
                 style={styles.calendarContainer}
                 scrollable

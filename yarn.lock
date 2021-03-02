@@ -2334,6 +2334,13 @@ connect@^3.6.5:
     parseurl "~1.3.3"
     utils-merge "1.0.1"
 
+convert-firebase-timestamp@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/convert-firebase-timestamp/-/convert-firebase-timestamp-0.0.4.tgz#df245284441013287a89d46d08220e157cc6804e"
+  integrity sha512-tBjloadb9hCJkCAtLl7/wiFsWd5rUjDbdRCdbJ53SsdzOfYt7uwxr+rucLbMRU5XdqSou2ckNLSlIFMnhdcV6w==
+  dependencies:
+    rxjs "^6.5.5"
+
 convert-source-map@^1.4.0, convert-source-map@^1.6.0, convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"
@@ -6530,6 +6537,13 @@ rxjs@^5.4.3:
   integrity sha512-xx2itnL5sBbqeeiVgNPVuQQ1nC8Jp2WfNJhXWHmElW9YmrpS9UVnNzhP3EH3HFqexO5Tlp8GhYY+WEcqcVMvGw==
   dependencies:
     symbol-observable "1.0.1"
+
+rxjs@^6.5.5:
+  version "6.6.6"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.6.6.tgz#14d8417aa5a07c5e633995b525e1e3c0dec03b70"
+  integrity sha512-/oTwee4N4iWzAMAL9xdGKjkEHmIwupR3oXbQjCKywF1BeFohswF3vZdogbmEF6pZkOsXTzWkrZszrWpQTByYVg==
+  dependencies:
+    tslib "^1.9.0"
 
 rxjs@^6.6.0:
   version "6.6.3"

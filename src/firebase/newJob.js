@@ -5,6 +5,7 @@ import firestore from '@react-native-firebase/firestore';
 export const newJob = async (job, tasks) => {
   try {
     const result = await firestore().collection('jobs').add(job);
+
     // Create a new batch instance
     const batch = firestore().batch();
 
