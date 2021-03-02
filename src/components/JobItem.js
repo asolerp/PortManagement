@@ -165,7 +165,7 @@ const JobItem = ({job, onPress}) => {
             )}
             <Progress.Bar
               progress={
-                job?.stats?.done > 0 && job?.stats?.done / job?.stats?.total
+                job?.stats?.done > 0 ? job?.stats?.done / job?.stats?.total : 0
               }
               unfilledColor={'#E2E2E2'}
               borderWidth={0}

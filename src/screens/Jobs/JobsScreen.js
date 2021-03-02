@@ -1,5 +1,9 @@
-import React, {useState, useEffect} from 'react';
-import {useSelector, shallowEqual} from 'react-redux';
+import React, {useState, useEffect, useCallback} from 'react';
+
+// Redux
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {setFilterDate} from '../../store/filterActions';
+
 import {StatusBar} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 
@@ -25,9 +29,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import {defaultTextTitle} from '../../styles/common';
 
 const JobsScreen = () => {
+  const dispatch = useDispatch();
   const {list, loading, error} = useGetFirebase('jobs');
-  const {houses} = useSelector(
-    ({filters: {houses}}) => ({houses}),
+  const {houses, filterDate} = useSelector(
+    ({filters: {houses, filterDate}}) => ({houses, filterDate}),
     shallowEqual,
   );
   const [filteredList, setFilteredList] = useState([]);
@@ -37,25 +42,31 @@ const JobsScreen = () => {
     navigation.navigate('NewJob');
   };
 
+  const setFilterDateAction = useCallback(
+    (date) => dispatch(setFilterDate(date)),
+    [dispatch],
+  );
+
   useEffect(() => {
     if (houses === null) {
-      const fList = list.filter((job) => job.house === null);
+      const fList = list
+        .filter((job) => job.house === null)
+        .filter((job) => job.date === filterDate);
       setFilteredList(fList);
     } else {
       if (houses?.length === 0) {
         setFilteredList(list);
       } else {
-        console.log('hola');
         const fList = list
           .filter((j) => j.house !== null)
+          .filter((job) => job.date === filterDate)
           .filter((job) =>
             houses?.find((houseId) => houseId === job?.house[0]?.id),
           );
-        console.log('fList', fList);
         setFilteredList(fList);
       }
     }
-  }, [houses, list]);
+  }, [houses, list, filterDate]);
 
   if (loading) {
     return (
@@ -81,6 +92,7 @@ const JobsScreen = () => {
             color="white">
             <View style={{flex: 1}}>
               <CalendarStrip
+                onDateSelected={(date) => setFilterDateAction(date)}
                 style={styles.calendarContainer}
                 scrollable
                 iconStyle={{color: 'white'}}
