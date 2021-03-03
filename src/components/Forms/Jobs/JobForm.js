@@ -110,20 +110,6 @@ const JobForm = () => {
       <ScrollView>
         <View style={{marginBottom: 20}}>
           <InputGroup>
-            <TextInput
-              style={{height: 40}}
-              placeholder="Nombre"
-              onChangeText={(text) => setInputFormAction('name', text)}
-              value={job.name}
-            />
-            <TextInput
-              style={{height: 40}}
-              placeholder="Descripción"
-              onChangeText={(text) => setInputFormAction('description', text)}
-              value={job.description}
-            />
-          </InputGroup>
-          <InputGroup>
             <Accordian
               title="Fecha"
               switcher={job.date?.switch}
@@ -158,7 +144,7 @@ const JobForm = () => {
               switcher={job.time?.switch}
               iconProps={{name: 'alarm', color: '#55A5AD'}}
               onOpen={() =>
-                setInputFormAction('date', {value: new Date(), switch: true})
+                setInputFormAction('time', {value: new Date(), switch: true})
               }
               onClose={() =>
                 setInputFormAction('time', {value: undefined, switch: false})
@@ -283,6 +269,16 @@ const JobForm = () => {
                 }}
               />
             </Accordian>
+          </InputGroup>
+          <InputGroup>
+            <TextInput
+              multiline
+              numberOfLines={10}
+              style={{height: 80}}
+              placeholder="Observaciones"
+              onChangeText={(text) => setInputFormAction('observations', text)}
+              value={job.description}
+            />
           </InputGroup>
           <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
             <Text style={styles.cleanButton} type="clear" onPress={cleanForm}>

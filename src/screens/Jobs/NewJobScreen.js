@@ -20,36 +20,8 @@ import TaskForm from '../../components/Forms/Jobs/TaskJob';
 // UI
 import LinearGradient from 'react-native-linear-gradient';
 
-const NewJobScreen = ({navigation}) => {
-  const [index, setIndex] = React.useState(0);
-  const [routes] = useState([
-    {key: 'general', title: 'GENERAL'},
-    {key: 'tasks', title: 'TAREAS'},
-  ]);
-
-  const FirstRoute = () => <JobForm />;
-  const SecondRoute = () => <TaskForm />;
-
-  const initialLayout = {width: Dimensions.get('window').width};
-
-  const renderScene = SceneMap({
-    general: FirstRoute,
-    tasks: SecondRoute,
-  });
-
-  const renderTabBar = (props) => (
-    <TabBar
-      {...props}
-      renderLabel={({route, focused, color}) => (
-        <Text style={styles.tabBarLabelStyle}>{route.title}</Text>
-      )}
-      indicatorStyle={[
-        styles.tabIndicator,
-        {left: Dimensions.get('window').width / (routes.length * 2) - 5},
-      ]}
-      style={styles.tabBarStyle}
-    />
-  );
+const NewJobScreen = ({route, navigation}) => {
+  const {taskName} = route.params;
 
   return (
     <React.Fragment>
@@ -67,7 +39,7 @@ const NewJobScreen = ({navigation}) => {
             </TouchableOpacity>
           }
           subPage
-          title="Nuevo trabajo"
+          title={`Nuevo trabajo de ${taskName.toLowerCase()}`}
           color="white"
         />
 
@@ -77,13 +49,7 @@ const NewJobScreen = ({navigation}) => {
           colors={['#126D9B', '#67B26F']}
           style={styles.jobBackScreen}>
           <View style={styles.jobScreen}>
-            <TabView
-              navigationState={{index, routes}}
-              renderScene={renderScene}
-              renderTabBar={renderTabBar}
-              onIndexChange={setIndex}
-              initialLayout={initialLayout}
-            />
+            <JobForm />
           </View>
         </LinearGradient>
       </View>

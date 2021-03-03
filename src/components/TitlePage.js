@@ -38,12 +38,14 @@ const TitlePage = ({
               )}
               <View style={{flex: 6}}>
                 <Text
+                  adjustsFontSizeToFit
+                  numberOfLines={1}
                   style={{
                     ...styles.title,
                     ...{
                       color: color,
                       marginTop: leftSide ? 40 : 0,
-                      fontSize: leftSide ? 20 : 35,
+                      // fontSize: leftSide ? 20 : 35,
                       textAlign: leftSide ? 'center' : 'left',
                     },
                   }}>

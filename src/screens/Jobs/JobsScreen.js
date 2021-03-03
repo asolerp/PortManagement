@@ -43,7 +43,7 @@ const JobsScreen = () => {
   const navigation = useNavigation();
 
   const handleNewJob = () => {
-    navigation.navigate('NewJob');
+    navigation.navigate('NewJobTaskSelector');
   };
 
   const setFilterDateAction = useCallback(

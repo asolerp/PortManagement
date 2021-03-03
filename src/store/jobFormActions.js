@@ -6,10 +6,9 @@ export const setInputForm = (label, value) => {
   };
 };
 
-export const addTask = (task) => {
+export const setTask = (task) => {
   return {
-    type: 'ADD_TASK',
-    label: 'tasks',
+    type: 'SET_TASK',
     payload: task,
   };
 };
@@ -36,21 +35,6 @@ export const editForm = (task, job) => {
       },
       mode: 'edit',
     },
-  };
-};
-
-export const addEditedTask = (index, task) => {
-  return {
-    type: 'ADD_EDITED_TASK',
-    index: index,
-    payload: task,
-  };
-};
-
-export const removeTask = (taskId) => {
-  return {
-    type: 'REMOVE_TASK',
-    payload: taskId,
   };
 };
 
