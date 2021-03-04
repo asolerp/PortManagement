@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderRadius: 20,
     padding: 10,
-    height: 100,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -48,7 +47,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 10,
   },
-
   firstSection: {
     flex: 1,
     flexDirection: 'row',
@@ -59,13 +57,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-between',
   },
+  firstLine: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  date: {
+    marginRight: 10,
+    color: '#3DB6BA',
+  },
   priority: {
     justifyContent: 'center',
     alignItems: 'center',
-    width: 30,
-    height: '60%',
+    width: 10,
+    height: '100%',
     borderRadius: 20,
-    marginLeft: 5,
+    marginLeft: 0,
     marginRight: 15,
     backgroundColor: 'white',
     shadowOffset: {
@@ -92,11 +98,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 10,
-  },
-  date: {
-    fontSize: 12,
-    fontWeight: 'bold',
-    marginLeft: 5,
   },
   progressContainer: {
     flex: 1,
@@ -150,29 +151,23 @@ const JobItem = ({job, onPress}) => {
               style={[
                 styles.priority,
                 {backgroundColor: parsePriorityColor(job.priority)},
-              ]}>
-              <Icon
-                name={parsePirorityIcon(job.priority).name}
-                color="white"
-                size={25}
-              />
-            </View>
+              ]}
+            />
           )}
           <View style={styles.titleSubtitle}>
-            <Text style={styles.title}>{job.name}</Text>
-            {job.description && (
-              <Text style={styles.subtitle}>{job.description}</Text>
-            )}
-            <Progress.Bar
-              progress={
-                job?.stats?.done > 0 ? job?.stats?.done / job?.stats?.total : 0
-              }
-              unfilledColor={'#E2E2E2'}
-              borderWidth={0}
-              width={200}
-              height={10}
-              color={parsePriorityColor(job.priority)}
-            />
+            <View style={styles.firstLine}>
+              <Text style={styles.date}>
+                {moment(job.date.toDate()).format('LL')}
+              </Text>
+              {job?.workers?.map((worker) => (
+                <Avatar uri={worker.profileImage} overlap />
+              ))}
+            </View>
+            <Text
+              style={
+                styles.title
+              }>{`Trabajos en ${job.house[0].houseName}`}</Text>
+            <Text style={styles.subtitle}>{job?.task?.desc}</Text>
           </View>
           <View>
             <Icon name="keyboard-arrow-right" color="#284748" size={30} />

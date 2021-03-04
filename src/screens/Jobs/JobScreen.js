@@ -106,7 +106,6 @@ const JobScreen = ({route, navigation}) => {
   return (
     <React.Fragment>
       <StatusBar barStyle="default" />
-
       <View style={styles.container}>
         <TitlePage
           leftSide={
@@ -120,8 +119,8 @@ const JobScreen = ({route, navigation}) => {
             </TouchableOpacity>
           }
           subPage
-          title={job?.name}
-          subtitle={job?.description}
+          title={`Trabajos en ${job?.house[0]?.houseName}`}
+          subtitle={job?.task?.desc}
           color="white"
         />
         <LinearGradient

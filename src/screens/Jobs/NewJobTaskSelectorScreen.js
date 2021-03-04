@@ -111,6 +111,7 @@ const NewJobTaskSelectorScreen = ({navigation}) => {
               })
               .map((task) => (
                 <TaskItem
+                  key={task.id}
                   icon={task?.icon}
                   name={task?.name}
                   active={job?.task?.name === task?.name}

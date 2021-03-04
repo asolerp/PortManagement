@@ -60,8 +60,9 @@ const Accordian = ({
   };
 
   return (
-    <View style={styles.container}>
+    <React.Fragment>
       <TouchableOpacity
+        style={styles.container}
         onPress={() => {
           switcher && toggleExpand();
         }}>
@@ -85,19 +86,17 @@ const Accordian = ({
       </TouchableOpacity>
       <View style={styles.parentHr} />
       {expanded && (
-        <React.Fragment>
+        <View>
           <View style={styles.separator} />
           <View style={styles.child}>{children}</View>
-        </React.Fragment>
+        </View>
       )}
-    </View>
+    </React.Fragment>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: {},
   title: {
     fontSize: 14,
     color: 'black',
@@ -114,7 +113,6 @@ const styles = StyleSheet.create({
   },
   iconStyle: {},
   accordianContainer: {
-    flex: 1,
     height: 40,
     paddingRight: 10,
     flexDirection: 'row',
@@ -125,6 +123,7 @@ const styles = StyleSheet.create({
   separator: {
     borderBottomColor: '#EAEAEA',
     borderBottomWidth: 1,
+    marginTop: 10,
   },
   row: {
     flexDirection: 'row',
@@ -140,9 +139,9 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   child: {
-    display: 'flex',
     paddingVertical: 10,
     paddingRight: 20,
+    height: 'auto',
   },
 });
 

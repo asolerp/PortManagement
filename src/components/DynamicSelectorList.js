@@ -107,17 +107,10 @@ const DynamicSelectorList = ({
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  titleWrapper: {
-    flex: 1.2,
-  },
-  userListSelectorScreen: {
-    flex: 6,
-  },
+  container: {},
+  titleWrapper: {},
+  userListSelectorScreen: {},
   scrollWrapper: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
