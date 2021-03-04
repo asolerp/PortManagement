@@ -1,4 +1,6 @@
 import React from 'react';
+import {useRoute} from '@react-navigation/native';
+
 import {View, Text, StyleSheet} from 'react-native';
 
 import GridImageView from 'react-native-grid-image-viewer';
@@ -13,9 +15,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const Photos = ({job}) => {
+const Photos = () => {
+  const route = useRoute();
+  const {jobId} = route.params;
   const {list: photos, loading: loadingPhotos} = useGetFirebase(
-    `jobs/${job.id}/photos`,
+    `jobs/${jobId}/photos`,
     {
       field: 'createdAt',
       type: 'desc',
@@ -37,4 +41,4 @@ const Photos = ({job}) => {
   );
 };
 
-export default Photos;
+export default React.memo(Photos);

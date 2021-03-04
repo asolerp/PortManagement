@@ -7,7 +7,7 @@ import {createIconSetFromFontello} from 'react-native-vector-icons';
 import fontelloConfig from '../../assets/fonts/config.json';
 const Icon = createIconSetFromFontello(fontelloConfig);
 
-const sizeIcon = 80;
+const sizeIcon = 70;
 
 const styles = StyleSheet.create({
   container: {
@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   },
   iconTitle: {
     textAlign: 'center',
+    fontSize: 12,
   },
 });
 

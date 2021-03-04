@@ -112,7 +112,7 @@ const JobsScreen = () => {
             color="white">
             <View style={{flex: 1}}>
               <CalendarStrip
-                startingDate={moment(new Date())}
+                startingDate={moment(new Date()).subtract(3, 'days')}
                 markedDates={generateCalendarDots(list)}
                 selectedDate={moment(filterDate) || moment(new Date())}
                 onDateSelected={(date) => setFilterDateAction(date)}

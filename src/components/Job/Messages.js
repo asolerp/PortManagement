@@ -1,4 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
+import {useRoute} from '@react-navigation/native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import {
   View,
@@ -20,7 +21,9 @@ import {useAddFirebase} from '../../hooks/useAddFirebase';
 // Firebase
 import firestore from '@react-native-firebase/firestore';
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
+import {useUpdateFirebase} from '../../hooks/useUpdateFirebase';
 import {useGetFirebase} from '../../hooks/useGetFirebase';
+import {setMessagesAsRead} from '../../firebase/setMessagesAsRead';
 
 // Utils
 import {launchImage} from '../../utils/imageFunctions';
@@ -41,18 +44,22 @@ const styles = StyleSheet.create({
   },
 });
 
-const Messages = ({job}) => {
+const Messages = () => {
+  const route = useRoute();
+  const {jobId} = route.params;
+
   const [messageImage, setMessageImage] = useState(null);
   const [imageLoading, setImageLoading] = useState(null);
   const [local, setLocal] = useState([]);
 
   const {list: messages, loading: loadingMessages} = useGetFirebase(
-    `jobs/${job.id}/messages`,
+    `jobs/${jobId}/messages`,
     {
       field: 'createdAt',
       type: 'desc',
     },
   );
+
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
     shallowEqual,
@@ -63,9 +70,16 @@ const Messages = ({job}) => {
   );
   const {
     addFirebase: addMessage,
+    result: resultAddMessage,
     loading: loadingAddMessage,
     error: addMessageError,
   } = useAddFirebase();
+
+  const {
+    updateFirebase,
+    loading: updatingMessage,
+    error: errorUpdatingMessage,
+  } = useUpdateFirebase('jobs');
 
   const {
     addFirebase: addPhoto,
@@ -93,52 +107,54 @@ const Messages = ({job}) => {
 
   const onSend = useCallback(
     (messages = []) => {
-      addMessage(`jobs/${job.id}/messages`, {
+      addMessage(`jobs/${jobId}/messages`, {
         ...messages[0],
         createdAt: firestore.FieldValue.serverTimestamp(),
+        received: false,
       });
     },
-    [addMessage, job],
+    [addMessage, jobId],
   );
 
-  console.log('Cargando photo', loadingAddPhoto);
-
-  // useEffect(() => {
-  //   if (loadingAddPhoto) {
-  //     const loadingMessage = [
-  //       {
-  //         _id: messageIdGenerator(),
-  //         text: 'Cargando imagen..',
-  //         createdAt: new Date(),
-  //         user: {
-  //           _id: userLoggedIn?.id,
-  //           name: userLoggedIn?.firstName,
-  //           avatar: userLoggedIn?.profileImage,
-  //         },
-  //       },
-  //     ];
-  //     GiftedChat.append(messages, loadingMessage);
-  //   }
-  // }, [loadingAddPhoto]);
+  useEffect(() => {
+    if (messages.length > 0) {
+      setMessagesAsRead(jobId, user.uid);
+    }
+  }, [messages, jobId]);
 
   useEffect(() => {
     const uploadImage = async () => {
+      const messageID = messageIdGenerator();
+
+      const waitingSendImageMessage = {
+        _id: messageID,
+        image:
+          'https://res.cloudinary.com/enalbis/image/upload/v1614849090/PortManagement/loader_ro9a3e.gif',
+        messageType: 'image',
+        createdAt: firestore.FieldValue.serverTimestamp(),
+        user: {
+          _id: userLoggedIn?.id,
+          name: userLoggedIn?.firstName,
+          avatar: userLoggedIn?.profileImage,
+        },
+      };
+
+      const result = await addMessage(
+        `jobs/${jobId}/messages`,
+        waitingSendImageMessage,
+      );
+
       const image = await cloudinaryUpload(
         messageImage,
-        `/PortManagement/Jobs/${job.id}/Photos`,
+        `/PortManagement/Jobs/${jobId}/Photos`,
       );
-      const message = {};
-      message._id = messageIdGenerator();
-      message.createdAt = firestore.FieldValue.serverTimestamp();
-      message.user = {
-        _id: userLoggedIn?.id,
-        name: userLoggedIn?.firstName,
-        avatar: userLoggedIn?.profileImage,
-      };
-      message.image = image;
-      message.messageType = 'image';
-      addMessage(`jobs/${job.id}/messages`, message);
-      addPhoto(`jobs/${job.id}/photos`, {
+
+      updateFirebase(`${jobId}/messages/${result.id}`, {
+        ...waitingSendImageMessage,
+        image: image,
+      });
+
+      addPhoto(`jobs/${jobId}/photos`, {
         createdAt: firestore.FieldValue.serverTimestamp(),
         image: image,
       });
@@ -148,13 +164,13 @@ const Messages = ({job}) => {
     }
   }, [messageImage]);
 
-  if (loadingMessages) {
-    return (
-      <View>
-        <Text>Cargando mensajes</Text>
-      </View>
-    );
-  }
+  // if (loadingMessages) {
+  //   return (
+  //     <View>
+  //       <Text>Cargando mensajes</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
     <ScrollView contentContainerStyle={{height: '100%', marginTop: 20}}>
@@ -208,4 +224,4 @@ const Messages = ({job}) => {
   );
 };
 
-export default Messages;
+export default React.memo(Messages);

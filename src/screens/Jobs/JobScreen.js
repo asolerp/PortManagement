@@ -66,6 +66,10 @@ const styles = StyleSheet.create({
   },
 });
 
+// const FirstRoute = () => <Tasks />;
+const SecondRoute = () => <Messages />;
+const ThirdRoute = () => <Photos />;
+
 const JobScreen = ({route, navigation}) => {
   const {jobId} = route.params;
   const {document: job, loading, error} = useGetDocFirebase('jobs', jobId);
@@ -73,19 +77,15 @@ const JobScreen = ({route, navigation}) => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
-    {key: 'jobTasks', title: 'TAREAS'},
+    // {key: 'jobTasks', title: 'TAREAS'},
     {key: 'messages', title: 'MENSAJES'},
     {key: 'photos', title: 'FOTOS'},
   ]);
 
-  const FirstRoute = () => <Tasks job={job} tasks={tasks} />;
-  const SecondRoute = () => <Messages job={job} />;
-  const ThirdRoute = () => <Photos job={job} />;
-
   const initialLayout = {width: Dimensions.get('window').width};
 
   const renderScene = SceneMap({
-    jobTasks: FirstRoute,
+    // jobTasks: FirstRoute,
     messages: SecondRoute,
     photos: ThirdRoute,
   });
@@ -119,7 +119,7 @@ const JobScreen = ({route, navigation}) => {
             </TouchableOpacity>
           }
           subPage
-          title={`Trabajos en ${job?.house[0]?.houseName}`}
+          title={`Trabajos en ${job?.house && job?.house[0]?.houseName}`}
           subtitle={job?.task?.desc}
           color="white"
         />
