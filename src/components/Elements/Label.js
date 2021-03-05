@@ -3,7 +3,6 @@ import {View, Text, StyleSheet} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     borderRadius: 10,
     padding: 5,
     marginHorizontal: 5,

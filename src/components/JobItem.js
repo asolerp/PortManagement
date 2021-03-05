@@ -1,5 +1,8 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
+import {useSelector, shallowEqual} from 'react-redux';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+
+import firestore from '@react-native-firebase/firestore';
 
 import {
   View,
@@ -24,6 +27,9 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import RightActions from './Elements/RightActions';
 import {deleteJobAlert} from './Alerts/deleteJobAlert';
+
+//Firebase
+import {useGetFirebase} from '../hooks/useGetFirebase';
 
 const styles = StyleSheet.create({
   container: {
@@ -119,22 +125,55 @@ const styles = StyleSheet.create({
 
 const JobItem = ({job, onPress}) => {
   const [expanded, setExpanded] = useState(false);
-  // const {deleteFirebase, loading, error} = useDeleteFirebase('jobs', job.id);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState();
+  const [list, setList] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  const {user} = useSelector(
+    ({userLoggedIn: {user}}) => ({user}),
+    shallowEqual,
+  );
+
+  const onResult = (QuerySnapshot) => {
+    setLoading(false);
+    setList(
+      QuerySnapshot.docs
+        .map((doc) => ({...doc.data(), id: doc.id}))
+        .filter((message) => !message.received)
+        .filter((message) => message.user._id !== user.uid),
+    );
+  };
+
+  const onError = (err) => {
+    setLoading(false);
+    setError(err);
+  };
 
   if (Platform.OS === 'android') {
     UIManager.setLayoutAnimationEnabledExperimental(true);
   }
+
+  useEffect(() => {
+    const collectionJobs = firestore().collection('jobs');
+    const jobDocument = collectionJobs.doc(job.id);
+    const messagesQuery = jobDocument.collection('messages');
+
+    const subscriber = messagesQuery.onSnapshot(onResult, onError);
+
+    return () => subscriber();
+  }, []);
 
   const toggleExpand = () => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
 
+  console.log(list, 'list');
+
   // const onAction = () => {
   //   deleteFirebase();
   // };
-
-  console.log(job, 'job');
 
   return (
     // <Swipeable
@@ -168,6 +207,7 @@ const JobItem = ({job, onPress}) => {
                 styles.title
               }>{`Trabajos en ${job.house[0].houseName}`}</Text>
             <Text style={styles.subtitle}>{job?.task?.desc}</Text>
+            <Text style={styles.subtitle}>{list.length}</Text>
           </View>
           <View>
             <Icon name="keyboard-arrow-right" color="#284748" size={30} />

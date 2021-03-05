@@ -12,8 +12,9 @@ export const setMessagesAsRead = async (jobId, userId) => {
       .collection('jobs')
       .doc(jobId)
       .collection('messages')
-      .where('received', '==', false)
-      .where('user.id', '!=', userId)
+      // .where('received', '==', false)
+      // .where('received', '==', false)
+      .where('user._id', '!=', userId)
       .get();
     querySnapshot.forEach((doc) => {
       console.log(doc, 'doc');

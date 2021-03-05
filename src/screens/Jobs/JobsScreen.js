@@ -150,10 +150,10 @@ const JobsScreen = () => {
               <View style={styles.jobsListWrapper}>
                 <Text style={defaultTextTitle}>Trabajos activos</Text>
                 <View style={{marginTop: 20}}>
-                  {filteredList?.map((item, i) => (
+                  {filteredList?.map((item) => (
                     <JobItem
                       job={item}
-                      key={i}
+                      key={item.id}
                       onPress={() =>
                         navigation.navigate('JobScreen', {
                           jobId: item.id,

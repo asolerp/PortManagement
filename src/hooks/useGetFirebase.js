@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 import {useState, useEffect} from 'react';
 
-export const useGetFirebase = (coll, order) => {
+export const useGetFirebase = (coll, order, where1, where2) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
   const [list, setList] = useState([]);
@@ -18,18 +18,16 @@ export const useGetFirebase = (coll, order) => {
   };
 
   useEffect(() => {
-    let subscriber;
+    let subscriber = firestore().collection(coll);
+
     if (order) {
-      subscriber = firestore()
-        .collection(coll)
-        .orderBy(order.field, order.type)
-        .onSnapshot(onResult, onError);
-    } else {
-      subscriber = firestore().collection(coll).onSnapshot(onResult, onError);
+      subscriber = subscriber.orderBy(order.field, order.type);
     }
 
+    subscriber.onSnapshot(onResult, onError);
+
     // Stop listening for updates when no longer required
-    return () => subscriber();
+    return () => subscriber;
   }, []);
 
   return {
