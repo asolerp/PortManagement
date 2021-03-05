@@ -546,7 +546,7 @@ PODS:
     - React-cxxreact (= 0.63.4)
     - React-jsi (= 0.63.4)
   - React-jsinspector (0.63.4)
-  - react-native-flipper (0.76.0):
+  - react-native-flipper (0.79.1):
     - React-Core
   - react-native-image-picker (3.1.2):
     - React
@@ -635,7 +635,7 @@ PODS:
     - Firebase/Storage (~> 7.3.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (1.10.0):
+  - RNGestureHandler (1.10.3):
     - React-Core
   - RNReanimated (1.13.2):
     - React-Core
@@ -873,7 +873,7 @@ SPEC CHECKSUMS:
   React-jsi: a0418934cf48f25b485631deb27c64dc40fb4c31
   React-jsiexecutor: 93bd528844ad21dc07aab1c67cb10abae6df6949
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
-  react-native-flipper: c2f977eb57ae4f6929c4df172c06bc76fc789685
+  react-native-flipper: 8f36be6b8300d4e156d5164fde091287c9cf4563
   react-native-image-picker: a2b7ee36dabe1e511dab6fb79918633a4fd3d7ce
   react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
@@ -894,7 +894,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 4bf9e2c84d2e42651030eb80acf6b32f966f847a
   RNFBFirestore: 501b9120430c0b5e800a79406c5106a8bdd5e624
   RNFBStorage: e437476260737b551c2f5e9c042d93aa2f679c41
-  RNGestureHandler: 03f587ba19a7e2d9fe48fb9aa6e33ace5fd07dd5
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 45c457af3d2ee9e08fc01e70da87e653d46b1198
   RNVectorIcons: bc69e6a278b14842063605de32bec61f0b251a59
@@ -903,4 +903,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: a2252a26cd006f234ae321c4a5e141e5e9ae2c52
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.0

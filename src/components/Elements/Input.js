@@ -15,7 +15,7 @@ const Input = ({
     <View style={styles.container}>
       <TextInput
         placeholder={error ? 'El campo es obligatorio' : label}
-        placeholderTextColor={error && 'red'}
+        placeholderTextColor={error ? 'red' : 'white'}
         autoCapitalize="none"
         value={value}
         style={

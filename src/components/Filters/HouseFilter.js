@@ -9,18 +9,18 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 
 import {defaultHouseFilters} from '../../constants/housesFilter';
 
-const heightFilter = 113;
+const heightFilter = 120;
 const widthFilter = 90;
 
 const styles = StyleSheet.create({
   filterWrapper: {
     paddingHorizontal: 20,
-    marginTop: 20,
+    marginTop: 10,
   },
   container: {
-    width: '98%',
+    width: '100%',
     marginTop: 10,
-    paddingLeft: 5,
+    paddingLeft: 0,
   },
   titleFilter: {
     color: '#284748',
@@ -31,14 +31,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: 8,
+    height: 140,
   },
   houseFilter: {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-    marginRight: 20,
     width: widthFilter,
+    height: 120,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -51,24 +51,24 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 5,
+    padding: 0,
+    width: '100%',
     height: heightFilter,
     zIndex: 1,
   },
   maskContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 5,
-    height: 113,
+    height: 120,
   },
   activeFilter: {
+    width: 98,
     borderWidth: 4,
     borderColor: '#EB5B28',
     borderRadius: 24,
-    marginBottom: 0,
+    backgroundColor: 'transparent',
   },
   textWrapper: {
-    flex: 1,
     justifyContent: 'flex-end',
     padding: 10,
     position: 'absolute',
@@ -83,7 +83,6 @@ const styles = StyleSheet.create({
     opacity: 0.56,
     borderRadius: 20,
     width: '100%',
-    marginTop: 10,
     height: heightFilter,
     zIndex: 2,
   },
@@ -178,17 +177,17 @@ const HouseFilter = () => {
             return (
               <TouchableOpacity
                 key={house.id}
-                onPress={() => handleSetHouse(house)}>
-                <View style={styles.houseFilter}>
-                  <View
-                    style={
-                      ([styles.avatarContainer],
-                      isInArray(house.id) && styles.activeFilter)
-                    }>
+                onPress={() => handleSetHouse(house)}
+                style={[
+                  isInArray(house.id) && styles.activeFilter,
+                  {marginHorizontal: 10},
+                ]}>
+                <View style={[styles.houseFilter]}>
+                  <View style={[styles.avatarContainer]}>
                     <Image
                       style={[
                         styles.ownerImage,
-                        {width: 90, height: 113, borderRadius: 20},
+                        {width: 90, height: 120, borderRadius: 20},
                       ]}
                       source={{
                         uri: house.houseImage,

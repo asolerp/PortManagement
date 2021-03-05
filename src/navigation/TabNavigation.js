@@ -8,6 +8,7 @@ import JobsStack from './JobsStack';
 
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
+import {Platform} from 'react-native';
 
 const Tabs = AnimatedTabBarNavigator();
 
@@ -28,15 +29,16 @@ const TabNavigation = () => {
         activeBackgroundColor: '#3E93A8',
         tabStyle: {
           marginTop: 0,
-          marginBottom: 20,
+          marginBottom: Platform.OS === 'ios' ? 20 : 0,
           borderTopWidth: 1,
+          borderBottomWidth: 0,
           borderTopColor: '#dbdbdb',
         },
       }}
       appearence={{
         floating: false,
-        shadow: false,
-        tabBarBackground: 'transparent',
+        shadow: true,
+        tabBarBackground: 'white',
       }}>
       <Tabs.Screen
         name="Dashboard"

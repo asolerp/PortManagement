@@ -9,11 +9,14 @@ import auth from '@react-native-firebase/auth';
 
 // UI
 import Input from '../Elements/Input';
+import {set} from 'react-native-reanimated';
 
 const LoginForm = () => {
   const {control, handleSubmit, errors, reset} = useForm();
+  const [loadingLogin, setLoadingLogin] = useState(false);
 
   const signIn = async (data) => {
+    setLoadingLogin(true);
     try {
       auth().signInWithEmailAndPassword(data.username, data.password);
     } catch (err) {
@@ -26,6 +29,8 @@ const LoginForm = () => {
       }
 
       console.error(err);
+    } finally {
+      setLoadingLogin(false);
     }
   };
 
@@ -67,6 +72,7 @@ const LoginForm = () => {
         wrapperStyle={styles.gradientButton}
         onPress={handleSubmit(signIn)}
         title="Login"
+        loading={loadingLogin}
       />
     </View>
   );

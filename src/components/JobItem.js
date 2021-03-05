@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     borderRadius: 20,
     padding: 10,
+    elevation: 1,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -80,6 +81,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     marginRight: 15,
     backgroundColor: 'white',
+    elevation: 2,
     shadowOffset: {
       height: 0,
       width: 0,

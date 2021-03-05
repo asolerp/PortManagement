@@ -1,24 +1,38 @@
 import React from 'react';
-import {View, Button, StyleSheet} from 'react-native';
+import {ActivityIndicator} from 'react-native';
+import {TouchableOpacity} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
-const GradientButton = ({colors, wrapperStyle, ...args}) => {
+const GradientButton = ({
+  colors,
+  wrapperStyle,
+  onPress,
+  title,
+  loading = true,
+}) => {
   return (
-    <View style={{...styles.container, ...wrapperStyle}}>
-      <LinearGradient
-        colors={colors}
-        style={styles.gradientButton}
-        start={{y: 0.0, x: 0.0}}
-        end={{y: 0.0, x: 1.0}}>
-        <Button style={styles.loginButton} color="white" {...args} />
-      </LinearGradient>
-    </View>
+    <TouchableOpacity onPress={onPress}>
+      <View style={{...styles.container, ...wrapperStyle}}>
+        <LinearGradient
+          colors={colors}
+          style={styles.gradientButton}
+          start={{y: 0.0, x: 0.0}}
+          end={{y: 0.0, x: 1.0}}>
+          {loading ? (
+            <ActivityIndicator color="white" size="small" />
+          ) : (
+            <Text style={styles.loginButton}>{title}</Text>
+          )}
+        </LinearGradient>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    marginTop: 20,
   },
   gradientButton: {
     borderRadius: 10,
@@ -28,8 +42,8 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     borderRadius: 20,
-    flex: 1,
     textAlign: 'center',
+    color: 'white',
   },
 });
 

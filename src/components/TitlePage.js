@@ -1,8 +1,12 @@
 import React from 'react';
-import {Image, View, Text, StyleSheet} from 'react-native';
+import {useRoute} from '@react-navigation/native';
+import {Image, View, Text, StyleSheet, Platform} from 'react-native';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
+
+// Utils
+import {getHightByRoute} from '../utils/parsers';
 
 const TitlePage = ({
   title,
@@ -12,6 +16,9 @@ const TitlePage = ({
   subPage = false,
   color = 'white',
 }) => {
+  const route = useRoute();
+  console.log(route);
+
   return (
     <LinearGradient
       start={{x: 0, y: 0}}
@@ -19,7 +26,10 @@ const TitlePage = ({
       colors={['#4D84A0', '#55A7AE', '#67B26F']}
       style={{
         ...styles.container,
-        ...{height: subPage ? 100 : 250, paddingTop: children ? 50 : 0},
+        ...{
+          height: subPage ? 100 : getHightByRoute(route.name),
+          paddingTop: children ? (Platform.OS === 'ios' ? 50 : 0) : 0,
+        },
       }}>
       <View
         style={{
@@ -75,7 +85,7 @@ const TitlePage = ({
         ) : (
           <View
             style={{
-              justifyContent: 'center',
+              justifyContent: 'flex-start',
               alignItems: 'center',
               width: '100%',
             }}>

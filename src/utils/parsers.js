@@ -7,6 +7,15 @@ import {
   PRIORITY_HEIGHT,
 } from '../constants/colors';
 
+export const getHightByRoute = (route) => {
+  switch (route) {
+    case 'Dashboard':
+      return 210;
+    default:
+      return 250;
+  }
+};
+
 export const parsePriority = (priority) => {
   switch (priority) {
     case 'low':

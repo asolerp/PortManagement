@@ -14,6 +14,7 @@ const AddButton = () => {
 const styles = StyleSheet.create({
   container: {
     width: 50,
+    elevation: 3,
     height: 50,
     borderRadius: 100,
     justifyContent: 'center',

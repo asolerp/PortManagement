@@ -1,6 +1,6 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useRoute} from '@react-navigation/native';
-import {GiftedChat} from 'react-native-gifted-chat';
+import {GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
 import {
   View,
   Text,
@@ -110,6 +110,7 @@ const Messages = () => {
       addMessage(`jobs/${jobId}/messages`, {
         ...messages[0],
         createdAt: firestore.FieldValue.serverTimestamp(),
+        sent: true,
         received: false,
       });
     },
@@ -177,6 +178,21 @@ const Messages = () => {
       <GiftedChat
         bottomOffset={-3}
         isLoadingEarlier={loadingAddPhoto}
+        renderBubble={(props) => (
+          <Bubble
+            {...props}
+            textStyle={{
+              right: {
+                color: 'white',
+              },
+            }}
+            wrapperStyle={{
+              right: {
+                backgroundColor: '#5BAB9C',
+              },
+            }}
+          />
+        )}
         renderLoading={() => <ActivityIndicator size="large" color="#0000ff" />}
         messages={GiftedChat.append(messages, local)}
         renderActions={(props) => (
@@ -195,13 +211,27 @@ const Messages = () => {
           </View>
         )}
         renderDay={(props) => <RenderDay message={props} />}
+        // renderTime={(props) => (
+        //   <Time
+        //     {...props}
+        //     textStyle={{
+        //       right: {
+        //         color: 'black',
+        //       },
+        //       left: {
+        //         color: 'white',
+        //       },
+        //     }}
+        //   />
+        // )}
         renderTime={(props) => (
           <View style={props.containerStyle}>
             <Text
-              size={10}
-              style={{marginHorizontal: 10, marginBottom: 5, color: 'white'}}
-              bold
-              color={props.position === 'left' ? 'white' : 'white'}>
+              style={{
+                marginHorizontal: 10,
+                marginBottom: 5,
+                color: props.position === 'left' ? 'black' : 'white',
+              }}>
               {`${props.currentMessage.createdAt
                 .toDate()
                 .toLocaleString('es-ES', {
