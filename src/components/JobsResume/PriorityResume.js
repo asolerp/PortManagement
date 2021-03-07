@@ -5,8 +5,9 @@ const PriorityResume = ({color, label, value}) => {
   return (
     <View
       style={{
+        width: '100%',
         flexDirection: 'row',
-        width: 100,
+        width: 120,
         justifyContent: 'space-between',
         marginBottom: 15,
       }}>
