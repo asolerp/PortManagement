@@ -16,7 +16,7 @@ const ProfileBar = () => {
   useEffect(() => {
     const subscriber = firestore()
       .collection('users')
-      .doc(user.uid)
+      .doc(user?.uid)
       .onSnapshot((documentSnapshot) => {
         setUserProfile(documentSnapshot?.data());
         console.log('User data: ', documentSnapshot?.data());
@@ -48,12 +48,10 @@ const ProfileBar = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     padding: 10,
   },
   profileBar: {
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

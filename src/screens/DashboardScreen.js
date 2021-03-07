@@ -6,11 +6,16 @@ import {useDispatch} from 'react-redux';
 //Firebase
 import auth from '@react-native-firebase/auth';
 
+// Components
+import JobsResume from '../components/JobsResume/JobsResume';
 import ProfileBar from '../components/ProfileBar';
 import TitlePage from '../components/TitlePage';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
+
+// Utils
+import moment from 'moment';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -43,6 +48,11 @@ const DashboardScreen = () => {
         style={styles.homeBackScreen}>
         <View style={styles.home}>
           <View style={styles.content}>
+            <Text style={styles.todayStyle}>
+              {moment(new Date()).format('LL')}
+            </Text>
+            <Text style={styles.todayStyle}>Trabajos activos</Text>
+            <JobsResume />
             <Button title="Logout" onPress={logOut} />
           </View>
         </View>
@@ -64,9 +74,12 @@ const styles = StyleSheet.create({
     flex: 5,
   },
   content: {
-    flex: 6,
-    justifyContent: 'center',
-    alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  todayStyle: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginTop: 20,
   },
 });
 

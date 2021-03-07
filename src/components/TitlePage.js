@@ -43,10 +43,8 @@ const TitlePage = ({
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              {leftSide && (
-                <View style={{flex: 1, marginTop: 40}}>{leftSide}</View>
-              )}
-              <View style={{flex: 6}}>
+              {leftSide && <View style={{marginTop: 40}}>{leftSide}</View>}
+              <View>
                 <Text
                   adjustsFontSizeToFit
                   numberOfLines={1}
@@ -79,16 +77,15 @@ const TitlePage = ({
                   </Text>
                 )}
               </View>
-              {leftSide && <View style={{flex: 1}} />}
+              {leftSide && <View />}
             </View>
           </React.Fragment>
         ) : (
           <View
             style={{
-              justifyContent: 'flex-start',
               alignItems: 'center',
-              width: '100%',
             }}>
+            {/* <Text>Hola</Text> */}
             <Image
               style={styles.logo}
               source={require('../assets/images/logo_pm_servicios.png')}
@@ -109,7 +106,6 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 50,
   },
   titleWrapper: {
-    flex: 1,
     justifyContent: 'flex-end',
     width: '100%',
     marginBottom: 0,
@@ -121,9 +117,7 @@ const styles = StyleSheet.create({
   },
   logo: {
     width: 80,
-    height: 80,
-    marginTop: 40,
-    resizeMode: 'contain',
+    height: 40,
     margin: 0,
   },
   title: {

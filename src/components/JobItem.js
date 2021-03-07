@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useSelector, shallowEqual} from 'react-redux';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 
@@ -10,6 +10,7 @@ import {
   StyleSheet,
   Platform,
   UIManager,
+  Animated,
   LayoutAnimation,
 } from 'react-native';
 import * as Progress from 'react-native-progress';
@@ -30,6 +31,7 @@ import {deleteJobAlert} from './Alerts/deleteJobAlert';
 
 //Firebase
 import {useGetFirebase} from '../hooks/useGetFirebase';
+import InfoIcon from './InfoIcon';
 
 const styles = StyleSheet.create({
   container: {
@@ -126,11 +128,10 @@ const styles = StyleSheet.create({
 });
 
 const JobItem = ({job, onPress}) => {
+  const [noReadCounter, setNoReadCounter] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
-  const [list, setList] = useState([]);
-  const [counter, setCounter] = useState(0);
 
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
@@ -139,11 +140,11 @@ const JobItem = ({job, onPress}) => {
 
   const onResult = (QuerySnapshot) => {
     setLoading(false);
-    setList(
+    setNoReadCounter(
       QuerySnapshot.docs
         .map((doc) => ({...doc.data(), id: doc.id}))
         .filter((message) => !message.received)
-        .filter((message) => message.user._id !== user.uid),
+        .filter((message) => message.user._id !== user.uid).length,
     );
   };
 
@@ -170,8 +171,6 @@ const JobItem = ({job, onPress}) => {
     LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setExpanded(!expanded);
   };
-
-  console.log(list, 'list');
 
   // const onAction = () => {
   //   deleteFirebase();
@@ -201,7 +200,7 @@ const JobItem = ({job, onPress}) => {
                 {moment(job.date.toDate()).format('LL')}
               </Text>
               {job?.workers?.map((worker) => (
-                <Avatar uri={worker.profileImage} overlap />
+                <Avatar key={worker.id} uri={worker.profileImage} overlap />
               ))}
             </View>
             <Text
@@ -209,7 +208,12 @@ const JobItem = ({job, onPress}) => {
                 styles.title
               }>{`Trabajos en ${job.house[0].houseName}`}</Text>
             <Text style={styles.subtitle}>{job?.task?.desc}</Text>
-            <Text style={styles.subtitle}>{list.length}</Text>
+            <InfoIcon
+              info={noReadCounter}
+              icon={'chat'}
+              color="#C49277"
+              active={noReadCounter > 0}
+            />
           </View>
           <View>
             <Icon name="keyboard-arrow-right" color="#284748" size={30} />

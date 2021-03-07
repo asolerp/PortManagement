@@ -11,6 +11,7 @@ import SignOutStack from './SignOutStack';
 //Firebase
 import auth from '@react-native-firebase/auth';
 import {getUser} from '../firebase/getUser';
+import SignInWorkerStack from './SignInWorkerStack';
 
 export const AuthContext = createContext(null);
 
@@ -65,18 +66,31 @@ export default function AuthNavigator() {
     [dispatch],
   );
 
-  useEffect(() => {}, []);
-
   // Handle user state changes
   const onAuthStateChanged = useCallback(
-    (result) => {
-      setUser(result);
+    async (result) => {
+      const usuario = await getUser(result?.uid);
+      if (usuario.data()) {
+        setUser({...usuario.data(), uid: result.uid});
+      } else {
+        setUser(null);
+      }
+      console.log(user, usuario.data());
       if (initializing) {
         setInitializing(false);
       }
     },
     [initializing, setUser],
   );
+
+  const getUserSignInStack = (role) => {
+    console.log(role, 'role');
+    if (role === 'admin') {
+      return <SignInStack />;
+    } else {
+      return <SignInWorkerStack />;
+    }
+  };
 
   useEffect(() => {
     const authSubscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -95,7 +109,7 @@ export default function AuthNavigator() {
       <View style={styles.appBackground}>
         <View style={styles.background}>
           <View style={styles.contentWrapper}>
-            <SignInStack />
+            {getUserSignInStack(user?.role)}
           </View>
         </View>
       </View>
