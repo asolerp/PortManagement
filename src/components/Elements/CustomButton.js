@@ -8,12 +8,12 @@ const styles = StyleSheet.create({
   buttonWrapper: {
     backgroundColor: '#2A7BA5',
     borderRadius: 20,
-    padding: 10,
+    padding: 12,
   },
   titleStyle: {
     color: 'white',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 15,
   },
 });
 

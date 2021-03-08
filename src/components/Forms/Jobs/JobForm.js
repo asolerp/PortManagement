@@ -1,6 +1,7 @@
 import React, {useState, useCallback} from 'react';
 
 import {useNavigation} from '@react-navigation/native';
+import {BottomModal, ModalContent} from 'react-native-modals';
 
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setInputForm, resetForm} from '../../../store/jobFormActions';
@@ -22,12 +23,18 @@ import PrioritySelector from '../../../components/Elements/PrioritySelector';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
+import 'moment/locale/es';
+
 import {parsePriority} from '../../../utils/parsers';
 
 // Firebase
 import {newJob} from '../../../firebase/newJob';
 import CustomButton from '../../Elements/CustomButton';
 import {Dimensions} from 'react-native';
+import DateSelector from './DateSelector';
+import CustomInput from '../../Elements/CustomInput';
+
+moment.locale('es');
 
 const styles = StyleSheet.create({
   container: {
@@ -68,6 +75,10 @@ const styles = StyleSheet.create({
   },
 });
 
+const JobFormModalsContainers = {
+  DateSelector: () => <DateSelector />,
+};
+
 const JobForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -82,7 +93,8 @@ const JobForm = () => {
   const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
 
   // Form State
-  const [recurrente, setRecurrente] = useState(false);
+  const [modalContent, setModalContent] = useState();
+  const [modalVisible, setModalVisible] = useState(false);
 
   const cleanForm = () => {
     resetFormAction();
@@ -118,9 +130,20 @@ const JobForm = () => {
 
   return (
     <View style={[styles.newJobScreen]}>
+      <BottomModal
+        modalStyle={{borderRadius: 30}}
+        height={0.5}
+        visible={modalVisible}
+        onTouchOutside={() => {
+          setModalVisible(false);
+        }}>
+        <ModalContent style={{flex: 1, alignItems: 'center'}}>
+          {modalContent}
+        </ModalContent>
+      </BottomModal>
       {/* <ScrollView> */}
       <InputGroup>
-        <Accordian
+        {/* <Accordian
           title="Fecha"
           switcher={job.date?.switch}
           subtitle={[
@@ -167,13 +190,23 @@ const JobForm = () => {
             display="default"
             onChange={onChangeTime}
           />
-        </Accordian>
-        <InputWithSwitch
-          title="Recurrente"
-          disabled
-          icon={{name: 'alarm', color: '#55A5AD'}}
-          get={recurrente}
-          set={setRecurrente}
+        </Accordian> */}
+        <CustomInput
+          title="Fecha"
+          subtitle={
+            job?.date && (
+              <Text style={styles.subtitle}>
+                {moment(job?.date).format('LL') +
+                  ' ' +
+                  moment(job?.time).format('LT')}
+              </Text>
+            )
+          }
+          iconProps={{name: 'alarm', color: '#55A5AD'}}
+          onPress={() => {
+            setModalContent(JobFormModalsContainers.DateSelector);
+            setModalVisible(true);
+          }}
         />
       </InputGroup>
       <InputGroup>
