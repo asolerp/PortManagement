@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {View, StyleSheet, Text, Button} from 'react-native';
 
 import {useDispatch} from 'react-redux';
@@ -19,6 +19,10 @@ import moment from 'moment';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
+  const [visible, setVisible] = useState(false);
+
+  const date = moment(new Date()).format('LL').split(' ');
+  date[2] = date[2][0].toUpperCase() + date[2].slice(1);
 
   const logUser = useCallback(
     () =>
@@ -48,9 +52,7 @@ const DashboardScreen = () => {
         style={styles.homeBackScreen}>
         <View style={styles.home}>
           <View style={styles.content}>
-            <Text style={styles.todayStyle}>
-              {moment(new Date()).format('LL')}
-            </Text>
+            <Text style={styles.todayStyle}>{date.join(' ')}</Text>
             <Text style={styles.todayStyle}>Trabajos activos</Text>
             <JobsResume />
             <Button title="Logout" onPress={logOut} />

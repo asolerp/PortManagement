@@ -26,6 +26,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderWidth: 0,
     borderColor: 'white',
+    elevation: 3,
     shadowOffset: {
       height: 0,
       width: 0,
@@ -53,7 +54,7 @@ const TaskItem = ({icon, name, active, onPress}) => {
             name={icon}
             color={active ? '#54A5AD' : 'white'}
             size={sizeIcon}
-            style={{marginLeft: 0.3, marginTop: 0.3}}
+            style={{marginLeft: 0, marginTop: 0}}
           />
         </View>
         <Text style={styles.iconTitle}>{name}</Text>

@@ -34,7 +34,10 @@ const TitlePage = ({
       <View
         style={{
           ...styles.titleWrapper,
-          ...{justifyContent: 'center'},
+          ...{
+            justifyContent: 'center',
+            marginTop: Platform.OS === 'ios' ? 0 : 20,
+          },
         }}>
         {title ? (
           <React.Fragment>
@@ -43,8 +46,12 @@ const TitlePage = ({
                 flexDirection: 'row',
                 alignItems: 'center',
               }}>
-              {leftSide && <View style={{marginTop: 40}}>{leftSide}</View>}
-              <View>
+              {leftSide && (
+                <View style={{marginTop: Platform.OS === 'ios' ? 40 : 0}}>
+                  {leftSide}
+                </View>
+              )}
+              <View style={{flex: 1, marginLeft: 20}}>
                 <Text
                   adjustsFontSizeToFit
                   numberOfLines={1}
@@ -52,7 +59,11 @@ const TitlePage = ({
                     ...styles.title,
                     ...{
                       color: color,
-                      marginTop: leftSide ? 40 : 0,
+                      marginTop: leftSide
+                        ? Platform.OS === 'ios'
+                          ? 40
+                          : 0
+                        : 0,
                       // fontSize: leftSide ? 20 : 35,
                       textAlign: leftSide ? 'center' : 'left',
                     },
@@ -84,6 +95,7 @@ const TitlePage = ({
           <View
             style={{
               alignItems: 'center',
+              marginTop: Platform.OS === 'ios' ? 0 : 20,
             }}>
             {/* <Text>Hola</Text> */}
             <Image

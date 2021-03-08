@@ -8,9 +8,22 @@ import PriorityResume from './PriorityResume';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    marginVertical: 20,
+    elevation: 3,
+    shadowOffset: {
+      height: 0,
+      width: 0,
+    },
+    shadowColor: 'black',
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   prioritiesWrapper: {
+    flex: 1,
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 
@@ -20,9 +33,10 @@ const JobsResume = () => {
       <View>
         <VictoryPie
           data={[{x: 'Alta', y: 5}, {x: 'Media', y: 10}, {x: 'Baja', y: 1}, ,]}
-          width={250}
-          height={250}
+          width={200}
+          height={200}
           padAngle={5}
+          padding={{left: 30, right: 30}}
           labels={() => null}
           colorScale={['#ED7A7A', '#F5C66D', '#58BFC0']}
           innerRadius={50}
