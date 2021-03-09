@@ -33,6 +33,7 @@ import CustomButton from '../../Elements/CustomButton';
 import {Dimensions} from 'react-native';
 import DateSelector from './DateSelector';
 import CustomInput from '../../Elements/CustomInput';
+import {set} from 'react-native-reanimated';
 
 moment.locale('es');
 
@@ -102,10 +103,9 @@ const JobForm = () => {
 
   const handleSubmit = () => {
     const newJobForm = {
-      name: job?.name,
       observations: job?.observations,
-      date: job?.date?.value,
-      time: job?.time?.value,
+      date: moment(new Date(job?.date)),
+      time: job?.time,
       workers: job?.workers?.value,
       task: job?.task,
       house: job?.house?.value,
@@ -118,22 +118,15 @@ const JobForm = () => {
     navigation.navigate('Jobs');
   };
 
-  const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setInputFormAction('date', {...job.date, value: currentDate});
-  };
-
-  const onChangeTime = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setInputFormAction('time', {...job.time, value: currentDate});
-  };
-
   return (
     <View style={[styles.newJobScreen]}>
       <BottomModal
         modalStyle={{borderRadius: 30}}
         height={0.5}
         visible={modalVisible}
+        onSwipeOut={(event) => {
+          setModalVisible(false);
+        }}
         onTouchOutside={() => {
           setModalVisible(false);
         }}>
@@ -204,51 +197,49 @@ const JobForm = () => {
           }
           iconProps={{name: 'alarm', color: '#55A5AD'}}
           onPress={() => {
-            setModalContent(JobFormModalsContainers.DateSelector);
+            setModalContent(
+              <DateSelector closeModal={() => setModalVisible(false)} />,
+            );
             setModalVisible(true);
           }}
         />
       </InputGroup>
       <InputGroup>
-        <Accordian
-          title="Asignar a..."
+        <CustomInput
+          title="Asignar a.."
           subtitle={
-            <View style={{flexDirection: 'row', paddingBottom: 10}}>
+            <View style={{flexDirection: 'row'}}>
               {job.workers?.value?.map((worker, i) => (
-                <React.Fragment>
+                <View key={i} style={{flexDirection: 'row'}}>
                   <Text style={styles.subtitle}>{worker.firstName}</Text>
                   {job.workers?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
                   )}
-                </React.Fragment>
+                </View>
               ))}
             </View>
           }
-          switcher={job.workers?.switch}
-          iconProps={{name: 'person', color: '#55A5AD'}}
-          onOpen={() =>
-            setInputFormAction('workers', {value: [], switch: true})
-          }
-          onClose={() =>
-            setInputFormAction('workers', {value: undefined, switch: false})
-          }>
-          <View style={styles.asignList}>
-            <DynamicSelectorList
-              collection="users"
-              searchBy="firstName"
-              schema={{img: 'profileImage', name: 'firstName'}}
-              get={job.workers?.value || []}
-              set={(workers) => {
-                setInputFormAction('workers', {
-                  ...job.workers,
-                  value: workers,
-                });
-              }}
-              multiple={true}
-            />
-          </View>
-        </Accordian>
-        <Accordian
+          iconProps={{name: 'alarm', color: '#55A5AD'}}
+          onPress={() => {
+            setModalContent(
+              <DynamicSelectorList
+                collection="users"
+                searchBy="firstName"
+                schema={{img: 'profileImage', name: 'firstName'}}
+                get={'workers'}
+                set={(workers) => {
+                  setInputFormAction('workers', {
+                    ...job.workers,
+                    value: workers,
+                  });
+                }}
+                multiple={true}
+              />,
+            );
+            setModalVisible(true);
+          }}
+        />
+        <CustomInput
           title="Casa"
           subtitle={
             <View style={{flexDirection: 'row'}}>
@@ -262,24 +253,22 @@ const JobForm = () => {
               ))}
             </View>
           }
-          switcher={job?.house?.switch}
           iconProps={{name: 'house', color: '#55A5AD'}}
-          onOpen={() => setInputFormAction('house', {value: [], switch: true})}
-          onClose={() =>
-            setInputFormAction('house', {value: undefined, switch: false})
-          }>
-          <View style={styles.asignList}>
-            <DynamicSelectorList
-              collection="houses"
-              searchBy="houseName"
-              schema={{img: 'houseImage', name: 'houseName'}}
-              get={job.house?.value || []}
-              set={(house) => {
-                setInputFormAction('house', {...job.house, value: house});
-              }}
-            />
-          </View>
-        </Accordian>
+          onPress={() => {
+            setModalContent(
+              <DynamicSelectorList
+                collection="houses"
+                searchBy="houseName"
+                schema={{img: 'houseImage', name: 'houseName'}}
+                get={'house'}
+                set={(house) => {
+                  setInputFormAction('house', {...job.house, value: house});
+                }}
+              />,
+            );
+            setModalVisible(true);
+          }}
+        />
       </InputGroup>
       <InputGroup>
         <Accordian

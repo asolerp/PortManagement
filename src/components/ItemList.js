@@ -33,10 +33,12 @@ const ItemList = ({item, schema, setter, getter, multiple}) => {
                 setter([item]);
               }
             } else {
+              console.log('hola');
               if (!newValue) {
                 const updatedItemList = getter?.filter((i) => i.id !== item.id);
                 setter(updatedItemList);
               } else {
+                console.log(getter, 'getter');
                 setter([...getter, item]);
               }
             }

@@ -44,10 +44,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const DateSelector = () => {
+const DateSelector = ({closeModal}) => {
   const dispatch = useDispatch();
-  const [dateSelected, setDateSelected] = useState();
-  const [timeSelected, setTimeSelected] = useState();
+  const [dateSelected, setDateSelected] = useState(job?.date);
+  const [timeSelected, setTimeSelected] = useState(job?.time);
 
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
@@ -56,21 +56,24 @@ const DateSelector = () => {
     [dispatch],
   );
 
+  const handleSubmit = () => {
+    setInputFormAction('date', dateSelected);
+    setInputFormAction('time', timeSelected);
+    closeModal();
+  };
+
   return (
     <View
       style={{
         flex: 1,
         width: '100%',
       }}>
-      {/* <CalendarStrip
-        style={{width: '100%', height: 150, paddingTop: 20, paddingBottom: 10}}
-      /> */}
       <View>
         <CalendarStrip
           scrollable={Platform.OS === 'android'}
           startingDate={moment(new Date())}
-          selectedDate={job?.date}
-          onDateSelected={(date) => setInputFormAction('date', date)}
+          selectedDate={dateSelected}
+          onDateSelected={(date) => setDateSelected(date)}
           style={styles.calendarContainer}
           iconStyle={{color: 'black'}}
           leftSelector={
@@ -79,8 +82,8 @@ const DateSelector = () => {
           rightSelector={
             <Icon name="keyboard-arrow-right" size={15} color="black" />
           }
-          // dateContainerStyle={{color: 'black'}}
-          // dateNameStyle={{color: 'black'}}
+          dateContainerStyle={{color: 'black'}}
+          dateNameStyle={{color: 'black'}}
           dateNumberStyle={styles.dateNumberStyle}
           highlightDateNameStyle={styles.highlightDateNameStyle}
           highlightDateNumberStyle={styles.highlightDateNumberStyle}
@@ -92,16 +95,15 @@ const DateSelector = () => {
       <View style={styles.parentHr} />
       <DateTimePicker
         testID="dateTimePicker"
-        value={job?.time || new Date()}
-        mode={'time'}
+        value={timeSelected || new Date()}
         is24Hour={true}
+        mode={'time'}
+        locale="es-ES"
         display="spinner"
-        onChange={(event, selectedDate) =>
-          setInputFormAction('time', selectedDate)
-        }
+        onChange={(event, selectedDate) => setTimeSelected(selectedDate)}
       />
       <View style={{marginTop: 'auto'}}>
-        <CustomButton title={'Seleccionar fecha'} />
+        <CustomButton title={'Seleccionar fecha'} onPress={handleSubmit} />
       </View>
     </View>
   );

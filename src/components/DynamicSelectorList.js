@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useSelector, shallowEqual} from 'react-redux';
 
 import {
   View,
@@ -27,6 +28,8 @@ const DynamicSelectorList = ({
   const [search, setSearch] = useState();
   const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
+
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
   useEffect(() => {
     const listUsers = [];
@@ -60,6 +63,8 @@ const DynamicSelectorList = ({
     }
   }, [search]);
 
+  console.log('get', get);
+
   const renderItem = ({item}) => {
     return (
       <React.Fragment>
@@ -67,7 +72,7 @@ const DynamicSelectorList = ({
           item={item}
           schema={schema}
           setter={set}
-          getter={get}
+          getter={job?.[get]?.value || []}
           multiple={multiple}
         />
         <View style={styles.separator} />
@@ -88,19 +93,19 @@ const DynamicSelectorList = ({
           inputStyle={{fontSize: 14, padding: 0}}
         />
 
-        <ScrollView contentContainerStyle={styles.scrollWrapper}>
-          {list ? (
-            <View style={{flex: 1, alignSelf: 'stretch'}}>
-              <FlatList
-                data={filteredList || list}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-              />
-            </View>
-          ) : (
-            <Text>No se han encontrado propietarios</Text>
-          )}
-        </ScrollView>
+        {/* <ScrollView contentContainerStyle={styles.scrollWrapper}> */}
+        {list ? (
+          <View style={{flex: 1, alignSelf: 'stretch'}}>
+            <FlatList
+              data={filteredList || list}
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
+            />
+          </View>
+        ) : (
+          <Text>No se han encontrado propietarios</Text>
+        )}
+        {/* </ScrollView> */}
       </View>
     </View>
   );
