@@ -99,7 +99,7 @@ const DateSelector = ({closeModal}) => {
         is24Hour={true}
         mode={'time'}
         locale="es-ES"
-        display="spinner"
+        display={Platform.OS === 'ios' ? 'spinner' : 'clock'}
         onChange={(event, selectedDate) => setTimeSelected(selectedDate)}
       />
       <View style={{marginTop: 'auto'}}>

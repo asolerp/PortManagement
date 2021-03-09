@@ -66,14 +66,6 @@ const NewJobTaskSelectorScreen = ({navigation}) => {
     });
   };
 
-  if (loadingTasks) {
-    return (
-      <View>
-        <Text>Cargando tareas..</Text>
-      </View>
-    );
-  }
-
   return (
     <React.Fragment>
       <View style={styles.container}>
@@ -98,27 +90,33 @@ const NewJobTaskSelectorScreen = ({navigation}) => {
           end={{x: 1, y: 0}}
           colors={['#126D9B', '#67B26F']}
           style={styles.taskSelectorBackScreen}>
-          <View style={styles.taskSelectorScreen}>
-            {tasks
-              .sort(function (a, b) {
-                if (a.name > b.name) {
-                  return 1;
-                }
-                if (a.name < b.name) {
-                  return -1;
-                }
-                return 0;
-              })
-              .map((task) => (
-                <TaskItem
-                  key={task.id}
-                  icon={task?.icon}
-                  name={task?.name}
-                  active={job?.task?.name === task?.name}
-                  onPress={() => handlerTaskClick(task)}
-                />
-              ))}
-          </View>
+          {loadingTasks ? (
+            <View style={styles.taskSelectorScreen}>
+              <Text>Cargando tareas..</Text>
+            </View>
+          ) : (
+            <View style={styles.taskSelectorScreen}>
+              {tasks
+                .sort(function (a, b) {
+                  if (a.name > b.name) {
+                    return 1;
+                  }
+                  if (a.name < b.name) {
+                    return -1;
+                  }
+                  return 0;
+                })
+                .map((task) => (
+                  <TaskItem
+                    key={task.id}
+                    icon={task?.icon}
+                    name={task?.name}
+                    active={job?.task?.name === task?.name}
+                    onPress={() => handlerTaskClick(task)}
+                  />
+                ))}
+            </View>
+          )}
         </LinearGradient>
       </View>
     </React.Fragment>

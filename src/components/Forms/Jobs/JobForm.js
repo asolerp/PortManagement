@@ -104,10 +104,10 @@ const JobForm = () => {
   const handleSubmit = () => {
     const newJobForm = {
       observations: job?.observations,
-      date: job?.date._d,
-      time: job?.time.toLocaleTimeString(),
+      date: job?.date?._d,
+      time: job?.time?.toLocaleTimeString(),
       workers: job?.workers?.value,
-      task: job?.task,
+      workersId: job?.workers?.value.map((worker) => worker.id),
       house: job?.house?.value,
       priority: job?.priority?.value,
       done: false,
