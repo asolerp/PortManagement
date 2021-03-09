@@ -104,15 +104,14 @@ const JobForm = () => {
   const handleSubmit = () => {
     const newJobForm = {
       observations: job?.observations,
-      date: moment(new Date(job?.date)),
-      time: job?.time,
+      date: job?.date._d,
+      time: job?.time.toLocaleTimeString(),
       workers: job?.workers?.value,
       task: job?.task,
       house: job?.house?.value,
       priority: job?.priority?.value,
       done: false,
     };
-
     newJob(newJobForm);
     cleanForm();
     navigation.navigate('Jobs');
@@ -134,56 +133,7 @@ const JobForm = () => {
           {modalContent}
         </ModalContent>
       </BottomModal>
-      {/* <ScrollView> */}
       <InputGroup>
-        {/* <Accordian
-          title="Fecha"
-          switcher={job.date?.switch}
-          subtitle={[
-            <Text style={styles.subtitle}>
-              {moment(job.date?.value).format('LL')}
-            </Text>,
-          ]}
-          iconProps={{name: 'calendar-today', color: '#55A5AD'}}
-          onOpen={() => {
-            setInputFormAction('date', {value: new Date(), switch: true});
-          }}
-          onClose={() =>
-            setInputFormAction('date', {value: undefined, switch: false})
-          }>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={job.date?.value || new Date()}
-            mode={'date'}
-            is24Hour={true}
-            display="inline"
-            onChange={onChangeDate}
-          />
-        </Accordian>
-        <Accordian
-          title="Hora"
-          subtitle={[
-            <Text style={styles.subtitle}>
-              {moment(job.time?.value).format('LT')}
-            </Text>,
-          ]}
-          switcher={job.time?.switch}
-          iconProps={{name: 'alarm', color: '#55A5AD'}}
-          onOpen={() =>
-            setInputFormAction('time', {value: new Date(), switch: true})
-          }
-          onClose={() =>
-            setInputFormAction('time', {value: undefined, switch: false})
-          }>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={job.time?.value || new Date()}
-            mode={'time'}
-            is24Hour={true}
-            display="default"
-            onChange={onChangeTime}
-          />
-        </Accordian> */}
         <CustomInput
           title="Fecha"
           subtitle={
@@ -319,7 +269,6 @@ const JobForm = () => {
         }}>
         <CustomButton title={'Crear trabajo'} onPress={handleSubmit} />
       </View>
-      {/* </ScrollView> */}
     </View>
   );
 };

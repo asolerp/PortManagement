@@ -110,29 +110,19 @@ exports.onDeleteTask = functions.firestore
     return Promise.all(promises);
   });
 
-exports.onCreateTask = functions.firestore
-  .document('jobs/{jobId}/tasks/{taskId}')
+exports.onCreateJob = functions.firestore
+  .document('jobs/{jobId}')
   .onCreate((snap, context) => {
-    const increment = FieldValue.increment(1);
-    const taskCreated = snap.data();
+    const jobCreated = snap.data();
 
     const addNewStats = () => {
       admin.firestore().collection('stats').add({
-        taskId: snap.id,
-        jobId: taskCreated.jobId,
-        taskPriority: taskCreated.priority,
-        date: taskCreated.date,
+        jobId: snap.id,
+        priority: jobCreated.priority,
+        date: jobCreated.date,
         done: false,
       });
     };
 
-    const incrementStats = () => {
-      admin
-        .firestore()
-        .collection(`jobs`)
-        .doc(taskCreated.jobId)
-        .update({'stats.total': increment});
-    };
-
-    return Promise.all([addNewStats(), incrementStats()]);
+    return Promise.all([addNewStats()]);
   });
