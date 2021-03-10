@@ -208,17 +208,11 @@ const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   calendarContainer: {
-    height: '80%',
-    paddingTop: 10,
-    paddingBottom: 20,
+    height: '100%',
   },
   dateNumberStyle: {color: 'white', fontSize: 15},
   calendarHeaderContainerStyle: {
-    marginBottom: 25,
-    textAlign: 'left',
-    flex: 1,
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    marginTop: 10,
   },
   calendarHeaderStyle: {
     color: 'white',

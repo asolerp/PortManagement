@@ -15,62 +15,6 @@ exports.newUser = functions.auth.user().onCreate((user) => {
   admin.firestore().collection(`users`).doc(user.uid).set({email: user.email});
 });
 
-exports.editJobTaskStatus = functions.firestore
-  .document('jobs/{jobId}/tasks/{taskId}')
-  .onUpdate((change, context) => {
-    const increment = FieldValue.increment(1);
-    const decrement = FieldValue.increment(-1);
-
-    const taskBefore = change.before.data();
-    const taskAfter = change.after.data();
-
-    console.log(context.params.taskId);
-
-    let promises = [];
-
-    let incrementOrDecrementStats = () => {
-      admin
-        .firestore()
-        .collection(`jobs`)
-        .doc(taskAfter.jobId)
-        .update({'stats.done': taskAfter.done ? increment : decrement});
-    };
-
-    let updateTaskStat = () => {
-      admin
-        .firestore()
-        .collection('stats')
-        .where('taskId', '==', context.params.taskId)
-        .limit(1)
-        .get()
-        .then((query) => {
-          const stat = query.docs[0];
-          return stat.ref.update({
-            taskPriority: taskAfter.priority,
-            date: taskAfter.date,
-            done: taskAfter.done,
-          });
-        })
-        .catch((err) => console.log(err));
-    };
-
-    if (taskBefore.workers.length > taskAfter.workers.length) {
-      const workersUnAsigned = taskBefore.workers.filter(
-        (oldWorker) =>
-          !taskAfter.workers.some((newWorker) => oldWorker.id === newWorker.id),
-      );
-      console.log('UnAsigned Worker', workersUnAsigned);
-    }
-
-    if (taskBefore.done !== taskAfter.done) {
-      promises.push(incrementOrDecrementStats());
-    }
-
-    promises.push(updateTaskStat());
-
-    return Promise.all(promises).catch((err) => console.log(err));
-  });
-
 exports.onDeleteTask = functions.firestore
   .document('jobs/{jobId}/tasks/{taskId}')
   .onDelete((snap, context) => {

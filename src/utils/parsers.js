@@ -10,7 +10,9 @@ import {
 export const getHightByRoute = (route) => {
   switch (route) {
     case 'Dashboard':
-      return 210;
+      return 180;
+    case 'Jobs':
+      return 230;
     default:
       return 250;
   }
