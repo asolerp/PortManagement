@@ -11,7 +11,7 @@ import {
 
 import TitlePage from '../../components/TitlePage';
 
-import {Tasks, Messages, Photos} from '../../components/Job';
+import {Info, Messages, Photos} from '../../components/Job';
 
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 
@@ -66,7 +66,7 @@ const styles = StyleSheet.create({
   },
 });
 
-// const FirstRoute = () => <Tasks />;
+const FirstRoute = () => <Info />;
 const SecondRoute = () => <Messages />;
 const ThirdRoute = () => <Photos />;
 
@@ -77,7 +77,7 @@ const JobScreen = ({route, navigation}) => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
-    // {key: 'jobTasks', title: 'TAREAS'},
+    {key: 'info', title: 'INFO'},
     {key: 'messages', title: 'MENSAJES'},
     {key: 'photos', title: 'FOTOS'},
   ]);
@@ -85,7 +85,7 @@ const JobScreen = ({route, navigation}) => {
   const initialLayout = {width: Dimensions.get('window').width};
 
   const renderScene = SceneMap({
-    // jobTasks: FirstRoute,
+    info: FirstRoute,
     messages: SecondRoute,
     photos: ThirdRoute,
   });
