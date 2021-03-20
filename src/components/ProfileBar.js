@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     padding: 10,
+    marginBottom: 20,
   },
   profileBar: {
     flexDirection: 'row',

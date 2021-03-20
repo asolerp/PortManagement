@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, KeyboardAvoidingView, Platform} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,20 +21,24 @@ const styles = StyleSheet.create({
 
 const InputGroup = ({children}) => {
   return (
-    <View style={styles.container}>
-      {Array.isArray(children) ? (
-        <View style={styles.inputContainer}>
-          {children.map((elemnt, i) => (
-            <View key={i}>
-              {elemnt}
-              {i !== children.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))}
-        </View>
-      ) : (
-        children
-      )}
-    </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      style={{flex: 1}}>
+      <View style={styles.container}>
+        {Array.isArray(children) ? (
+          <View style={styles.inputContainer}>
+            {children.map((elemnt, i) => (
+              <View key={i}>
+                {elemnt}
+                {i !== children.length - 1 && <View style={styles.separator} />}
+              </View>
+            ))}
+          </View>
+        ) : (
+          children
+        )}
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 

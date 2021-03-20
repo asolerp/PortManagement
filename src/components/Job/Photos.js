@@ -36,7 +36,7 @@ const Photos = () => {
 
   return (
     <View style={styles.container}>
-      {/* <GridImageView data={photos} /> */}
+      <GridImageView data={photos} />
     </View>
   );
 };

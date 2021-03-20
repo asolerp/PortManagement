@@ -149,19 +149,40 @@ const JobsScreen = () => {
               </View>
               <View style={styles.jobsListWrapper}>
                 <Text style={defaultTextTitle}>Trabajos activos</Text>
-                <View style={{marginTop: 20}}>
-                  {filteredList?.map((item) => (
-                    <JobItem
-                      job={item}
-                      key={item.id}
-                      onPress={() =>
-                        navigation.navigate('JobScreen', {
-                          jobId: item.id,
-                        })
-                      }
-                    />
-                  ))}
-                </View>
+                {filteredList.length > 0 ? (
+                  <View style={{marginTop: 20}}>
+                    {filteredList?.map((item) => (
+                      <JobItem
+                        job={item}
+                        key={item.id}
+                        onPress={() =>
+                          navigation.navigate('JobScreen', {
+                            jobId: item.id,
+                          })
+                        }
+                      />
+                    ))}
+                  </View>
+                ) : (
+                  <View
+                    style={{
+                      height: 200,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        fontWeight: '600',
+                        color: '#2d2d2d',
+                        textAlign: 'center',
+
+                        paddingHorizontal: 50,
+                      }}>
+                      No tienes ninguna tarea asignada para este día.
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
           </LinearGradient>

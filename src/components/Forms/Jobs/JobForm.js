@@ -7,12 +7,12 @@ import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setInputForm, resetForm} from '../../../store/jobFormActions';
 
 import {
-  View,
-  Button,
   Text,
+  View,
+  Platform,
   TextInput,
-  ScrollView,
   StyleSheet,
+  KeyboardAvoidingView,
 } from 'react-native';
 
 import Accordian from '../../../components/Elements/Accordian';

@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {
   View,
-  StyleSheet,
+  Keyboard,
   StatusBar,
+  StyleSheet,
   TouchableOpacity,
-  Dimensions,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,6 +20,12 @@ import TaskForm from '../../components/Forms/Jobs/TaskJob';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
+
+const HideKeyboard = ({children}) => (
+  <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+    {children}
+  </TouchableWithoutFeedback>
+);
 
 const NewJobScreen = ({route, navigation}) => {
   const {taskName} = route.params;
@@ -48,9 +55,11 @@ const NewJobScreen = ({route, navigation}) => {
           end={{x: 1, y: 0}}
           colors={['#126D9B', '#67B26F']}
           style={styles.jobBackScreen}>
-          <View style={styles.jobScreen}>
-            <JobForm />
-          </View>
+          <HideKeyboard>
+            <View style={styles.jobScreen}>
+              <JobForm />
+            </View>
+          </HideKeyboard>
         </LinearGradient>
       </View>
     </React.Fragment>
