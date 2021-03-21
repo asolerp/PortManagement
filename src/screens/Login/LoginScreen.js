@@ -1,9 +1,10 @@
 import React from 'react';
 import {View, Text, Image, StyleSheet, StatusBar} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
-import LoginForm from '../../components/Forms/LoginForm';
+import LoginForm from '../../components/Forms/Auth/LoginForm';
 
 const LoginScreen = () => {
   return (
@@ -21,9 +22,11 @@ const LoginScreen = () => {
             <Text style={styles.welcomeText}>Bienvenido!</Text>
             <Text style={styles.welcomeTextSub}>Logeate para continuar</Text>
           </View>
-          <View style={styles.inputsWrapper}>
-            <LoginForm />
-          </View>
+          <KeyboardAwareScrollView>
+            <View style={styles.inputsWrapper}>
+              <LoginForm />
+            </View>
+          </KeyboardAwareScrollView>
           <View style={styles.bottomWrapper}>
             <Text style={styles.signUpText}>
               Soy un nuevo usuario. Regístrate!
@@ -44,7 +47,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   logoWrapper: {
-    flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -53,10 +55,10 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
   },
   welcomeWrapper: {
-    flex: 1,
+    // marginBottom: '40%',
   },
   inputsWrapper: {
-    flex: 3,
+    paddingTop: '50%',
     justifyContent: 'flex-start',
     alignContent: 'flex-start',
   },

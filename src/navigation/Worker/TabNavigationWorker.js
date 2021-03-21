@@ -2,9 +2,7 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Screens
-import DashboardScreen from '../screens/DashboardScreen';
-import HomesStack from './HomesStack';
-import JobsStack from './JobsStack';
+import HomeWorkerStack from './HomeWorkerStack';
 
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
@@ -29,7 +27,7 @@ const TabNavigationWorker = () => {
         activeBackgroundColor: '#3E93A8',
         tabStyle: {
           marginTop: 0,
-          marginBottom: Platform.OS === 'ios' ? 20 : 0,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 0,
           borderTopWidth: 1,
           borderBottomWidth: 0,
           borderTopColor: '#dbdbdb',
@@ -41,9 +39,10 @@ const TabNavigationWorker = () => {
         tabBarBackground: 'white',
       }}>
       <Tabs.Screen
-        name="Dashboard"
-        component={DashboardScreen}
-        options={{
+        name="Home"
+        component={HomeWorkerStack}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisible(route),
           tabBarIcon: ({focused, color, size}) => (
             <Icon
               name="dashboard"
@@ -52,21 +51,7 @@ const TabNavigationWorker = () => {
               focused={focused}
             />
           ),
-        }}
-      />
-      <Tabs.Screen
-        name="Settings"
-        component={DashboardScreen}
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon
-              name="settings"
-              size={size ? size : 24}
-              color={focused ? color : '#3E93A8'}
-              focused={focused}
-            />
-          ),
-        }}
+        })}
       />
     </Tabs.Navigator>
   );

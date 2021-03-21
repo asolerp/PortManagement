@@ -1,5 +1,5 @@
-import React, {useEffect, useContext, useState} from 'react';
-import {View, Text, Image, Dimensions, StyleSheet} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, StyleSheet} from 'react-native';
 
 import {useSelector, shallowEqual} from 'react-redux';
 
@@ -19,7 +19,6 @@ const ProfileBar = () => {
       .doc(user?.uid)
       .onSnapshot((documentSnapshot) => {
         setUserProfile(documentSnapshot?.data());
-        console.log('User data: ', documentSnapshot?.data());
       });
 
     // Stop listening for updates when no longer required
@@ -62,6 +61,8 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     borderRadius: 100,
+    borderWidth: 4,
+    borderColor: 'white',
     resizeMode: 'cover',
   },
   welcome: {

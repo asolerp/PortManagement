@@ -7,10 +7,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     alignItems: 'center',
-    width: 50,
     paddingHorizontal: 5,
     paddingVertical: 2,
     borderRadius: 20,
+    marginRight: 10,
+  },
+  icon: {
+    marginLeft: 5,
   },
   textStyle: {
     color: 'white',
@@ -52,7 +55,9 @@ const InfoIcon = ({info, icon, color, active}) => {
         ...{backgroundColor: color, transform: [{scale: scaleAnim}]},
       }}>
       <Text style={styles.textStyle}>{info}</Text>
-      <Icon name={icon} size={15} color={'white'} />
+      {icon && (
+        <Icon name={icon} size={15} color={'white'} style={styles.icon} />
+      )}
     </Animated.View>
   );
 };

@@ -2,13 +2,13 @@ import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 
 import {Text, View, StyleSheet} from 'react-native';
-import GradientButton from '../Elements/GradientButton';
+import GradientButton from '../../Elements/GradientButton';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
 
 // UI
-import Input from '../Elements/Input';
+import Input from '../../Elements/Input';
 import {set} from 'react-native-reanimated';
 
 const LoginForm = () => {

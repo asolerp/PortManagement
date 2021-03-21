@@ -4,7 +4,7 @@ import {View, StyleSheet, StatusBar} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import NewFormHome from '../../components/Forms/NewHomeForm';
+import NewFormHome from '../../components/Forms/Homes/NewHomeForm';
 
 import TitlePage from '../../components/TitlePage';
 

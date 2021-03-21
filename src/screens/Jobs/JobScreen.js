@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {
-  View,
   Text,
+  View,
+  StatusBar,
   StyleSheet,
   Dimensions,
-  StatusBar,
-  ScrollView,
   TouchableOpacity,
 } from 'react-native';
 
@@ -33,7 +32,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
   },
-  tabBarLabelStyle: {color: 'black', fontWeight: 'bold'},
+  tabBarLabelStyle: {color: '#284748', fontWeight: 'bold', fontSize: 18},
   tabIndicator: {
     backgroundColor: '#2A7BA5',
     width: 10,
@@ -77,9 +76,9 @@ const JobScreen = ({route, navigation}) => {
 
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
-    {key: 'info', title: 'INFO'},
-    {key: 'messages', title: 'MENSAJES'},
-    {key: 'photos', title: 'FOTOS'},
+    {key: 'info', title: 'Info'},
+    {key: 'messages', title: 'Mensajes'},
+    {key: 'photos', title: 'Fotos'},
   ]);
 
   const initialLayout = {width: Dimensions.get('window').width};

@@ -6,28 +6,25 @@ import {useNavigation} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 
 import {
-  ActivityIndicator,
-  Platform,
   KeyboardAvoidingView,
-  View,
+  ActivityIndicator,
   StyleSheet,
   ScrollView,
   Button,
   Alert,
+  View,
 } from 'react-native';
 
 // UI
-import ImageLoader from '../../components/Elements/ImageLoader';
-import UserSelector from '../Elements/UserSelector';
-import Input from '../Elements/Input';
+import ImageLoader from '../../Elements/ImageLoader';
+import UserSelector from '../../Elements/UserSelector';
+import Input from '../../Elements/Input';
 
 // Firebase
-import {newHouse} from '../../firebase/uploadNewHouse';
+import {newHouse} from '../../../firebase/uploadNewHouse';
 
 // Utils
-import {launchImage} from '../../utils/imageFunctions';
-import {NewHouseFormContext} from '../../context/newHouseFormContext';
-import {AuthContext} from '../../navigation/AuthNavigator';
+import {launchImage} from '../../../utils/imageFunctions';
 
 const NewFormHome = () => {
   const {users} = useSelector(

@@ -11,9 +11,7 @@ import SignOutStack from './SignOutStack';
 //Firebase
 import auth from '@react-native-firebase/auth';
 import {getUser} from '../firebase/getUser';
-import SignInWorkerStack from './SignInWorkerStack';
-
-export const AuthContext = createContext(null);
+import SignInWorkerStack from './Worker/SignInWorkerStack';
 
 const styles = StyleSheet.create({
   appBackground: {
@@ -29,7 +27,6 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'flex-start',
-    backgroundColor: 'transparent',
     position: 'absolute',
     height: '100%',
     width: '100%',
@@ -38,6 +35,7 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
+    backgroundColor: 'white',
   },
   logo: {
     flex: 1,
@@ -48,7 +46,15 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function AuthNavigator() {
+const getUserSignInStack = (role) => {
+  if (role === 'admin') {
+    return <SignInStack />;
+  } else {
+    return <SignInWorkerStack />;
+  }
+};
+
+const AuthNavigator = () => {
   const [initializing, setInitializing] = useState(true);
   const dispatch = useDispatch();
 
@@ -75,22 +81,12 @@ export default function AuthNavigator() {
       } else {
         setUser(null);
       }
-      console.log(user, usuario.data());
       if (initializing) {
         setInitializing(false);
       }
     },
     [initializing, setUser],
   );
-
-  const getUserSignInStack = (role) => {
-    console.log(role, 'role');
-    if (role === 'admin') {
-      return <SignInStack />;
-    } else {
-      return <SignInWorkerStack />;
-    }
-  };
 
   useEffect(() => {
     const authSubscriber = auth().onAuthStateChanged(onAuthStateChanged);
@@ -117,4 +113,6 @@ export default function AuthNavigator() {
   ) : (
     <SignOutStack />
   );
-}
+};
+
+export default React.memo(AuthNavigator);

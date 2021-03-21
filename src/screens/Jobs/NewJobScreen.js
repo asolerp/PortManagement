@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
@@ -55,11 +56,13 @@ const NewJobScreen = ({route, navigation}) => {
           end={{x: 1, y: 0}}
           colors={['#126D9B', '#67B26F']}
           style={styles.jobBackScreen}>
-          <HideKeyboard>
-            <View style={styles.jobScreen}>
+          {/* <HideKeyboard> */}
+          <View style={styles.jobScreen}>
+            <KeyboardAwareScrollView>
               <JobForm />
-            </View>
-          </HideKeyboard>
+            </KeyboardAwareScrollView>
+          </View>
+          {/* </HideKeyboard> */}
         </LinearGradient>
       </View>
     </React.Fragment>
@@ -84,6 +87,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderTopRightRadius: 50,
+    paddingTop: 20,
+
     height: '100%',
   },
   iconWrapper: {

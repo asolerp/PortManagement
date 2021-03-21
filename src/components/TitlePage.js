@@ -17,7 +17,6 @@ const TitlePage = ({
   color = 'white',
 }) => {
   const route = useRoute();
-  console.log(route);
 
   return (
     <LinearGradient

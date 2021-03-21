@@ -109,6 +109,7 @@ const JobForm = () => {
       workers: job?.workers?.value,
       workersId: job?.workers?.value.map((worker) => worker.id),
       house: job?.house?.value,
+      task: job?.task,
       priority: job?.priority?.value,
       done: false,
     };

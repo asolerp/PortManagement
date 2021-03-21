@@ -1,55 +1,35 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useSelector, shallowEqual} from 'react-redux';
-import Swipeable from 'react-native-gesture-handler/Swipeable';
 
 import firestore from '@react-native-firebase/firestore';
 
 import {
+  TouchableOpacity,
   View,
   Text,
   StyleSheet,
   Platform,
   UIManager,
-  Animated,
-  LayoutAnimation,
 } from 'react-native';
-import * as Progress from 'react-native-progress';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
-import moment from 'moment';
+//UI
 import Avatar from './Avatar';
-
-import {
-  parsePriorityColor,
-  parsePirorityIcon,
-  percentageOfComplete,
-} from '../utils/parsers';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import RightActions from './Elements/RightActions';
-import {deleteJobAlert} from './Alerts/deleteJobAlert';
-
-//Firebase
-import {useGetFirebase} from '../hooks/useGetFirebase';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import InfoIcon from './InfoIcon';
+
+// Utils
+import moment from 'moment';
+import {parsePriorityColor} from '../utils/parsers';
 
 const styles = StyleSheet.create({
   container: {
     width: '100%',
     backgroundColor: 'white',
-    alignSelf: 'stretch',
     borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#EAEAEA',
     padding: 10,
-    elevation: 1,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#BCBCBC',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    marginBottom: 20,
-    flex: 1,
+    marginBottom: 10,
     flexDirection: 'row',
   },
   swipperContainer: {
@@ -93,7 +73,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   title: {
-    fontSize: 20,
+    fontSize: 19,
     marginBottom: 5,
     fontWeight: 'bold',
     color: '#284748',
@@ -122,6 +102,10 @@ const styles = StyleSheet.create({
     marginBottom: 5,
     fontWeight: 'bold',
   },
+  iconsWrapper: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
   workers: {
     flexDirection: 'row',
   },
@@ -129,7 +113,6 @@ const styles = StyleSheet.create({
 
 const JobItem = ({job, onPress}) => {
   const [noReadCounter, setNoReadCounter] = useState(0);
-  const [expanded, setExpanded] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState();
 
@@ -161,28 +144,11 @@ const JobItem = ({job, onPress}) => {
     const collectionJobs = firestore().collection('jobs');
     const jobDocument = collectionJobs.doc(job.id);
     const messagesQuery = jobDocument.collection('messages');
-
     const subscriber = messagesQuery.onSnapshot(onResult, onError);
-
     return () => subscriber();
   }, []);
 
-  const toggleExpand = () => {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-    setExpanded(!expanded);
-  };
-
-  // const onAction = () => {
-  //   deleteFirebase();
-  // };
-
   return (
-    // <Swipeable
-    //   renderRightActions={(progress, dragX) =>
-    //     RightActions(progress, dragX, onAction)
-    //   }
-    //   containerStyle={styles.swipperContainer}
-    //   childrenContainerStyle={{borderRadius: 10}}>
     <TouchableOpacity onPress={onPress}>
       <View style={styles.container}>
         <View style={styles.firstSection}>
@@ -197,23 +163,30 @@ const JobItem = ({job, onPress}) => {
           <View style={styles.titleSubtitle}>
             <View style={styles.firstLine}>
               <Text style={styles.date}>
-                {moment(job.date.toDate()).format('LL')}
+                🕜 {moment(job.date.toDate()).format('LL')}
               </Text>
               {job?.workers?.map((worker) => (
                 <Avatar key={worker.id} uri={worker.profileImage} overlap />
               ))}
             </View>
-            <Text
-              style={
-                styles.title
-              }>{`Trabajos en ${job.house[0].houseName}`}</Text>
-            <Text style={styles.subtitle}>{job?.task?.desc}</Text>
-            <InfoIcon
-              info={noReadCounter}
-              icon={'chat'}
-              color="#C49277"
-              active={noReadCounter > 0}
-            />
+            <Text style={styles.title}>
+              🏡 {`Trabajos en ${job.house[0].houseName}`}
+            </Text>
+            {job?.task?.desc && (
+              <Text style={styles.subtitle}>{job?.task?.desc}</Text>
+            )}
+            <View style={styles.iconsWrapper}>
+              <InfoIcon
+                info={noReadCounter}
+                icon={'chat'}
+                color="#ac76cc"
+                active={noReadCounter > 0}
+              />
+              <InfoIcon
+                info={job.done ? 'Termianda' : 'Sin terminar'}
+                color={job.done ? '#7dd891' : '#ED7A7A'}
+              />
+            </View>
           </View>
           <View>
             <Icon name="keyboard-arrow-right" color="#284748" size={30} />
@@ -221,7 +194,6 @@ const JobItem = ({job, onPress}) => {
         </View>
       </View>
     </TouchableOpacity>
-    // </Swipeable>
   );
 };
 

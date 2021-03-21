@@ -29,7 +29,7 @@ const TabNavigation = () => {
         activeBackgroundColor: '#3E93A8',
         tabStyle: {
           marginTop: 0,
-          marginBottom: Platform.OS === 'ios' ? 20 : 0,
+          paddingBottom: Platform.OS === 'ios' ? 20 : 0,
           borderTopWidth: 1,
           borderBottomWidth: 0,
           borderTopColor: '#dbdbdb',
