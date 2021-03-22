@@ -1,13 +1,15 @@
-import React, {useCallback, useState} from 'react';
+import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector, shallowEqual} from 'react-redux';
+import {useSelector, shallowEqual} from 'react-redux';
 import {View, Text, Button, StyleSheet} from 'react-native';
 
 import TitlePage from '../../components/TitlePage';
 import ProfileBar from '../../components/ProfileBar';
+import StatusTaskFilter from '../../components/Filters/StatusTaskFilter';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
+
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // UI
@@ -17,7 +19,6 @@ import JobItem from '../../components/JobItem';
 // Utils
 import moment from 'moment';
 import {ScrollView} from 'react-native';
-import StatusTaskFilter from '../../components/Filters/StatusTaskFilter';
 
 const styles = StyleSheet.create({
   container: {
@@ -47,11 +48,11 @@ const styles = StyleSheet.create({
     color: '#284748',
     fontWeight: '500',
     marginTop: 20,
+    marginBottom: 20,
   },
 });
 
 const HomeWorker = () => {
-  const dispatch = useDispatch();
   const navigation = useNavigation();
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
@@ -73,14 +74,6 @@ const HomeWorker = () => {
 
   const date = moment(new Date()).format('LL').split(' ');
   date[2] = date[2][0].toUpperCase() + date[2].slice(1);
-
-  const logUser = useCallback(
-    () =>
-      dispatch({
-        type: 'LOGOUT_USER',
-      }),
-    [dispatch],
-  );
 
   const logOut = async () => {
     try {
@@ -124,7 +117,6 @@ const HomeWorker = () => {
                     />
                   ))}
               </View>
-              {}
               <Button title="Logout" onPress={logOut} />
             </View>
           </View>

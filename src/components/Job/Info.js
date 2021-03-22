@@ -30,11 +30,7 @@ const styles = StyleSheet.create({
   infoWrapper: {
     width: '30%',
   },
-  actionButtonWrapper: {
-    alignItems: 'flex-end',
-    justifyContent: 'flex-end',
-    paddingBottom: 30,
-  },
+  actionButtonWrapper: {},
   date: {
     fontSize: 18,
     marginVertical: 10,

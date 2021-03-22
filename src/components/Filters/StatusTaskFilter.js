@@ -8,7 +8,7 @@ import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    marginTop: 20,
+    marginTop: 0,
   },
   filterWrapper: {
     paddingHorizontal: 5,

@@ -70,3 +70,119 @@ exports.onCreateJob = functions.firestore
 
     return Promise.all([addNewStats()]);
   });
+
+exports.sendPushNotificationUpdateStatusJob = functions.firestore
+  .document('jobs/{jobId}')
+  .onUpdate(async (change, context) => {
+    try {
+      const taskAfter = change.after.data();
+      let status;
+      if (taskAfter.done) {
+        status = 'finished';
+      }
+
+      const jobSnapshot = await admin
+        .firestore()
+        .collection('jobs')
+        .doc(context.params.jobId)
+        .get();
+
+      let notificationFinish = {
+        title: 'Actualización de trabajo 🚨',
+        body: `Se ha finalizado la tarea en ${taskAfter.house[0].houseName}. ${taskAfter.task.desc}`,
+      };
+
+      let notificationUnfinish = {
+        title: 'Actualización de trabajo',
+        body: `Se ha vuelto a abrir la tarea en ${
+          taskAfter.house[0].houseName
+        }. ${taskAfter.task.desc ? taskAfter.task.desc : ''}`,
+      };
+
+      let data = {
+        screen: 'JobScreen',
+        jobId: change.after.id,
+      };
+
+      const workersId = jobSnapshot.data().workersId;
+
+      const users = await Promise.all(
+        workersId.map(
+          async (workerId) =>
+            await admin.firestore().collection('users').doc(workerId).get(),
+        ),
+      );
+
+      const workersTokens = users.map((user) => user.data().token);
+
+      const adminsSnapshot = await admin
+        .firestore()
+        .collection('users')
+        .where('role', '==', 'admin')
+        .get();
+
+      const adminTokens = adminsSnapshot.docs.map((doc) => doc.data().token);
+
+      await admin.messaging().sendMulticast({
+        tokens: adminTokens.concat(workersTokens),
+        notification:
+          status === 'finished' ? notificationFinish : notificationUnfinish,
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+exports.sendPushNotificationNewMessage = functions.firestore
+  .document('jobs/{jobId}/messages/{messageId}')
+  .onCreate(async (snap, context) => {
+    try {
+      const message = snap.data();
+
+      const jobSnapshot = await admin
+        .firestore()
+        .collection('jobs')
+        .doc(context.params.jobId)
+        .get();
+
+      const workersId = jobSnapshot.data().workersId;
+
+      const users = await Promise.all(
+        workersId.map(
+          async (workerId) =>
+            await admin.firestore().collection('users').doc(workerId).get(),
+        ),
+      );
+
+      const workersTokens = users.map((user) => user.data().token);
+      console.log(workersTokens);
+
+      const adminsSnapshot = await admin
+        .firestore()
+        .collection('users')
+        .where('role', '==', 'admin')
+        .get();
+
+      const adminTokens = adminsSnapshot.docs.map((doc) => doc.data().token);
+
+      let notification = {
+        title: 'Tienes un nuevo mensaje 💬',
+        body: message.text
+          ? `${
+              message.user.name + 'dice: ' + message.text.length > 25
+                ? message.text.substring(0, 25 - 3) + '...'
+                : message.text
+            }`
+          : 'Nueva imagen...',
+      };
+
+      await admin.messaging().sendMulticast({
+        tokens: adminTokens.concat(workersTokens),
+        notification,
+        // data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });

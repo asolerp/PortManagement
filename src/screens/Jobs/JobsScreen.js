@@ -18,6 +18,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import LinearGradient from 'react-native-linear-gradient';
 import AddButton from '../../components/Elements/AddButton';
 import HouseFilter from '../../components/Filters/HouseFilter';
+import StatusTaskFilter from '../../components/Filters/StatusTaskFilter';
 import JobItem from '../../components/JobItem';
 import TitlePage from '../../components/TitlePage';
 import CalendarStrip from 'react-native-calendar-strip';
@@ -35,10 +36,17 @@ import {generateCalendarDots} from '../../utils/parsers';
 const JobsScreen = () => {
   const dispatch = useDispatch();
   const {list, loading, error} = useGetFirebase('jobs');
+
   const {houses, filterDate} = useSelector(
     ({filters: {houses, filterDate}}) => ({houses, filterDate}),
     shallowEqual,
   );
+
+  const {statusTaskFilter} = useSelector(
+    ({filters: {statusTaskFilter}}) => ({statusTaskFilter}),
+    shallowEqual,
+  );
+
   const [filteredList, setFilteredList] = useState([]);
   const navigation = useNavigation();
 
@@ -86,7 +94,7 @@ const JobsScreen = () => {
         setFilteredList(fList);
       }
     }
-  }, [houses, list, filterDate]);
+  }, [houses, list, filterDate, statusTaskFilter]);
 
   if (loading) {
     return (
@@ -148,20 +156,30 @@ const JobsScreen = () => {
                 <HouseFilter />
               </View>
               <View style={styles.jobsListWrapper}>
-                <Text style={defaultTextTitle}>Trabajos activos</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                  }}>
+                  <Text style={{...defaultTextTitle}}>🚀 Trabajos</Text>
+                  <StatusTaskFilter />
+                </View>
                 {filteredList.length > 0 ? (
                   <View style={{marginTop: 20}}>
-                    {filteredList?.map((item) => (
-                      <JobItem
-                        job={item}
-                        key={item.id}
-                        onPress={() =>
-                          navigation.navigate('JobScreen', {
-                            jobId: item.id,
-                          })
-                        }
-                      />
-                    ))}
+                    {filteredList
+                      ?.filter((job) => job.done === statusTaskFilter)
+                      .map((item) => (
+                        <JobItem
+                          job={item}
+                          key={item.id}
+                          onPress={() =>
+                            navigation.navigate('JobScreen', {
+                              jobId: item.id,
+                            })
+                          }
+                        />
+                      ))}
                   </View>
                 ) : (
                   <View

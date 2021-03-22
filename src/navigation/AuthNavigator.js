@@ -1,4 +1,5 @@
 import React, {useState, useEffect, useCallback, createContext} from 'react';
+import {useNavigation} from '@react-navigation/native';
 
 // Redux
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
@@ -10,7 +11,9 @@ import SignOutStack from './SignOutStack';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
 import {getUser} from '../firebase/getUser';
+import {useUpdateFirebase} from '../hooks/useUpdateFirebase';
 import SignInWorkerStack from './Worker/SignInWorkerStack';
 
 const styles = StyleSheet.create({
@@ -58,6 +61,12 @@ const AuthNavigator = () => {
   const [initializing, setInitializing] = useState(true);
   const dispatch = useDispatch();
 
+  const {
+    updateFirebase,
+    loading: updatingMessage,
+    error: errorUpdatingMessage,
+  } = useUpdateFirebase('users');
+
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
     shallowEqual,
@@ -78,6 +87,9 @@ const AuthNavigator = () => {
       const usuario = await getUser(result?.uid);
       if (usuario.data()) {
         setUser({...usuario.data(), uid: result.uid});
+        updateFirebase(`${result.uid}`, {
+          token: await messaging().getToken(),
+        });
       } else {
         setUser(null);
       }

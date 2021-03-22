@@ -1,6 +1,13 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {useRoute} from '@react-navigation/native';
-import {GiftedChat, Bubble, Time} from 'react-native-gifted-chat';
+import {
+  GiftedChat,
+  Actions,
+  Bubble,
+  InputToolbar,
+  CustomView,
+  Send,
+} from 'react-native-gifted-chat';
 import {
   View,
   Text,
@@ -29,6 +36,7 @@ import {setMessagesAsRead} from '../../firebase/setMessagesAsRead';
 import {launchImage} from '../../utils/imageFunctions';
 import {cloudinaryUpload} from '../../cloudinary/index';
 import {messageIdGenerator} from '../../utils/uuid';
+import {Platform} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -88,20 +96,6 @@ const Messages = () => {
   } = useAddFirebase();
 
   const onSendImage = () => {
-    const loadingMessage = [
-      {
-        _id: messageIdGenerator(),
-        text: 'Cargando imagen..',
-        createdAt: messages[0].createdAt,
-        user: {
-          _id: userLoggedIn?.id,
-          name: userLoggedIn?.firstName,
-          avatar: userLoggedIn?.profileImage,
-        },
-      },
-    ];
-    // setLocal(loadingMessage);
-    // console.log(GiftedChat.append(messages, loadingMessage));
     launchImage(setMessageImage);
   };
 
@@ -137,6 +131,8 @@ const Messages = () => {
           _id: userLoggedIn?.id,
           name: userLoggedIn?.firstName,
           avatar: userLoggedIn?.profileImage,
+          token: userLoggedIn?.token,
+          role: userLoggedIn?.role,
         },
       };
 
@@ -173,8 +169,17 @@ const Messages = () => {
   //   );
   // }
 
+  const renderCustomView = (props) => {
+    return <CustomView {...props} />;
+  };
+
   return (
-    <ScrollView contentContainerStyle={{height: '100%', marginTop: 20}}>
+    <ScrollView
+      contentContainerStyle={{
+        height: Platform.OS === 'ios' ? '98%' : '96%',
+        marginTop: 20,
+        marginBottom: 20,
+      }}>
       <GiftedChat
         bottomOffset={-3}
         isLoadingEarlier={loadingAddPhoto}
@@ -194,36 +199,32 @@ const Messages = () => {
           />
         )}
         renderLoading={() => <ActivityIndicator size="large" color="#0000ff" />}
+        renderInputToolbar={(props) => (
+          <InputToolbar
+            {...props}
+            onPressActionButton={() => onSendImage()}
+            containerStyle={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: '#cccccc',
+              marginHorizontal: 20,
+              marginBottom: 10,
+            }}
+          />
+        )}
         messages={GiftedChat.append(messages, local)}
+        messagesContainerStyle={{paddingBottom: 20}}
         renderActions={(props) => (
-          <View
-            style={{
-              ...props.containerStyle,
-            }}>
-            <TouchableOpacity onPress={() => onSendImage()}>
-              <Icon
-                name="camera-alt"
-                size={30}
-                color={'black'}
-                style={{marginLeft: 10, marginTop: -10}}
-              />
-            </TouchableOpacity>
-          </View>
+          <Actions
+            {...props}
+            icon={() => (
+              <Icon name="camera-alt" size={25} color={'#4F8AA3'} style={{}} />
+            )}
+          />
         )}
         renderDay={(props) => <RenderDay message={props} />}
-        // renderTime={(props) => (
-        //   <Time
-        //     {...props}
-        //     textStyle={{
-        //       right: {
-        //         color: 'black',
-        //       },
-        //       left: {
-        //         color: 'white',
-        //       },
-        //     }}
-        //   />
-        // )}
         renderTime={(props) => (
           <View style={props.containerStyle}>
             <Text
@@ -242,12 +243,28 @@ const Messages = () => {
             </Text>
           </View>
         )}
+        renderSend={(props) => {
+          return (
+            <Send
+              {...props}
+              containerStyle={{
+                borderWidth: 0,
+                flexDirection: 'column',
+                justifyContent: 'center',
+                marginRight: 20,
+              }}>
+              <Icon name="send" color={'#4F8AA3'} style={{borderWidth: 0}} />
+            </Send>
+          );
+        }}
         showUserAvatar
         onSend={(messages) => onSend(messages)}
         user={{
           _id: userLoggedIn?.id,
           name: userLoggedIn?.firstName,
           avatar: userLoggedIn?.profileImage,
+          token: userLoggedIn?.token,
+          role: userLoggedIn?.role,
         }}
       />
     </ScrollView>

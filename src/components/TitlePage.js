@@ -26,7 +26,7 @@ const TitlePage = ({
       style={{
         ...styles.container,
         ...{
-          height: subPage ? 100 : getHightByRoute(route.name),
+          height: subPage ? 90 : getHightByRoute(route.name),
           paddingTop: children ? (Platform.OS === 'ios' ? 50 : 0) : 0,
         },
       }}>

@@ -144,7 +144,7 @@ const HouseFilter = () => {
 
   return (
     <View style={styles.filterWrapper}>
-      <Text style={styles.titleFilter}>Las Casas</Text>
+      <Text style={styles.titleFilter}>🏡 Las Casas</Text>
       <ScrollView horizontal={true} style={styles.container}>
         <View style={styles.housesWrapper}>
           {/* {defaultHouseFilters.map((houseFilter, i) => {
