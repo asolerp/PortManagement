@@ -13,7 +13,11 @@ const Tabs = AnimatedTabBarNavigator();
 const TabNavigationWorker = () => {
   const getTabBarVisible = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'NewJob' || routeName === 'JobScreen') {
+    if (
+      routeName === 'NewJob' ||
+      routeName === 'JobScreen' ||
+      routeName === 'NewIncidence'
+    ) {
       return false;
     }
     return true;

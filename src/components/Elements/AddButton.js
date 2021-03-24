@@ -3,10 +3,10 @@ import {View, StyleSheet} from 'react-native';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-const AddButton = () => {
+const AddButton = ({iconName, backColor = '#3E93A8'}) => {
   return (
-    <View style={styles.container}>
-      <Icon name="add" size={30} color={'white'} />
+    <View style={{...styles.container, ...{backgroundColor: backColor}}}>
+      <Icon name={iconName} size={30} color={'white'} />
     </View>
   );
 };
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3E93A8',
     zIndex: 100,
   },
 });

@@ -1,18 +1,22 @@
 import {applyMiddleware, combineReducers, createStore} from 'redux';
+import thunk from 'redux-thunk';
+
 // REDUCERS
+import {userReducer} from './userReducer';
 import {filterReducer} from './filterReducer';
 import {jobFormReducer} from './jobFormReducer';
 import {houseFormReducer} from './houseFormReducer';
-import {userReducer} from './userReducer';
+import {incidenceFormReducer} from './incidenceFormReducer';
 
 const rootReducer = combineReducers({
   filters: filterReducer,
   jobForm: jobFormReducer,
+  incidenceForm: incidenceFormReducer,
   userLoggedIn: userReducer,
   houseForm: houseFormReducer,
 });
 
-let middlewaresToApply = [];
+let middlewaresToApply = [thunk];
 
 if (__DEV__) {
   const createFlipperDebugger = require('redux-flipper').default;

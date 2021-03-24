@@ -1,6 +1,6 @@
 export const setInputForm = (label, value) => {
   return {
-    type: 'SET_FORM',
+    type: 'SET_FORM_JOB',
     label: label,
     payload: value,
   };

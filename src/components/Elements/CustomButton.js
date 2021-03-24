@@ -1,5 +1,11 @@
 import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -17,11 +23,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomButton = ({title, onPress}) => {
+const CustomButton = ({title, onPress, loading = false}) => {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <View style={styles.buttonWrapper}>
-        <Text style={styles.titleStyle}>{title}</Text>
+        {loading ? (
+          <ActivityIndicator size="small" color="white" />
+        ) : (
+          <Text style={styles.titleStyle}>{title}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

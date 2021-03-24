@@ -6,6 +6,7 @@ import messaging from '@react-native-firebase/messaging';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomeWorker from '../../screens/Worker/HomeWorker';
 import JobScreen from '../../screens/Jobs/JobScreen';
+import NewIncidence from '../../screens/Worker/NewIncidence';
 
 const Stack = createStackNavigator();
 const HomeWorkerStack = () => {
@@ -43,6 +44,7 @@ const HomeWorkerStack = () => {
     <Stack.Navigator headerMode="none" initialRouteName={initialRoute}>
       <Stack.Screen name="Home" component={HomeWorker} />
       <Stack.Screen name="JobScreen" component={JobScreen} />
+      <Stack.Screen name="NewIncidence" component={NewIncidence} />
     </Stack.Navigator>
   );
 };

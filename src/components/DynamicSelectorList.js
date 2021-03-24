@@ -12,6 +12,7 @@ import {
 
 // Firebase
 import firestore from '@react-native-firebase/firestore';
+import {useGetFirebase} from '../hooks/useGetFirebase';
 
 import {SearchBar} from 'react-native-elements';
 import ItemList from './ItemList';
@@ -21,33 +22,15 @@ const DynamicSelectorList = ({
   filter,
   searchBy,
   schema,
+  store,
   set,
   get,
   multiple = false,
 }) => {
   const [search, setSearch] = useState();
-  const [list, setList] = useState();
   const [filteredList, setFilteredList] = useState();
 
-  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
-
-  useEffect(() => {
-    const listUsers = [];
-    let query = firestore().collection(collection);
-
-    if (filter) {
-      query = query.where(filter.label, filter.operator, filter.value);
-    }
-
-    query = query
-      .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((documentSnapshot) => {
-          listUsers.push({id: documentSnapshot.id, ...documentSnapshot.data()});
-        });
-      })
-      .then(() => setList(listUsers));
-  }, [filter, collection]);
+  const {list, loading, error} = useGetFirebase(collection);
 
   const handleSearch = (text) => {
     setSearch(text);
@@ -63,8 +46,6 @@ const DynamicSelectorList = ({
     }
   }, [search]);
 
-  console.log('get', get);
-
   const renderItem = ({item}) => {
     return (
       <React.Fragment>
@@ -72,7 +53,7 @@ const DynamicSelectorList = ({
           item={item}
           schema={schema}
           setter={set}
-          getter={job?.[get]?.value || []}
+          getter={get}
           multiple={multiple}
         />
         <View style={styles.separator} />

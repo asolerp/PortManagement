@@ -10,6 +10,7 @@ import auth from '@react-native-firebase/auth';
 import JobsResume from '../components/JobsResume/JobsResume';
 import ProfileBar from '../components/ProfileBar';
 import TitlePage from '../components/TitlePage';
+import IncidencesList from '../components/IncidencesList';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
@@ -52,10 +53,14 @@ const DashboardScreen = () => {
         style={styles.homeBackScreen}>
         <View style={styles.home}>
           <View style={styles.content}>
-            <Text style={styles.todayStyle}>{date.join(' ')}</Text>
-            <Text style={styles.todayStyle}>Trabajos activos</Text>
+            <Text style={styles.todayStyle}>Hoy es {date.join(' ')} ☀️</Text>
+            <Text style={styles.todayStyle}>🛠 Trabajos activos</Text>
             <JobsResume />
-            <Button title="Logout" onPress={logOut} />
+            <Text style={{...styles.todayStyle, ...{marginBottom: 20}}}>
+              🚨 Incidencias
+            </Text>
+            <IncidencesList />
+            {/* <Button title="Logout" onPress={logOut} /> */}
           </View>
         </View>
       </LinearGradient>
@@ -79,7 +84,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   todayStyle: {
-    fontSize: 25,
+    fontSize: 22,
     fontWeight: 'bold',
     marginTop: 20,
   },

@@ -109,7 +109,7 @@ const JobsScreen = () => {
       <StatusBar barStyle="default" />
       <View style={styles.addButton}>
         <TouchableOpacity onPress={() => handleNewJob()}>
-          <AddButton />
+          <AddButton iconName="add" />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.jobsWrapper}>
@@ -197,7 +197,7 @@ const JobsScreen = () => {
 
                         paddingHorizontal: 50,
                       }}>
-                      No tienes ninguna tarea asignada para este día.
+                      No tienes ninguna tarea creada para este día.
                     </Text>
                   </View>
                 )}

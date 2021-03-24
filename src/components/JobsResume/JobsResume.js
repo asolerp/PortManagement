@@ -10,15 +10,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'white',
     borderRadius: 10,
-    marginVertical: 20,
-    elevation: 3,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
+    borderWidth: 1,
+    borderColor: '#EAEAEA',
+    marginTop: 20,
   },
   prioritiesWrapper: {
     flex: 1,

@@ -23,7 +23,7 @@ export const jobFormReducer = (state = INITIAL_JOB_FORM_STATE, action) => {
           mode: action.payload,
         },
       };
-    case 'SET_FORM':
+    case 'SET_FORM_JOB':
       return {
         ...state,
         job: {...state.job, [action.label]: action.payload},

@@ -21,6 +21,7 @@ import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // UI
 import LinearGradient from 'react-native-linear-gradient';
+import PagetLayout from '../../components/PageLayout';
 
 const styles = StyleSheet.create({
   container: {
@@ -72,7 +73,6 @@ const ThirdRoute = () => <Photos />;
 const JobScreen = ({route, navigation}) => {
   const {jobId} = route.params;
   const {document: job, loading, error} = useGetDocFirebase('jobs', jobId);
-  const {list: tasks} = useGetFirebase(`jobs/${jobId}/tasks`);
 
   const [index, setIndex] = React.useState(0);
   const [routes] = useState([
@@ -103,42 +103,31 @@ const JobScreen = ({route, navigation}) => {
     />
   );
   return (
-    <React.Fragment>
-      <StatusBar barStyle="default" />
-      <View style={styles.container}>
-        <TitlePage
-          leftSide={
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <View style={styles.iconWrapper}>
-                <Icon name="arrow-back" size={25} color="#5090A5" />
-              </View>
-            </TouchableOpacity>
-          }
-          subPage
-          title={`Trabajos en ${job?.house && job?.house[0]?.houseName}`}
-          subtitle={job?.task?.desc}
-          color="white"
-        />
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.jobBackScreen}>
-          <View style={styles.jobScreen}>
-            <TabView
-              navigationState={{index, routes}}
-              renderScene={renderScene}
-              renderTabBar={renderTabBar}
-              onIndexChange={setIndex}
-              initialLayout={initialLayout}
-            />
+    <PagetLayout
+      titleLefSide={
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <View style={styles.iconWrapper}>
+            <Icon name="arrow-back" size={25} color="#5090A5" />
           </View>
-        </LinearGradient>
-      </View>
-    </React.Fragment>
+        </TouchableOpacity>
+      }
+      titleProps={{
+        subPage: true,
+        title: `Trabajos en ${job?.house && job?.house[0]?.houseName}`,
+        subtitle: job?.task?.desc,
+        color: 'white',
+      }}>
+      <TabView
+        navigationState={{index, routes}}
+        renderScene={renderScene}
+        renderTabBar={renderTabBar}
+        onIndexChange={setIndex}
+        initialLayout={initialLayout}
+      />
+    </PagetLayout>
   );
 };
 

@@ -6,22 +6,13 @@ import {BottomModal, ModalContent} from 'react-native-modals';
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setInputForm, resetForm} from '../../../store/jobFormActions';
 
-import {
-  Text,
-  View,
-  Platform,
-  TextInput,
-  StyleSheet,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {Text, View, TextInput, StyleSheet} from 'react-native';
 
 import Accordian from '../../../components/Elements/Accordian';
 import InputGroup from '../../../components/Elements/InputGroup';
-import InputWithSwitch from '../../../components/Elements/InputWithSwitch';
 import DynamicSelectorList from '../../../components/DynamicSelectorList';
 import PrioritySelector from '../../../components/Elements/PrioritySelector';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment';
 import 'moment/locale/es';
 
@@ -30,10 +21,8 @@ import {parsePriority} from '../../../utils/parsers';
 // Firebase
 import {newJob} from '../../../firebase/newJob';
 import CustomButton from '../../Elements/CustomButton';
-import {Dimensions} from 'react-native';
 import DateSelector from './DateSelector';
 import CustomInput from '../../Elements/CustomInput';
-import {set} from 'react-native-reanimated';
 
 moment.locale('es');
 
@@ -175,12 +164,13 @@ const JobForm = () => {
             setModalContent(
               <DynamicSelectorList
                 collection="users"
+                store="job"
                 searchBy="firstName"
                 schema={{img: 'profileImage', name: 'firstName'}}
-                get={'workers'}
+                get={job?.workers?.value}
                 set={(workers) => {
                   setInputFormAction('workers', {
-                    ...job.workers,
+                    ...job?.workers,
                     value: workers,
                   });
                 }}
@@ -209,9 +199,10 @@ const JobForm = () => {
             setModalContent(
               <DynamicSelectorList
                 collection="houses"
+                store="job"
                 searchBy="houseName"
                 schema={{img: 'houseImage', name: 'houseName'}}
-                get={'house'}
+                get={job?.house?.value}
                 set={(house) => {
                   setInputFormAction('house', {...job.house, value: house});
                 }}

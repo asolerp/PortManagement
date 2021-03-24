@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   title: {
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: 'bold',
   },
   subtitle: {

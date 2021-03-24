@@ -49,7 +49,7 @@ const HomesScreen = ({navigation}) => {
     <React.Fragment>
       <View style={styles.addButton}>
         <TouchableOpacity onPress={() => handleNewHome()}>
-          <AddButton />
+          <AddButton iconName="add" />
         </TouchableOpacity>
       </View>
       <View style={styles.container}>

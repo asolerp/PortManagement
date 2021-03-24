@@ -1,11 +1,12 @@
 import React, {useEffect} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {useSelector, shallowEqual} from 'react-redux';
-import {View, Text, Button, StyleSheet} from 'react-native';
+import {View, Text, Button, StyleSheet, TouchableOpacity} from 'react-native';
 
 import TitlePage from '../../components/TitlePage';
 import ProfileBar from '../../components/ProfileBar';
 import StatusTaskFilter from '../../components/Filters/StatusTaskFilter';
+import AddButton from '../../components/Elements/AddButton';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
@@ -24,6 +25,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: 'white',
     flex: 1,
+  },
+  addButton: {
+    position: 'absolute',
+    right: 30,
+    bottom: 20,
+    zIndex: 10,
   },
   homeBackScreen: {
     flex: 1,
@@ -85,6 +92,11 @@ const HomeWorker = () => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.addButton}>
+        <TouchableOpacity onPress={() => navigation.navigate('NewIncidence')}>
+          <AddButton iconName="add-alert" backColor="#F5C66D" />
+        </TouchableOpacity>
+      </View>
       <ScrollView contentContainerStyle={{backgroundColor: 'white'}}>
         <TitlePage>
           <ProfileBar />

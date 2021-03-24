@@ -1,6 +1,6 @@
 import {launchImageLibrary} from 'react-native-image-picker';
 
-export const launchImage = (houseSetter) => {
+export const launchImage = (setter) => {
   let options = {
     storageOptions: {
       skipBackup: true,
@@ -17,7 +17,7 @@ export const launchImage = (houseSetter) => {
       console.log('User tapped custom button: ', response.customButton);
     } else {
       console.log('response', JSON.stringify(response));
-      houseSetter({
+      setter({
         fileName: response.fileName,
         filePath: response,
         fileData: response.data,

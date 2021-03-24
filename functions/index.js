@@ -186,3 +186,32 @@ exports.sendPushNotificationNewMessage = functions.firestore
       console.log(err);
     }
   });
+
+exports.sendPushNotificationNewIncidence = functions.firestore
+  .document('incidences/{incidenceId}')
+  .onCreate(async (snap, context) => {
+    try {
+      const incidence = snap.data();
+
+      const adminsSnapshot = await admin
+        .firestore()
+        .collection('users')
+        .where('role', '==', 'admin')
+        .get();
+
+      const adminTokens = adminsSnapshot.docs.map((doc) => doc.data().token);
+
+      let notification = {
+        title: 'Se ha creado una incidencia! 🚨',
+        body: `${incidence.user.firstName} ha creado una nueva incidencia...`,
+      };
+
+      await admin.messaging().sendMulticast({
+        tokens: adminTokens,
+        notification,
+        // data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  });
