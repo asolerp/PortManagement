@@ -7,12 +7,6 @@ import CheckBox from '@react-native-community/checkbox';
 import Avatar from './Avatar';
 
 const ItemList = ({item, schema, setter, getter, multiple}) => {
-  const findItemID = (uid) => {
-    console.log(uid, 'uid');
-    const continer = [...(getter || [])];
-    return continer?.find((i) => i.id === uid);
-  };
-
   const handleChange = (newValue) => {
     const container = [...(getter || [])];
     const ids = [...container, item];
