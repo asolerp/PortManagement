@@ -14,7 +14,6 @@ export const setTask = (task) => {
 };
 
 export const editForm = (task, job) => {
-  console.log(task);
   return {
     type: 'EDIT_FORM',
     payload: {

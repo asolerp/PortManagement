@@ -6,28 +6,7 @@ import CheckBox from '@react-native-community/checkbox';
 //Ui
 import Avatar from './Avatar';
 
-const ItemList = ({item, schema, setter, getter, multiple}) => {
-  const handleChange = (newValue) => {
-    const container = [...(getter || [])];
-    const ids = [...container, item];
-    console.log(ids);
-
-    if (!multiple) {
-      if (!newValue) {
-        setter([]);
-      } else {
-        setter([item]);
-      }
-    } else {
-      if (!newValue) {
-        const updatedItemList = getter?.filter((i) => i.id !== item.id);
-        setter(updatedItemList);
-      } else {
-        setter([...getter, item]);
-      }
-    }
-  };
-
+const ItemList = ({item, schema, handleChange, active}) => {
   return (
     <View style={styles.container}>
       <Avatar uri={item[schema?.img]} size="big" />
@@ -37,7 +16,7 @@ const ItemList = ({item, schema, setter, getter, multiple}) => {
       <View style={styles.checkboxWrapper}>
         <CheckBox
           disabled={false}
-          value={getter.find((i) => i.id === item.uid)}
+          value={active}
           onValueChange={(newValue) => handleChange(newValue)}
         />
       </View>

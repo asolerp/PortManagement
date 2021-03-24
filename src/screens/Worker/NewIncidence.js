@@ -87,6 +87,7 @@ const NewIncidence = () => {
         house: incidence.house.value[0],
         user: user,
         date: new Date(),
+        done: false,
       });
 
       const uploadImages = incidenceImages.map((file) =>
@@ -94,8 +95,6 @@ const NewIncidence = () => {
       );
 
       const imagesURLs = await Promise.all(uploadImages);
-
-      console.log(imagesURLs, 'imagenes');
 
       await updateFirebase(`${newIncidence.id}`, {
         photos: imagesURLs,

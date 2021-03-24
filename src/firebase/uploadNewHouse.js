@@ -23,7 +23,6 @@ export const newHouse = async (data, houseImage, userUID) => {
       houseImage,
       `/PortManagement/Houses/${house.id}`,
     );
-    console.log(uploadImage, 'uploadImage');
     await firestore()
       .collection('houses')
       .doc(house.id)

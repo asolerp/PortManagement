@@ -88,7 +88,6 @@ const Task = ({onSelect, onItemClick, onDelete, job, task, index}) => {
     typeof task?.priority === 'string' ? task?.priority : task?.priority?.value;
 
   const handleTaskSelector = () => {
-    console.log(task.done);
     onSelect(task?.id, {done: !task.done});
   };
 

@@ -11,3 +11,10 @@ export const setStatusTaskFilter = (status) => {
     payload: status,
   };
 };
+
+export const setStatusIncidenceFilter = (status) => {
+  return {
+    type: 'SET_STATUS_INCIDENCE_FILTER',
+    payload: status,
+  };
+};

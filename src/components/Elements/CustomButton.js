@@ -23,10 +23,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomButton = ({title, onPress, loading = false}) => {
+const CustomButton = ({title, onPress, loading = false, disabled = false}) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <View style={styles.buttonWrapper}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
+      disabled={disabled}>
+      <View
+        style={
+          disabled
+            ? {...styles.buttonWrapper, ...{opacity: 0.5}}
+            : {...styles.buttonWrapper}
+        }>
         {loading ? (
           <ActivityIndicator size="small" color="white" />
         ) : (

@@ -38,7 +38,6 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 1,
-    backgroundColor: 'white',
   },
   logo: {
     flex: 1,

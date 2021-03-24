@@ -7,7 +7,6 @@ export const useUpdateFirebase = (coll) => {
   const [error, setError] = useState();
 
   const updateFirebase = async (document, update) => {
-    console.log(document, update);
     setLoading(true);
     try {
       await firestore().collection(coll).doc(document).update(update);

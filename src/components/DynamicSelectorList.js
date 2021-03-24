@@ -16,6 +16,7 @@ import {useGetFirebase} from '../hooks/useGetFirebase';
 
 import {SearchBar} from 'react-native-elements';
 import ItemList from './ItemList';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DynamicSelectorList = ({
   collection,
@@ -29,7 +30,6 @@ const DynamicSelectorList = ({
 }) => {
   const [search, setSearch] = useState();
   const [filteredList, setFilteredList] = useState();
-
   const {list, loading, error} = useGetFirebase(collection);
 
   const handleSearch = (text) => {
@@ -47,19 +47,42 @@ const DynamicSelectorList = ({
   }, [search]);
 
   const renderItem = ({item}) => {
+    const handleChange = (newValue) => {
+      if (!multiple) {
+        if (!newValue) {
+          setFilteredList([]);
+        } else {
+          set([item]);
+        }
+      } else {
+        if (!newValue) {
+          const updatedItemList = get?.filter((i) => i.id !== item.id);
+          set(updatedItemList);
+        } else {
+          console.log(get);
+          set([...(get || []), item]);
+        }
+      }
+    };
+
     return (
       <React.Fragment>
         <ItemList
           item={item}
           schema={schema}
           setter={set}
-          getter={get}
+          handleChange={handleChange}
+          active={get?.some((i) => i.id === item.id)}
           multiple={multiple}
         />
         <View style={styles.separator} />
       </React.Fragment>
     );
   };
+
+  if (loading) {
+    return <Text>No se han encontrado propietarios</Text>;
+  }
 
   return (
     <View style={styles.container}>
@@ -73,20 +96,13 @@ const DynamicSelectorList = ({
           containerStyle={{padding: 0}}
           inputStyle={{fontSize: 14, padding: 0}}
         />
-
-        {/* <ScrollView contentContainerStyle={styles.scrollWrapper}> */}
-        {list ? (
-          <View style={{flex: 1, alignSelf: 'stretch'}}>
-            <FlatList
-              data={filteredList || list}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.id}
-            />
-          </View>
-        ) : (
-          <Text>No se han encontrado propietarios</Text>
-        )}
-        {/* </ScrollView> */}
+        <View style={{flex: 1, alignSelf: 'stretch'}}>
+          <FlatList
+            data={list}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+          />
+        </View>
       </View>
     </View>
   );

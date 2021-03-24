@@ -23,6 +23,7 @@ import {newJob} from '../../../firebase/newJob';
 import CustomButton from '../../Elements/CustomButton';
 import DateSelector from './DateSelector';
 import CustomInput from '../../Elements/CustomInput';
+import {set} from 'react-native-reanimated';
 
 moment.locale('es');
 
@@ -65,13 +66,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const JobFormModalsContainers = {
-  DateSelector: () => <DateSelector />,
-};
-
 const JobForm = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  const [lo, setLo] = useState(false);
 
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
@@ -90,22 +89,75 @@ const JobForm = () => {
     resetFormAction();
   };
 
-  const handleSubmit = () => {
-    const newJobForm = {
-      observations: job?.observations,
-      date: job?.date?._d,
-      time: job?.time?.toLocaleTimeString(),
-      workers: job?.workers?.value,
-      workersId: job?.workers?.value.map((worker) => worker.id),
-      house: job?.house?.value,
-      task: job?.task,
-      priority: job?.priority?.value,
-      done: false,
-    };
-    newJob(newJobForm);
-    cleanForm();
-    navigation.navigate('Jobs');
+  const handleSubmit = async () => {
+    try {
+      setLo(true);
+      const newJobForm = {
+        observations: job?.observations,
+        date: job?.date?._d,
+        time: job?.time?.toLocaleTimeString(),
+        workers: job?.workers?.value,
+        workersId: job?.workers?.value.map((worker) => worker.id),
+        house: job?.house?.value,
+        task: job?.task,
+        priority: job?.priority?.value,
+        done: false,
+      };
+      await newJob(newJobForm);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLo(false);
+      cleanForm();
+      navigation.navigate('Jobs');
+    }
   };
+
+  const modalSwitcher = (modal) => {
+    switch (modal) {
+      case 'houses': {
+        return ListDynamicHouse();
+      }
+      case 'workers': {
+        return ListDynamicWorkers();
+      }
+      case 'date': {
+        return DateTimeSelector();
+      }
+      default: {
+        return ListDynamicWorkers();
+      }
+    }
+  };
+
+  const DateTimeSelector = () => (
+    <DateSelector closeModal={() => setModalVisible(false)} />
+  );
+
+  const ListDynamicHouse = () => (
+    <DynamicSelectorList
+      collection="houses"
+      store="jobForm"
+      searchBy="houseName"
+      schema={{img: 'houseImage', name: 'houseName'}}
+      get={job?.house?.value || []}
+      set={(house) => setInputFormAction('house', {...job.house, value: house})}
+    />
+  );
+
+  const ListDynamicWorkers = () => (
+    <DynamicSelectorList
+      collection="users"
+      store="jobForm"
+      searchBy="firstName"
+      schema={{img: 'profileImage', name: 'firstName'}}
+      get={job?.workers?.value}
+      set={(workers) =>
+        setInputFormAction('workers', {...job.workers, value: workers})
+      }
+      multiple={true}
+    />
+  );
 
   return (
     <View style={[styles.newJobScreen]}>
@@ -120,7 +172,7 @@ const JobForm = () => {
           setModalVisible(false);
         }}>
         <ModalContent style={{flex: 1, alignItems: 'center'}}>
-          {modalContent}
+          {modalContent && modalSwitcher(modalContent)}
         </ModalContent>
       </BottomModal>
       <InputGroup>
@@ -137,9 +189,7 @@ const JobForm = () => {
           }
           iconProps={{name: 'alarm', color: '#55A5AD'}}
           onPress={() => {
-            setModalContent(
-              <DateSelector closeModal={() => setModalVisible(false)} />,
-            );
+            setModalContent('date');
             setModalVisible(true);
           }}
         />
@@ -150,7 +200,7 @@ const JobForm = () => {
           subtitle={
             <View style={{flexDirection: 'row'}}>
               {job.workers?.value?.map((worker, i) => (
-                <View key={i} style={{flexDirection: 'row'}}>
+                <View key={worker.id} style={{flexDirection: 'row'}}>
                   <Text style={styles.subtitle}>{worker.firstName}</Text>
                   {job.workers?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
@@ -161,22 +211,7 @@ const JobForm = () => {
           }
           iconProps={{name: 'alarm', color: '#55A5AD'}}
           onPress={() => {
-            setModalContent(
-              <DynamicSelectorList
-                collection="users"
-                store="job"
-                searchBy="firstName"
-                schema={{img: 'profileImage', name: 'firstName'}}
-                get={job?.workers?.value}
-                set={(workers) => {
-                  setInputFormAction('workers', {
-                    ...job?.workers,
-                    value: workers,
-                  });
-                }}
-                multiple={true}
-              />,
-            );
+            setModalContent('workers');
             setModalVisible(true);
           }}
         />
@@ -185,29 +220,18 @@ const JobForm = () => {
           subtitle={
             <View style={{flexDirection: 'row'}}>
               {job?.house?.value?.map((house, i) => (
-                <React.Fragment>
+                <View key={house.id}>
                   <Text style={styles.subtitle}>{house.houseName}</Text>
                   {job?.house?.value?.length - 1 !== i && (
                     <Text style={styles.subtitle}> & </Text>
                   )}
-                </React.Fragment>
+                </View>
               ))}
             </View>
           }
           iconProps={{name: 'house', color: '#55A5AD'}}
           onPress={() => {
-            setModalContent(
-              <DynamicSelectorList
-                collection="houses"
-                store="job"
-                searchBy="houseName"
-                schema={{img: 'houseImage', name: 'houseName'}}
-                get={job?.house?.value}
-                set={(house) => {
-                  setInputFormAction('house', {...job.house, value: house});
-                }}
-              />,
-            );
+            setModalContent('houses');
             setModalVisible(true);
           }}
         />
@@ -259,7 +283,11 @@ const JobForm = () => {
           alignItems: 'flex-end',
           marginBottom: 40,
         }}>
-        <CustomButton title={'Crear trabajo'} onPress={handleSubmit} />
+        <CustomButton
+          title={'Crear trabajo'}
+          onPress={handleSubmit}
+          loading={lo}
+        />
       </View>
     </View>
   );

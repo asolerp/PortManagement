@@ -46,10 +46,9 @@ const styles = StyleSheet.create({
 
 const DateSelector = ({closeModal}) => {
   const dispatch = useDispatch();
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
   const [dateSelected, setDateSelected] = useState(job?.date);
   const [timeSelected, setTimeSelected] = useState(job?.time);
-
-  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
   const setInputFormAction = useCallback(
     (label, value) => dispatch(setInputForm(label, value)),
@@ -67,31 +66,31 @@ const DateSelector = ({closeModal}) => {
       style={{
         flex: 1,
         width: '100%',
+        height: 200,
       }}>
-      <View>
-        <CalendarStrip
-          scrollable={Platform.OS === 'android'}
-          startingDate={moment(new Date())}
-          selectedDate={dateSelected}
-          onDateSelected={(date) => setDateSelected(date)}
-          style={styles.calendarContainer}
-          iconStyle={{color: 'black'}}
-          leftSelector={
-            <Icon name="keyboard-arrow-left" size={15} color="black" />
-          }
-          rightSelector={
-            <Icon name="keyboard-arrow-right" size={15} color="black" />
-          }
-          dateContainerStyle={{color: 'black'}}
-          dateNameStyle={{color: 'black'}}
-          dateNumberStyle={styles.dateNumberStyle}
-          highlightDateNameStyle={styles.highlightDateNameStyle}
-          highlightDateNumberStyle={styles.highlightDateNumberStyle}
-          highlightDateContainerStyle={styles.highlightDateContainerStyle}
-          calendarHeaderContainerStyle={styles.calendarHeaderContainerStyle}
-          calendarHeaderStyle={styles.calendarHeaderStyle}
-        />
-      </View>
+      <CalendarStrip
+        startingDate={moment(new Date())}
+        selectedDate={dateSelected}
+        onDateSelected={(date) => setDateSelected(date)}
+        scrollable
+        style={styles.calendarContainer}
+        iconStyle={{color: 'black'}}
+        leftSelector={
+          <Icon name="keyboard-arrow-left" size={15} color="black" />
+        }
+        rightSelector={
+          <Icon name="keyboard-arrow-right" size={15} color="black" />
+        }
+        dateContainerStyle={{color: 'black'}}
+        dateNameStyle={{color: 'black'}}
+        dateNumberStyle={styles.dateNumberStyle}
+        highlightDateNameStyle={styles.highlightDateNameStyle}
+        highlightDateNumberStyle={styles.highlightDateNumberStyle}
+        highlightDateContainerStyle={styles.highlightDateContainerStyle}
+        calendarHeaderContainerStyle={styles.calendarHeaderContainerStyle}
+        calendarHeaderStyle={styles.calendarHeaderStyle}
+      />
+
       <View style={styles.parentHr} />
       <DateTimePicker
         testID="dateTimePicker"

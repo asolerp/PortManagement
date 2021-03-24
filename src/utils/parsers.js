@@ -7,6 +7,10 @@ import {
   PRIORITY_HEIGHT,
 } from '../constants/colors';
 
+export const minimizetext = (text) => {
+  return text.length > 40 ? text.substring(0, 40 - 3) + '...' : text;
+};
+
 export const getHightByRoute = (route) => {
   switch (route) {
     case 'Dashboard':

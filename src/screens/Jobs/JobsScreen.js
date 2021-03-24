@@ -59,8 +59,6 @@ const JobsScreen = () => {
     [dispatch],
   );
 
-  console.log('Dots generados', generateCalendarDots(list));
-
   useEffect(() => {
     if (houses === null) {
       const fList = list
@@ -112,45 +110,43 @@ const JobsScreen = () => {
           <AddButton iconName="add" />
         </TouchableOpacity>
       </View>
-      <ScrollView style={styles.jobsWrapper}>
-        <View style={styles.container}>
-          <TitlePage
-            title="Listado de trabajos"
-            subtitle="En esta semana"
-            color="white">
-            <View style={{flex: 1}}>
-              <CalendarStrip
-                startingDate={moment(new Date()).subtract(3, 'days')}
-                markedDates={generateCalendarDots(list)}
-                selectedDate={moment(filterDate) || moment(new Date())}
-                onDateSelected={(date) => setFilterDateAction(date)}
-                style={styles.calendarContainer}
-                scrollable
-                iconStyle={{color: 'white'}}
-                leftSelector={
-                  <Icon name="keyboard-arrow-left" size={15} color="white" />
-                }
-                rightSelector={
-                  <Icon name="keyboard-arrow-right" size={15} color="white" />
-                }
-                dateContainerStyle={{color: 'white'}}
-                dateNameStyle={{color: 'white'}}
-                dateNumberStyle={styles.dateNumberStyle}
-                highlightDateNameStyle={styles.highlightDateNameStyle}
-                highlightDateNumberStyle={styles.highlightDateNumberStyle}
-                highlightDateContainerStyle={styles.highlightDateContainerStyle}
-                calendarHeaderContainerStyle={
-                  styles.calendarHeaderContainerStyle
-                }
-                calendarHeaderStyle={styles.calendarHeaderStyle}
-              />
-            </View>
-          </TitlePage>
-          <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 1, y: 0}}
-            colors={['#126D9B', '#67B26F']}
-            style={styles.jobsBackScreen}>
+      <View style={styles.container}>
+        <TitlePage
+          title="Listado de trabajos"
+          subtitle="En esta semana"
+          color="white">
+          <View style={{flex: 1}}>
+            <CalendarStrip
+              startingDate={moment(new Date()).subtract(3, 'days')}
+              markedDates={generateCalendarDots(list)}
+              selectedDate={moment(filterDate) || moment(new Date())}
+              onDateSelected={(date) => setFilterDateAction(date)}
+              style={styles.calendarContainer}
+              scrollable
+              iconStyle={{color: 'white'}}
+              leftSelector={
+                <Icon name="keyboard-arrow-left" size={15} color="white" />
+              }
+              rightSelector={
+                <Icon name="keyboard-arrow-right" size={15} color="white" />
+              }
+              dateContainerStyle={{color: 'white'}}
+              dateNameStyle={{color: 'white'}}
+              dateNumberStyle={styles.dateNumberStyle}
+              highlightDateNameStyle={styles.highlightDateNameStyle}
+              highlightDateNumberStyle={styles.highlightDateNumberStyle}
+              highlightDateContainerStyle={styles.highlightDateContainerStyle}
+              calendarHeaderContainerStyle={styles.calendarHeaderContainerStyle}
+              calendarHeaderStyle={styles.calendarHeaderStyle}
+            />
+          </View>
+        </TitlePage>
+        <LinearGradient
+          start={{x: 0, y: 0}}
+          end={{x: 1, y: 0}}
+          colors={['#126D9B', '#67B26F']}
+          style={styles.jobsBackScreen}>
+          <ScrollView style={styles.jobsWrapper}>
             <View style={styles.jobsScreen}>
               <View style={styles.housesWrapper}>
                 <HouseFilter />
@@ -203,9 +199,9 @@ const JobsScreen = () => {
                 )}
               </View>
             </View>
-          </LinearGradient>
-        </View>
-      </ScrollView>
+          </ScrollView>
+        </LinearGradient>
+      </View>
     </React.Fragment>
   );
 };
@@ -228,7 +224,6 @@ const styles = StyleSheet.create({
   },
   jobsWrapper: {
     backgroundColor: 'white',
-    borderRadius: 20,
   },
   jobsListWrapper: {
     paddingHorizontal: 20,

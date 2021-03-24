@@ -8,12 +8,9 @@ const TabBar = ({tabs, children}) => {
   const [tabWidth, setTabWidth] = useState(0);
   const [tabsPositions, setTabsPositions] = useState([]);
 
-  console.log(tabWidth, tabsPositions);
   const transRef = createRef();
 
   const handleTab = (index) => {
-    // console.log(transRef.current.measure);
-    // transRef.current.animateNextTransition();
     setTabPosition(index);
   };
 

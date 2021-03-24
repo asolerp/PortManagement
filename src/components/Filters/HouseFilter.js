@@ -39,13 +39,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     width: widthFilter,
     height: 120,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#6b6b6b',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
   },
   avatarContainer: {
     position: 'absolute',
@@ -130,7 +123,6 @@ const HouseFilter = () => {
   };
 
   const handleSetHouse = (house) => {
-    console.log('hola');
     if (isInArray(house.id)) {
       const housesWithoutID = houses?.filter((id) => {
         return id !== house.id;

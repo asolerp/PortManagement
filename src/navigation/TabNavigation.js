@@ -2,9 +2,9 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 // Screens
-import DashboardScreen from '../screens/DashboardScreen';
 import HomesStack from './HomesStack';
 import JobsStack from './JobsStack';
+import DashboardStack from './DashboardStack';
 
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
@@ -42,7 +42,7 @@ const TabNavigation = () => {
       }}>
       <Tabs.Screen
         name="Dashboard"
-        component={DashboardScreen}
+        component={DashboardStack}
         options={{
           tabBarIcon: ({focused, color, size}) => (
             <Icon

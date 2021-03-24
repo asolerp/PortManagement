@@ -11,12 +11,13 @@ import JobsResume from '../components/JobsResume/JobsResume';
 import ProfileBar from '../components/ProfileBar';
 import TitlePage from '../components/TitlePage';
 import IncidencesList from '../components/IncidencesList';
-
+import StatusIncidence from '../components/Filters/StatusIncidence';
 // UI
 import LinearGradient from 'react-native-linear-gradient';
 
 // Utils
 import moment from 'moment';
+import {ScrollView} from 'react-native';
 
 const DashboardScreen = () => {
   const dispatch = useDispatch();
@@ -42,35 +43,43 @@ const DashboardScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <TitlePage>
-        <ProfileBar />
-      </TitlePage>
+    <React.Fragment>
+      <View style={{backgroundColor: 'white'}}>
+        <TitlePage>
+          <ProfileBar />
+        </TitlePage>
+      </View>
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 1, y: 0}}
         colors={['#126D9B', '#67B26F']}
         style={styles.homeBackScreen}>
-        <View style={styles.home}>
-          <View style={styles.content}>
-            <Text style={styles.todayStyle}>Hoy es {date.join(' ')} ☀️</Text>
-            <Text style={styles.todayStyle}>🛠 Trabajos activos</Text>
-            <JobsResume />
-            <Text style={{...styles.todayStyle, ...{marginBottom: 20}}}>
-              🚨 Incidencias
-            </Text>
-            <IncidencesList />
-            {/* <Button title="Logout" onPress={logOut} /> */}
+        <ScrollView style={styles.container}>
+          <View style={styles.home}>
+            <View style={styles.content}>
+              <Text style={{...styles.todayStyle, ...{marginVertical: 20}}}>
+                Hoy es {date.join(' ')} ☀️
+              </Text>
+              <Text style={styles.todayStyle}>🛠 Trabajos activos</Text>
+              <JobsResume />
+              <View style={styles.filterWrapper}>
+                <Text style={{...styles.todayStyle}}>🚨 Incidencias</Text>
+                <StatusIncidence />
+              </View>
+              <IncidencesList />
+              <Button title="Logout" onPress={logOut} />
+            </View>
           </View>
-        </View>
+        </ScrollView>
       </LinearGradient>
-    </View>
+    </React.Fragment>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   homeBackScreen: {
     flex: 1,
@@ -83,10 +92,15 @@ const styles = StyleSheet.create({
   content: {
     paddingHorizontal: 20,
   },
+  filterWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 20,
+  },
   todayStyle: {
     fontSize: 22,
     fontWeight: 'bold',
-    marginTop: 20,
   },
 });
 
