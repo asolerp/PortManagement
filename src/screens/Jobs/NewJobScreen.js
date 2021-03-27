@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import {
   View,
   Keyboard,
@@ -7,20 +7,23 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
-
-import TitlePage from '../../components/TitlePage';
-
-import {Text} from 'react-native';
 import JobForm from '../../components/Forms/Jobs/JobForm';
 import TaskForm from '../../components/Forms/Jobs/TaskJob';
 
 // UI
-import LinearGradient from 'react-native-linear-gradient';
+import CustomButton from '../../components/Elements/CustomButton';
+import PagetLayout from '../../components/PageLayout';
+
+// Firebase
+import {resetForm} from '../../store/jobFormActions';
+import {newJob} from '../../firebase/newJob';
 
 const HideKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -29,43 +32,72 @@ const HideKeyboard = ({children}) => (
 );
 
 const NewJobScreen = ({route, navigation}) => {
+  const dispatch = useDispatch();
   const {taskName} = route.params;
+  const [loading, setLoading] = useState();
+
+  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
+
+  const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
+
+  const cleanForm = () => {
+    resetFormAction();
+  };
+
+  const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      const newJobForm = {
+        observations: job?.observations,
+        date: job?.date?._d,
+        time: job?.time?.toLocaleTimeString(),
+        workers: job?.workers?.value,
+        workersId: job?.workers?.value.map((worker) => worker.id),
+        houseId: job?.house?.value[0].id,
+        house: job?.house?.value,
+        task: job?.task,
+        priority: job?.priority?.value,
+        done: false,
+      };
+      await newJob(newJobForm);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+      cleanForm();
+      navigation.navigate('Jobs');
+    }
+  };
 
   return (
-    <React.Fragment>
-      <StatusBar barStyle="default" />
-      <View style={styles.container}>
-        <TitlePage
-          leftSide={
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <View style={styles.iconWrapper}>
-                <Icon name="arrow-back" size={25} color="#5090A5" />
-              </View>
-            </TouchableOpacity>
-          }
-          subPage
-          title={`Nuevo trabajo de ${taskName.toLowerCase()}`}
-          color="white"
-        />
-
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.jobBackScreen}>
-          {/* <HideKeyboard> */}
-          <View style={styles.jobScreen}>
-            <KeyboardAwareScrollView>
-              <JobForm />
-            </KeyboardAwareScrollView>
+    <PagetLayout
+      titleLefSide={
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <View style={styles.iconWrapper}>
+            <Icon name="arrow-back" size={25} color="#5090A5" />
           </View>
-          {/* </HideKeyboard> */}
-        </LinearGradient>
+        </TouchableOpacity>
+      }
+      footer={
+        <CustomButton
+          loading={loading}
+          title="Crear incidencia"
+          onPress={() => handleSubmit()}
+        />
+      }
+      titleProps={{
+        title: `Nuevo trabajo de ${taskName.toLowerCase()}`,
+        subPage: true,
+      }}>
+      <View style={styles.jobScreen}>
+        <KeyboardAwareScrollView>
+          <JobForm />
+        </KeyboardAwareScrollView>
       </View>
-    </React.Fragment>
+    </PagetLayout>
   );
 };
 
@@ -98,13 +130,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#BCBCBC',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
   },
   asignList: {
     flex: 1,

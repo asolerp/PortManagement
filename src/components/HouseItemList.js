@@ -1,4 +1,5 @@
 import React from 'react';
+import {ImageBackground} from 'react-native';
 
 import {View, Text, Image, StyleSheet} from 'react-native';
 
@@ -11,7 +12,6 @@ const Owner = ({owner}) => {
           uri: owner?.profileImage,
         }}
       />
-      <Text>{owner?.firstName}</Text>
     </View>
   );
 };
@@ -19,76 +19,95 @@ const Owner = ({owner}) => {
 const HouseItemList = ({house}) => {
   return (
     <View style={styles.container}>
-      <View style={styles.avatarWrapper}>
-        <Image
-          style={styles.avatar}
-          source={{
-            uri: house?.houseImage,
-          }}
-        />
-      </View>
-      <View style={styles.infoWrapper}>
-        <Text style={styles.name}>{house.houseName}</Text>
-        <Text style={styles.street}>{house.street}</Text>
-        <View>
-          <Text style={styles.ownerTitle}>Propietario</Text>
+      <ImageBackground
+        style={styles.avatarWrapper}
+        imageStyle={{borderRadius: 20}}
+        source={{
+          uri: house?.houseImage,
+        }}>
+        <View style={styles.leftTop}>
+          <Text style={styles.name}>{house?.houseName}</Text>
+          <Text style={styles.ownerTitle}>{house?.owner?.firstName}</Text>
+          <Text style={styles.street}>Calle{house?.street}</Text>
+          <Text style={styles.ownerTitle}>{house?.owner?.phone}</Text>
+        </View>
+        <View style={styles.left} />
+        <View style={styles.right}>
           <Owner owner={house.owner} />
         </View>
-      </View>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: '85%',
+    width: '100%',
+    height: 180,
     flexDirection: 'row',
     backgroundColor: 'white',
     alignSelf: 'stretch',
-    borderRadius: 10,
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: 'black',
-    shadowOpacity: 0.2,
-    shadowRadius: 4,
     marginTop: 10,
     marginBottom: 10,
   },
   avatarWrapper: {
-    flex: 2,
+    flex: 1,
+    flexDirection: 'row',
   },
   ownerWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    position: 'absolute',
+    right: 10,
+    top: 10,
   },
-  infoWrapper: {
-    flex: 3,
+  leftTop: {
+    position: 'absolute',
+    width: '50%',
+    height: 180,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+    backgroundColor: 'rgba(79,138, 163, .5)',
+    paddingLeft: 10,
+    paddingTop: 10,
+  },
+  left: {
+    flex: 1,
+    // backgroundColor: 'red',
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
+  },
+  right: {
+    flex: 1,
+    // backgroundColor: 'blue',
     justifyContent: 'space-around',
     alignSelf: 'stretch',
     padding: 10,
   },
   ownerTitle: {
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginTop: 10,
+    color: 'white',
   },
   ownerImage: {
-    width: 30,
-    height: 30,
+    width: 60,
+    height: 60,
     borderRadius: 100,
-    marginRight: 10,
+    borderWidth: 3,
+    borderColor: 'white',
+  },
+  street: {
+    color: 'white',
   },
   avatar: {
     flex: 1,
     height: 150,
     resizeMode: 'cover',
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
+    borderTopLeftRadius: 20,
+    borderBottomLeftRadius: 20,
   },
   name: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 25,
+    color: 'white',
   },
 });
 

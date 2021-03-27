@@ -7,6 +7,7 @@ import HomeWorkerStack from './HomeWorkerStack';
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {Platform} from 'react-native';
+import ProfileScreen from '../../screens/ProfileScreen';
 
 const Tabs = AnimatedTabBarNavigator();
 
@@ -56,6 +57,20 @@ const TabNavigationWorker = () => {
             />
           ),
         })}
+      />
+      <Tabs.Screen
+        name="Perfil"
+        component={ProfileScreen}
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="person"
+              size={size ? size : 24}
+              color={focused ? color : '#3E93A8'}
+              focused={focused}
+            />
+          ),
+        }}
       />
     </Tabs.Navigator>
   );

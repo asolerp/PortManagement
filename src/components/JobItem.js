@@ -165,8 +165,12 @@ const JobItem = ({job, onPress}) => {
               <Text style={styles.date}>
                 🕜 {moment(job.date.toDate()).format('LL')}
               </Text>
-              {job?.workers?.map((worker) => (
-                <Avatar key={worker.id} uri={worker.profileImage} overlap />
+              {job?.workers?.map((worker, i) => (
+                <Avatar
+                  key={worker.id || i}
+                  uri={worker.profileImage}
+                  overlap
+                />
               ))}
             </View>
             <Text style={styles.title}>

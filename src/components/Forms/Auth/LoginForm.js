@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useForm, Controller} from 'react-hook-form';
 
 import {Text, View, StyleSheet} from 'react-native';
-import GradientButton from '../../Elements/GradientButton';
+import CustomButton from '../../Elements/CustomButton';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
@@ -12,23 +12,19 @@ import Input from '../../Elements/Input';
 import {set} from 'react-native-reanimated';
 
 const LoginForm = () => {
-  const {control, handleSubmit, errors, reset} = useForm();
+  const {control, handleSubmit} = useForm();
+  const [error, setError] = useState();
   const [loadingLogin, setLoadingLogin] = useState(false);
 
   const signIn = async (data) => {
     setLoadingLogin(true);
     try {
-      auth().signInWithEmailAndPassword(data.username, data.password);
+      await auth().signInWithEmailAndPassword(data.username, data.password);
     } catch (err) {
-      if (err.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
-      }
-
-      if (err.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
-      }
-
-      console.error(err);
+      console.log('error!!!');
+      setError(
+        'Ha ocurrido un error, asegúrase de que el email y la contraseña son correcotos',
+      );
     } finally {
       setLoadingLogin(false);
     }
@@ -67,13 +63,14 @@ const LoginForm = () => {
       />
 
       <Text style={styles.forgotText}>He olvidado mi contraseña</Text>
-      <GradientButton
-        colors={['#126D9B', '#126D9B']}
-        wrapperStyle={styles.gradientButton}
-        onPress={handleSubmit(signIn)}
-        title="Login"
-        loading={loadingLogin}
-      />
+      <View style={styles.buttonWrapper}>
+        <CustomButton
+          onPress={handleSubmit(signIn)}
+          title="Login"
+          loading={loadingLogin}
+        />
+      </View>
+      <View>{error && <Text style={styles.errorMessage}>{error}</Text>}</View>
     </View>
   );
 };
@@ -88,6 +85,14 @@ const styles = StyleSheet.create({
   },
   gradientButton: {
     justifyContent: 'flex-end',
+  },
+  buttonWrapper: {
+    marginTop: 20,
+  },
+  errorMessage: {
+    marginTop: 10,
+    color: 'white',
+    fontWeight: '400',
   },
 });
 

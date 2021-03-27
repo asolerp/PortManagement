@@ -1,10 +1,9 @@
 import React, {useState, useCallback} from 'react';
 
-import {useNavigation} from '@react-navigation/native';
 import {BottomModal, ModalContent} from 'react-native-modals';
 
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
-import {setInputForm, resetForm} from '../../../store/jobFormActions';
+import {setInputForm} from '../../../store/jobFormActions';
 
 import {Text, View, TextInput, StyleSheet} from 'react-native';
 
@@ -19,11 +18,9 @@ import 'moment/locale/es';
 import {parsePriority} from '../../../utils/parsers';
 
 // Firebase
-import {newJob} from '../../../firebase/newJob';
-import CustomButton from '../../Elements/CustomButton';
+
 import DateSelector from './DateSelector';
 import CustomInput from '../../Elements/CustomInput';
-import {set} from 'react-native-reanimated';
 
 moment.locale('es');
 
@@ -68,9 +65,6 @@ const styles = StyleSheet.create({
 
 const JobForm = () => {
   const dispatch = useDispatch();
-  const navigation = useNavigation();
-
-  const [lo, setLo] = useState(false);
 
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
@@ -79,39 +73,9 @@ const JobForm = () => {
     [dispatch],
   );
 
-  const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
-
   // Form State
   const [modalContent, setModalContent] = useState();
   const [modalVisible, setModalVisible] = useState(false);
-
-  const cleanForm = () => {
-    resetFormAction();
-  };
-
-  const handleSubmit = async () => {
-    try {
-      setLo(true);
-      const newJobForm = {
-        observations: job?.observations,
-        date: job?.date?._d,
-        time: job?.time?.toLocaleTimeString(),
-        workers: job?.workers?.value,
-        workersId: job?.workers?.value.map((worker) => worker.id),
-        house: job?.house?.value,
-        task: job?.task,
-        priority: job?.priority?.value,
-        done: false,
-      };
-      await newJob(newJobForm);
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLo(false);
-      cleanForm();
-      navigation.navigate('Jobs');
-    }
-  };
 
   const modalSwitcher = (modal) => {
     switch (modal) {
@@ -276,19 +240,6 @@ const JobForm = () => {
           value={job.description}
         />
       </InputGroup>
-      <View
-        style={{
-          flex: 1,
-          flexDirection: 'row',
-          alignItems: 'flex-end',
-          marginBottom: 40,
-        }}>
-        <CustomButton
-          title={'Crear trabajo'}
-          onPress={handleSubmit}
-          loading={lo}
-        />
-      </View>
     </View>
   );
 };

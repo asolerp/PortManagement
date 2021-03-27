@@ -16,14 +16,31 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 12,
   },
+  clearStyle: {
+    padding: 12,
+  },
   titleStyle: {
-    color: 'white',
     textAlign: 'center',
     fontSize: 15,
   },
 });
 
-const CustomButton = ({title, onPress, loading = false, disabled = false}) => {
+const CustomButton = ({
+  title,
+  onPress,
+  loading = false,
+  disabled = false,
+  type,
+}) => {
+  const parseTypeStyle = () => {
+    switch (type) {
+      case 'clear':
+        return 'clearStyle';
+      default:
+        return 'buttonWrapper';
+    }
+  };
+
   return (
     <TouchableOpacity
       style={styles.container}
@@ -32,13 +49,24 @@ const CustomButton = ({title, onPress, loading = false, disabled = false}) => {
       <View
         style={
           disabled
-            ? {...styles.buttonWrapper, ...{opacity: 0.5}}
-            : {...styles.buttonWrapper}
+            ? {...styles[parseTypeStyle(type)], ...{opacity: 0.5}}
+            : {...styles[parseTypeStyle(type)]}
         }>
         {loading ? (
-          <ActivityIndicator size="small" color="white" />
+          <ActivityIndicator
+            size="small"
+            color={type === 'clear' ? '#2A7BA5' : 'white'}
+          />
         ) : (
-          <Text style={styles.titleStyle}>{title}</Text>
+          <Text
+            style={{
+              ...styles.titleStyle,
+              ...{
+                color: type === 'clear' ? '#2A7BA5' : 'white',
+              },
+            }}>
+            {title}
+          </Text>
         )}
       </View>
     </TouchableOpacity>

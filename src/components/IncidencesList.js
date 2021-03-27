@@ -14,8 +14,10 @@ import InfoIcon from './InfoIcon';
 const styles = StyleSheet.create({
   container: {
     width: '100%',
+    flex: 1,
   },
   incidenceWrapper: {
+    flex: 1,
     flexDirection: 'row',
     marginBottom: 10,
     borderColor: '#DEDEDE',
@@ -25,7 +27,6 @@ const styles = StyleSheet.create({
   },
   infoWrapper: {
     marginTop: 10,
-    flexDirection: 'row',
   },
   rightWrapper: {
     flex: 1,
@@ -63,15 +64,17 @@ const IncidencesList = () => {
         style={styles.incidenceWrapper}
         onPress={() => handlePressIncidence()}>
         <View>
+          <View style={{marginBottom: 10}}>
+            <Text style={{...styles.bold, flexShrink: 1}}>
+              🏡 {item?.house?.houseName}
+            </Text>
+          </View>
           <Text style={styles.title}>⚠️ {item?.title} </Text>
           <Text>{minimizetext(item?.incidence)}</Text>
           <View style={styles.infoWrapper}>
             <Text style={{marginRight: 10}}>
               <Text>👮‍♂️ Informador: </Text>
               <Text style={styles.bold}>{item?.user?.firstName}</Text>
-            </Text>
-            <Text>
-              <Text style={styles.bold}>🏡 {item?.house?.houseName}</Text>
             </Text>
           </View>
           <View style={{width: 110, marginTop: 10}}>
@@ -99,6 +102,7 @@ const IncidencesList = () => {
   return (
     <View style={styles.container}>
       <FlatList
+        scrollEnabled={false}
         data={list.filter((inci) => inci.done === statusIncidenceFilter)}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}

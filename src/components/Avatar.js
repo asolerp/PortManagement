@@ -31,6 +31,9 @@ const Avatar = ({
 }) => {
   const parseSize = (sizeImage) => {
     switch (sizeImage) {
+      case 'xxl': {
+        return 150;
+      }
       case 'small': {
         return 25;
       }

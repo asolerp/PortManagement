@@ -14,7 +14,6 @@ const widthFilter = 90;
 
 const styles = StyleSheet.create({
   filterWrapper: {
-    paddingHorizontal: 20,
     marginTop: 10,
   },
   container: {
@@ -139,32 +138,6 @@ const HouseFilter = () => {
       <Text style={styles.titleFilter}>🏡 Las Casas</Text>
       <ScrollView horizontal={true} style={styles.container}>
         <View style={styles.housesWrapper}>
-          {/* {defaultHouseFilters.map((houseFilter, i) => {
-          return (
-            <TouchableOpacity
-              key={i}
-              onPress={() => handleSetLocalFilter(houseFilter.filter)}>
-              <View style={styles.houseFilter}>
-                <View
-                  style={
-                    ([styles.avatarContainer],
-                    localFilterActive(houseFilter.filter) &&
-                      styles.activeFilter)
-                  }>
-                  <Avatar border size="big" uri={houseFilter.houseImage} />
-                </View>
-                <View />
-                <View style={styles.textWrapper}>
-                  <View style={styles.textHouse}>
-                    <Text style={styles.textStyle}>
-                      {houseFilter.houseName}
-                    </Text>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          );
-        })} */}
           {list.map((house, i) => {
             return (
               <TouchableOpacity

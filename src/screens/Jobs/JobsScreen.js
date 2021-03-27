@@ -32,6 +32,8 @@ import {defaultTextTitle} from '../../styles/common';
 // Utils
 import moment from 'moment';
 import {generateCalendarDots} from '../../utils/parsers';
+import PagetLayout from '../../components/PageLayout';
+import {FlatList} from 'react-native';
 
 const JobsScreen = () => {
   const dispatch = useDispatch();
@@ -102,6 +104,19 @@ const JobsScreen = () => {
     );
   }
 
+  const renderItem = ({item}) => {
+    return (
+      <JobItem
+        job={item}
+        onPress={() =>
+          navigation.navigate('JobScreen', {
+            jobId: item.id,
+          })
+        }
+      />
+    );
+  };
+
   return (
     <React.Fragment>
       <StatusBar barStyle="default" />
@@ -110,11 +125,8 @@ const JobsScreen = () => {
           <AddButton iconName="add" />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <TitlePage
-          title="Listado de trabajos"
-          subtitle="En esta semana"
-          color="white">
+      <PagetLayout
+        titleChildren={
           <View style={{flex: 1}}>
             <CalendarStrip
               startingDate={moment(new Date()).subtract(3, 'days')}
@@ -140,68 +152,50 @@ const JobsScreen = () => {
               calendarHeaderStyle={styles.calendarHeaderStyle}
             />
           </View>
-        </TitlePage>
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.jobsBackScreen}>
-          <ScrollView style={styles.jobsWrapper}>
-            <View style={styles.jobsScreen}>
-              <View style={styles.housesWrapper}>
-                <HouseFilter />
-              </View>
-              <View style={styles.jobsListWrapper}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}>
-                  <Text style={{...defaultTextTitle}}>🚀 Trabajos</Text>
-                  <StatusTaskFilter />
-                </View>
-                {filteredList.length > 0 ? (
-                  <View style={{marginTop: 20}}>
-                    {filteredList
-                      ?.filter((job) => job.done === statusTaskFilter)
-                      .map((item) => (
-                        <JobItem
-                          job={item}
-                          key={item.id}
-                          onPress={() =>
-                            navigation.navigate('JobScreen', {
-                              jobId: item.id,
-                            })
-                          }
-                        />
-                      ))}
-                  </View>
-                ) : (
-                  <View
-                    style={{
-                      height: 200,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: '600',
-                        color: '#2d2d2d',
-                        textAlign: 'center',
-
-                        paddingHorizontal: 50,
-                      }}>
-                      No tienes ninguna tarea creada para este día.
+        }
+        titleProps={{
+          title: 'Listado de trabajos',
+          subtitle: 'En esta semana',
+          color: 'white',
+        }}>
+        <View style={styles.jobsScreen}>
+          <View style={styles.housesWrapper}>
+            <HouseFilter />
+          </View>
+          <View style={styles.jobsListWrapper}>
+            <View style={styles.jobsTitleWrapper}>
+              <Text style={{...defaultTextTitle}}>🚀 Trabajos</Text>
+              <StatusTaskFilter />
+            </View>
+            {filteredList.length > 0 ? (
+              <View style={{marginTop: 20, flex: 1}}>
+                {filteredList?.filter((job) => job.done === statusTaskFilter)
+                  .length === 0 ? (
+                  <View style={styles.infoMessageWrapper}>
+                    <Text style={styles.infoMessageStyle}>
+                      No tienes ninguna en este estado.
                     </Text>
                   </View>
+                ) : (
+                  <FlatList
+                    data={filteredList?.filter(
+                      (job) => job.done === statusTaskFilter,
+                    )}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                  />
                 )}
               </View>
-            </View>
-          </ScrollView>
-        </LinearGradient>
-      </View>
+            ) : (
+              <View style={styles.infoMessageWrapper}>
+                <Text style={styles.infoMessageStyle}>
+                  No tienes ninguna tarea creada para este día.
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </PagetLayout>
     </React.Fragment>
   );
 };
@@ -211,22 +205,28 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'transparent',
   },
+  jobsWrapper: {
+    flex: 1,
+  },
   jobsBackScreen: {
     flex: 10,
   },
   jobsScreen: {
     flex: 1,
+    flexBasis: 'auto',
     backgroundColor: 'white',
     borderTopRightRadius: 50,
   },
   housesWrapper: {
     height: 200,
   },
-  jobsWrapper: {
-    backgroundColor: 'white',
+  jobsTitleWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   jobsListWrapper: {
-    paddingHorizontal: 20,
+    flex: 1,
   },
   addButton: {
     position: 'absolute',
@@ -261,6 +261,18 @@ const styles = StyleSheet.create({
   },
   highlightDateContainerStyle: {
     backgroundColor: 'white',
+  },
+  infoMessageWrapper: {
+    height: 200,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoMessageStyle: {
+    fontSize: 15,
+    fontWeight: '600',
+    color: '#2d2d2d',
+    textAlign: 'center',
+    paddingHorizontal: 50,
   },
 });
 

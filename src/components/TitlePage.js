@@ -40,35 +40,49 @@ const TitlePage = ({
         }}>
         {title ? (
           <React.Fragment>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              {leftSide && (
-                <View style={{marginTop: Platform.OS === 'ios' ? 40 : 0}}>
-                  {leftSide}
-                </View>
-              )}
-              <View style={{flex: 1, marginLeft: 20}}>
-                <Text
-                  adjustsFontSizeToFit
-                  numberOfLines={1}
+            <View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                }}>
+                {leftSide && (
+                  <View
+                    style={{
+                      ...{
+                        width: 30,
+                        marginTop: Platform.OS === 'ios' ? 40 : 0,
+                      },
+                    }}>
+                    {leftSide}
+                  </View>
+                )}
+                <View
                   style={{
-                    ...styles.title,
-                    ...{
-                      color: color,
-                      marginTop: leftSide
-                        ? Platform.OS === 'ios'
-                          ? 40
-                          : 0
-                        : 0,
-                      // fontSize: leftSide ? 20 : 35,
-                      textAlign: leftSide ? 'center' : 'left',
-                    },
+                    ...styles.box,
+                    ...{marginHorizontal: leftSide ? 20 : 0},
                   }}>
-                  {title}
-                </Text>
+                  <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={{
+                      ...styles.title,
+                      ...{
+                        color: color,
+                        marginTop: leftSide
+                          ? Platform.OS === 'ios'
+                            ? 40
+                            : 0
+                          : 0,
+                        // fontSize: leftSide ? 20 : 35,
+                        textAlign: leftSide ? 'center' : 'left',
+                      },
+                    }}>
+                    {title}
+                  </Text>
+                </View>
+                <View style={{...{width: 30}}} />
+              </View>
+              <View>
                 {subtitle && !subPage && (
                   <Text
                     style={{
@@ -81,13 +95,17 @@ const TitlePage = ({
                 {subtitle && subPage && (
                   <Text
                     style={{
-                      ...{color: color, textAlign: 'center', fontSize: 12},
+                      ...{
+                        color: color,
+                        textAlign: 'center',
+                        fontSize: 13,
+                        marginBottom: 5,
+                      },
                     }}>
                     {subtitle}
                   </Text>
                 )}
               </View>
-              {leftSide && <View />}
             </View>
           </React.Fragment>
         ) : (
@@ -115,6 +133,11 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     paddingHorizontal: 20,
     borderBottomLeftRadius: 50,
+  },
+  box: {
+    flexBasis: 1,
+    flexGrow: 1,
+    flexShrink: 1,
   },
   titleWrapper: {
     justifyContent: 'flex-end',

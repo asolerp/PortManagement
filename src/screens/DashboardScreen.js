@@ -4,7 +4,6 @@ import {View, StyleSheet, Text, Button} from 'react-native';
 import {useDispatch} from 'react-redux';
 
 //Firebase
-import auth from '@react-native-firebase/auth';
 
 // Components
 import JobsResume from '../components/JobsResume/JobsResume';
@@ -34,14 +33,6 @@ const DashboardScreen = () => {
     [dispatch],
   );
 
-  const logOut = async () => {
-    try {
-      await auth().signOut();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   return (
     <React.Fragment>
       <View style={{backgroundColor: 'white'}}>
@@ -54,7 +45,7 @@ const DashboardScreen = () => {
         end={{x: 1, y: 0}}
         colors={['#126D9B', '#67B26F']}
         style={styles.homeBackScreen}>
-        <ScrollView style={styles.container}>
+        <ScrollView style={styles.container} nestedScrollEnabled>
           <View style={styles.home}>
             <View style={styles.content}>
               <Text style={{...styles.todayStyle, ...{marginVertical: 20}}}>
@@ -67,7 +58,6 @@ const DashboardScreen = () => {
                 <StatusIncidence />
               </View>
               <IncidencesList />
-              <Button title="Logout" onPress={logOut} />
             </View>
           </View>
         </ScrollView>
@@ -80,13 +70,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
+    borderTopRightRadius: 50,
   },
   homeBackScreen: {
     flex: 1,
   },
   home: {
     backgroundColor: 'white',
-    borderTopRightRadius: 50,
     flex: 5,
   },
   content: {

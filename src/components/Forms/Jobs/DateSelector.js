@@ -47,8 +47,17 @@ const styles = StyleSheet.create({
 const DateSelector = ({closeModal}) => {
   const dispatch = useDispatch();
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
-  const [dateSelected, setDateSelected] = useState(job?.date);
-  const [timeSelected, setTimeSelected] = useState(job?.time);
+  const {filterDate} = useSelector(
+    ({filters: {filterDate}}) => ({filterDate}),
+    shallowEqual,
+  );
+
+  const initialTime = new Date();
+
+  const [dateSelected, setDateSelected] = useState(filterDate);
+  const [timeSelected, setTimeSelected] = useState(
+    job?.time || initialTime.setHours(8, 0),
+  );
 
   const setInputFormAction = useCallback(
     (label, value) => dispatch(setInputForm(label, value)),
@@ -56,8 +65,8 @@ const DateSelector = ({closeModal}) => {
   );
 
   const handleSubmit = () => {
-    setInputFormAction('date', dateSelected);
-    setInputFormAction('time', timeSelected);
+    // setInputFormAction('date', dateSelected);
+    // setInputFormAction('time', moment(timeSelected));
     closeModal();
   };
 
@@ -69,8 +78,7 @@ const DateSelector = ({closeModal}) => {
         height: 200,
       }}>
       <CalendarStrip
-        startingDate={moment(new Date())}
-        selectedDate={dateSelected}
+        selectedDate={moment(filterDate)}
         onDateSelected={(date) => setDateSelected(date)}
         scrollable
         style={styles.calendarContainer}
@@ -94,7 +102,7 @@ const DateSelector = ({closeModal}) => {
       <View style={styles.parentHr} />
       <DateTimePicker
         testID="dateTimePicker"
-        value={timeSelected || new Date()}
+        value={timeSelected}
         is24Hour={true}
         mode={'time'}
         locale="es-ES"

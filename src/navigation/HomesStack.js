@@ -3,7 +3,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import HomesScreen from '../screens/Homes/HomesScreen';
 import NewHomeScreen from '../screens/Homes/NewHomeScreen';
-import UserListSelectorScreen from '../screens/UserListSelectorScreen';
+import HomeScreen from '../screens/Homes/HomeScreen';
 
 const Stack = createStackNavigator();
 
@@ -18,7 +18,7 @@ export default function HomesStack() {
         }}
       />
       <Stack.Screen name="NewHome" component={NewHomeScreen} />
-      <Stack.Screen name="UserList" component={UserListSelectorScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
     </Stack.Navigator>
   );
 }

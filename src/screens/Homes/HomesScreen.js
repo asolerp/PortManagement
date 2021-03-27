@@ -16,34 +16,32 @@ import AddButton from '../../components/Elements/AddButton';
 import TitlePage from '../../components/TitlePage';
 import HouseItemList from '../../components/HouseItemList';
 import {Dimensions} from 'react-native';
+import PagetLayout from '../../components/PageLayout';
+
+import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 const HomesScreen = ({navigation}) => {
-  const [housesList, setHousesList] = useState([]);
-
-  const onResult = (QuerySnapshot) => {
-    setHousesList(QuerySnapshot.docs.map((doc) => doc.data()));
-  };
-
-  const onError = (error) => {
-    console.error(error);
-  };
+  const {list: houses, loading: loadingHouses, error} = useGetFirebase(
+    'houses',
+  );
 
   const handleNewHome = () => {
     navigation.navigate('NewHome');
   };
 
   const renderItem = ({item}) => {
-    return <HouseItemList house={item} />;
+    return (
+      <TouchableOpacity
+        style={{width: '100%'}}
+        onPress={() =>
+          navigation.navigate('HomeScreen', {
+            houseId: item.id,
+          })
+        }>
+        <HouseItemList house={item} />
+      </TouchableOpacity>
+    );
   };
-
-  useEffect(() => {
-    const subscriber = firestore()
-      .collection('houses')
-      .onSnapshot(onResult, onError);
-
-    // Stop listening for updates when no longer required
-    return () => subscriber();
-  }, []);
 
   return (
     <React.Fragment>
@@ -52,14 +50,19 @@ const HomesScreen = ({navigation}) => {
           <AddButton iconName="add" />
         </TouchableOpacity>
       </View>
-      <View style={styles.container}>
-        <TitlePage title="Casas" color="black" />
-        <View style={styles.homesScreen}>
-          <ScrollView contentContainerStyle={styles.scrollWrapper}>
-            {housesList ? (
+      <PagetLayout
+        titleLefSide={true}
+        titleProps={{
+          leftSide: true,
+          title: 'Casas',
+          subPage: false,
+        }}>
+        <View style={styles.container}>
+          <View style={styles.homesScreen}>
+            {houses ? (
               <SafeAreaView style={{alignSelf: 'stretch'}}>
                 <FlatList
-                  data={housesList}
+                  data={houses}
                   renderItem={renderItem}
                   keyExtractor={(item) => item.id}
                   contentContainerStyle={{
@@ -71,9 +74,9 @@ const HomesScreen = ({navigation}) => {
             ) : (
               <Text>No se han encontrado casas</Text>
             )}
-          </ScrollView>
+          </View>
         </View>
-      </View>
+      </PagetLayout>
     </React.Fragment>
   );
 };
@@ -81,14 +84,12 @@ const HomesScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
-    marginTop: Dimensions.get('window').height / 10,
     marginBottom: 15,
   },
   addButton: {
     position: 'absolute',
     right: 30,
-    bottom: 120,
+    bottom: 40,
     zIndex: 10,
   },
   homesScreen: {

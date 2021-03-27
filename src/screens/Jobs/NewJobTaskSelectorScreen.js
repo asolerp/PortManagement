@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 import TaskItem from '../../components/Elements/TaskItem';
 import {setTask} from '../../store/jobFormActions';
+import PagetLayout from '../../components/PageLayout';
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +51,6 @@ const styles = StyleSheet.create({
 
 const NewJobTaskSelectorScreen = ({navigation}) => {
   const dispatch = useDispatch();
-
   const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
 
   const {list: tasks, loading: loadingTasks} = useGetFirebase('tasks');
@@ -67,59 +67,49 @@ const NewJobTaskSelectorScreen = ({navigation}) => {
   };
 
   return (
-    <React.Fragment>
-      <View style={styles.container}>
-        <TitlePage
-          leftSide={
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}>
-              <View style={styles.iconWrapper}>
-                <Icon name="arrow-back" size={25} color="#5090A5" />
-              </View>
-            </TouchableOpacity>
-          }
-          subPage
-          title="Nuevo trabajo"
-          color="white"
-        />
-
-        <LinearGradient
-          start={{x: 0, y: 0}}
-          end={{x: 1, y: 0}}
-          colors={['#126D9B', '#67B26F']}
-          style={styles.taskSelectorBackScreen}>
-          {loadingTasks ? (
-            <View style={styles.taskSelectorScreen}>
-              <Text>Cargando tareas..</Text>
-            </View>
-          ) : (
-            <View style={styles.taskSelectorScreen}>
-              {tasks
-                .sort(function (a, b) {
-                  if (a.name > b.name) {
-                    return 1;
-                  }
-                  if (a.name < b.name) {
-                    return -1;
-                  }
-                  return 0;
-                })
-                .map((task) => (
-                  <TaskItem
-                    key={task.id}
-                    icon={task?.icon}
-                    name={task?.name}
-                    active={job?.task?.name === task?.name}
-                    onPress={() => handlerTaskClick(task)}
-                  />
-                ))}
-            </View>
-          )}
-        </LinearGradient>
-      </View>
-    </React.Fragment>
+    <PagetLayout
+      titleLefSide={
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <View style={styles.iconWrapper}>
+            <Icon name="arrow-back" size={25} color="#5090A5" />
+          </View>
+        </TouchableOpacity>
+      }
+      titleProps={{
+        title: 'Nuevo trabajo',
+        subPage: true,
+      }}>
+      {loadingTasks ? (
+        <View style={styles.taskSelectorScreen}>
+          <Text>Cargando tareas..</Text>
+        </View>
+      ) : (
+        <View style={styles.taskSelectorScreen}>
+          {tasks
+            .sort(function (a, b) {
+              if (a.name > b.name) {
+                return 1;
+              }
+              if (a.name < b.name) {
+                return -1;
+              }
+              return 0;
+            })
+            .map((task) => (
+              <TaskItem
+                key={task.id}
+                icon={task?.icon}
+                name={task?.name}
+                active={job?.task?.name === task?.name}
+                onPress={() => handlerTaskClick(task)}
+              />
+            ))}
+        </View>
+      )}
+    </PagetLayout>
   );
 };
 

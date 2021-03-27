@@ -1,26 +1,13 @@
 import React, {useState} from 'react';
-import {
-  Text,
-  View,
-  StatusBar,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
-
-import TitlePage from '../../components/TitlePage';
+import {Text, StyleSheet, Dimensions} from 'react-native';
 
 import {Info, Messages, Photos} from '../../components/Job';
 
 import {TabView, TabBar, SceneMap} from 'react-native-tab-view';
 
-import Icon from 'react-native-vector-icons/MaterialIcons';
-
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
-import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // UI
-import LinearGradient from 'react-native-linear-gradient';
 import PagetLayout from '../../components/PageLayout';
 
 const styles = StyleSheet.create({
@@ -48,21 +35,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopRightRadius: 50,
     // height: '100%',
-  },
-  iconWrapper: {
-    width: 30,
-    height: 30,
-    borderRadius: 100,
-    backgroundColor: 'white',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowOffset: {
-      height: 0,
-      width: 0,
-    },
-    shadowColor: '#BCBCBC',
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
   },
 });
 
@@ -104,16 +76,7 @@ const JobScreen = ({route, navigation}) => {
   );
   return (
     <PagetLayout
-      titleLefSide={
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}>
-          <View style={styles.iconWrapper}>
-            <Icon name="arrow-back" size={25} color="#5090A5" />
-          </View>
-        </TouchableOpacity>
-      }
+      backButton
       titleProps={{
         subPage: true,
         title: `Trabajos en ${job?.house && job?.house[0]?.houseName}`,

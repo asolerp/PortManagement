@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
 const InputGroup = ({children}) => {
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={{flex: 1}}>
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
       <View style={styles.container}>
         {Array.isArray(children) ? (
           <View style={styles.inputContainer}>

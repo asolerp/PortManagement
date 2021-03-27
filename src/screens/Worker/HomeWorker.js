@@ -8,9 +8,6 @@ import ProfileBar from '../../components/ProfileBar';
 import StatusTaskFilter from '../../components/Filters/StatusTaskFilter';
 import AddButton from '../../components/Elements/AddButton';
 
-//Firebase
-import auth from '@react-native-firebase/auth';
-
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 // UI
@@ -82,14 +79,6 @@ const HomeWorker = () => {
   const date = moment(new Date()).format('LL').split(' ');
   date[2] = date[2][0].toUpperCase() + date[2].slice(1);
 
-  const logOut = async () => {
-    try {
-      await auth().signOut();
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   return (
     <View style={styles.container}>
       <View style={styles.addButton}>
@@ -129,7 +118,6 @@ const HomeWorker = () => {
                     />
                   ))}
               </View>
-              <Button title="Logout" onPress={logOut} />
             </View>
           </View>
         </LinearGradient>

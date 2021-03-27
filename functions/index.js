@@ -215,3 +215,59 @@ exports.sendPushNotificationNewIncidence = functions.firestore
       console.log(err);
     }
   });
+
+exports.updateProfileImage = functions.firestore
+  .document('users/{userId}')
+  .onUpdate(async (change, context) => {
+    console.log('Updating images');
+    const userAfter = change.after.data();
+    // Create a new batch instance
+    const batch = admin.firestore().batch();
+
+    try {
+      const querySnapshot = await admin
+        .firestore()
+        .collection('jobs')
+        .where('workersId', 'array-contains', context.params.userId)
+        .get();
+      querySnapshot.forEach((doc) => {
+        const job = doc.data();
+        const findUserIndex = job.workers.findIndex(
+          (w) => w.id === context.params.userId,
+        );
+        job.workers[findUserIndex] = {...userAfter, id: context.params.userId};
+        const docRef = admin.firestore().collection('jobs').doc(doc.id);
+        batch.update(docRef, job);
+      });
+      await batch.commit();
+    } catch (err) {
+      console.log(err);
+    }
+  });
+
+exports.updateHouseImageJobs = functions.firestore
+  .document('houses/{houseId}')
+  .onUpdate(async (change, context) => {
+    console.log('Updating images');
+    const houseAfter = change.after.data();
+    // Create a new batch instance
+    const batch = admin.firestore().batch();
+
+    try {
+      const querySnapshot = await admin
+        .firestore()
+        .collection('jobs')
+        .where('houseId', '==', context.params.houseId)
+        .get();
+      querySnapshot.forEach((doc) => {
+        const job = doc.data();
+        console.log('job', job);
+        job.house[0] = {...houseAfter, id: context.params.houseId};
+        const docRef = admin.firestore().collection('jobs').doc(doc.id);
+        batch.update(docRef, job);
+      });
+      await batch.commit();
+    } catch (err) {
+      console.log(err);
+    }
+  });

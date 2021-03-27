@@ -19,6 +19,10 @@ export const getHightByRoute = (route) => {
       return 180;
     case 'Jobs':
       return 230;
+    case 'Homes':
+      return 100;
+    case 'Perfil':
+      return 100;
     default:
       return 250;
   }
