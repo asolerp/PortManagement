@@ -7,10 +7,12 @@ import {filterReducer} from './filterReducer';
 import {jobFormReducer} from './jobFormReducer';
 import {houseFormReducer} from './houseFormReducer';
 import {incidenceFormReducer} from './incidenceFormReducer';
+import {modalReducer} from './modalReducer';
 
 const rootReducer = combineReducers({
   filters: filterReducer,
   jobForm: jobFormReducer,
+  modal: modalReducer,
   incidenceForm: incidenceFormReducer,
   userLoggedIn: userReducer,
   houseForm: houseFormReducer,

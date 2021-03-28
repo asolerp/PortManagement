@@ -109,7 +109,6 @@ const styles = StyleSheet.create({
   newJobScreen: {
     flex: 1,
     paddingTop: 20,
-    paddingHorizontal: 30,
     justifyContent: 'flex-start',
   },
   jobBackScreen: {

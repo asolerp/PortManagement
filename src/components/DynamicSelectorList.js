@@ -1,36 +1,26 @@
 import React, {useState, useEffect} from 'react';
-import {useSelector, shallowEqual} from 'react-redux';
 
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  ScrollView,
-  Button,
-} from 'react-native';
+import {View, Text, FlatList, StyleSheet} from 'react-native';
 
 // Firebase
-import firestore from '@react-native-firebase/firestore';
 import {useGetFirebase} from '../hooks/useGetFirebase';
 
 import {SearchBar} from 'react-native-elements';
 import ItemList from './ItemList';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const DynamicSelectorList = ({
   collection,
-  filter,
   searchBy,
+  order,
+  where,
   schema,
-  store,
   set,
   get,
   multiple = false,
 }) => {
   const [search, setSearch] = useState();
   const [filteredList, setFilteredList] = useState();
-  const {list, loading, error} = useGetFirebase(collection);
+  const {list, loading, error} = useGetFirebase(collection, order, where);
 
   const handleSearch = (text) => {
     setSearch(text);
@@ -50,20 +40,22 @@ const DynamicSelectorList = ({
     const handleChange = (newValue) => {
       if (!multiple) {
         if (!newValue) {
-          setFilteredList([]);
+          set([]);
         } else {
+          console.log(item, 'item');
           set([item]);
         }
       } else {
         if (!newValue) {
-          const updatedItemList = get?.filter((i) => i.id !== item.id);
+          const updatedItemList = get?.filter((i) => i?.id !== item?.id);
           set(updatedItemList);
         } else {
-          console.log(get);
           set([...(get || []), item]);
         }
       }
     };
+
+    console.log(get?.some((i) => i?.id === item?.id));
 
     return (
       <React.Fragment>
@@ -72,7 +64,7 @@ const DynamicSelectorList = ({
           schema={schema}
           setter={set}
           handleChange={handleChange}
-          active={get?.some((i) => i.id === item.id)}
+          active={get?.some((i) => i?.id === item?.id)}
           multiple={multiple}
         />
         <View style={styles.separator} />

@@ -28,7 +28,7 @@ const HouseItemList = ({house}) => {
         <View style={styles.leftTop}>
           <Text style={styles.name}>{house?.houseName}</Text>
           <Text style={styles.ownerTitle}>{house?.owner?.firstName}</Text>
-          <Text style={styles.street}>Calle{house?.street}</Text>
+          <Text style={styles.street}>{house?.street}</Text>
           <Text style={styles.ownerTitle}>{house?.owner?.phone}</Text>
         </View>
         <View style={styles.left} />

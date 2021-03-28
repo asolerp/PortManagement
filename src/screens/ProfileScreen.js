@@ -29,6 +29,8 @@ const styles = StyleSheet.create({
     flex: 2,
     justifyContent: 'center',
     alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 40,
   },
   iconContainer: {
     position: 'absolute',
@@ -55,7 +57,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 3,
-    paddingHorizontal: 20,
     justifyContent: 'flex-start',
   },
   inputLabel: {
@@ -84,7 +85,6 @@ const ProfileScreen = () => {
   const handleEdit = async () => {
     try {
       setEditLoading(true);
-
       if (newImage) {
         const uploadImage = await upload(
           newImage,

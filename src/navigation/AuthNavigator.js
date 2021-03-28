@@ -8,6 +8,7 @@ import {View, StyleSheet, StatusBar, Dimensions} from 'react-native';
 
 import SignInStack from './SignInStack';
 import SignOutStack from './SignOutStack';
+import Modal from '../components/Modal';
 
 //Firebase
 import auth from '@react-native-firebase/auth';
@@ -112,6 +113,7 @@ const AuthNavigator = () => {
 
   return user ? (
     <React.Fragment>
+      <Modal />
       <StatusBar barStyle="light-content" />
       <View style={styles.appBackground}>
         <View style={styles.background}>

@@ -101,12 +101,17 @@ const IncidencesList = () => {
 
   return (
     <View style={styles.container}>
-      <FlatList
-        scrollEnabled={false}
-        data={list.filter((inci) => inci.done === statusIncidenceFilter)}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id}
-      />
+      {list.filter((inci) => inci.done === statusIncidenceFilter).length ===
+      0 ? (
+        <Text>No tienes incidencias en este estado</Text>
+      ) : (
+        <FlatList
+          scrollEnabled={false}
+          data={list.filter((inci) => inci.done === statusIncidenceFilter)}
+          renderItem={renderItem}
+          keyExtractor={(item) => item.id}
+        />
+      )}
     </View>
   );
 };

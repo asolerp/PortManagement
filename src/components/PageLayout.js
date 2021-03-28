@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   pageWrapper: {
+    flex: 1,
     backgroundColor: 'white',
     borderTopRightRadius: 50,
     paddingHorizontal: 20,
@@ -83,10 +84,7 @@ const PagetLayout = ({
         end={{x: 1, y: 0}}
         colors={['#126D9B', '#67B26F']}
         style={styles.pageBackScreen}>
-        <ScrollView
-          nestedScrollEnabled
-          contentContainerStyle={{flex: 1}}
-          style={styles.pageWrapper}>
+        <ScrollView style={styles.pageWrapper}>
           <View style={styles.pageScreen}>{children}</View>
         </ScrollView>
       </LinearGradient>

@@ -17,7 +17,7 @@ const ImageLoader = ({onPress, image}) => {
         ) : (
           <ImageBackground
             source={{uri: image?.fileUri}}
-            imageStyle={{borderRadius: 10}}
+            imageStyle={{borderRadius: 10, borderTopRightRadius: 40}}
             style={styles.houseImage}
           />
         )}
@@ -30,12 +30,16 @@ const styles = StyleSheet.create({
   container: {
     height: 170,
     borderRadius: 10,
+    borderTopRightRadius: 40,
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'stretch',
     marginBottom: 20,
+    borderWidth: 1,
+    borderColor: '#EAEAEA',
   },
+  selectImageStyle: {},
   houseImage: {
     height: 170,
     borderRadius: 10,

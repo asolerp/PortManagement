@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     flex: 1,
     height: '100%',
     paddingTop: 20,
-    paddingHorizontal: 30,
     justifyContent: 'flex-start',
   },
   asignList: {},
@@ -113,6 +112,13 @@ const JobForm = () => {
     <DynamicSelectorList
       collection="users"
       store="jobForm"
+      where={[
+        {
+          label: 'role',
+          operator: '==',
+          condition: 'worker',
+        },
+      ]}
       searchBy="firstName"
       schema={{img: 'profileImage', name: 'firstName'}}
       get={job?.workers?.value}
@@ -127,7 +133,7 @@ const JobForm = () => {
     <View style={[styles.newJobScreen]}>
       <BottomModal
         modalStyle={{borderRadius: 30}}
-        height={0.5}
+        height={0.9}
         visible={modalVisible}
         onSwipeOut={(event) => {
           setModalVisible(false);
