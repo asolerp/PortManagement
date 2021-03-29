@@ -6438,6 +6438,11 @@ react-native-grid-image-viewer@^1.0.7:
   resolved "https://registry.yarnpkg.com/react-native-grid-image-viewer/-/react-native-grid-image-viewer-1.0.7.tgz#3ba093450ec7ad9814876e0f31b63933ddccfa65"
   integrity sha512-XyUZiAhhQ3t+d8Rtb6m7h9I4K2vb6nNvNfnI6Et7z5Xp88hpuC2DtzbHuc/RLvxjhXwOrWxCD8oWdJJYbLraIA==
 
+react-native-image-blur-loading@^1.1.4:
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/react-native-image-blur-loading/-/react-native-image-blur-loading-1.1.4.tgz#45bf14ac131aa2ee5a741dca9590c9ca9a58a71a"
+  integrity sha512-kkNBQk2SpEm1fI7vkyn6vbqgZ3OeUWFo9urI/yye8biB3pouyPxaa+JXqO0qcYx51ZYeMUe0IYtrcrEYMdRZNw==
+
 react-native-image-crop-picker@^0.36.0:
   version "0.36.0"
   resolved "https://registry.yarnpkg.com/react-native-image-crop-picker/-/react-native-image-crop-picker-0.36.0.tgz#adf5a5677c3ae0e0bdaa18c73d880db2190e3023"

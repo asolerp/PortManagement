@@ -35,31 +35,20 @@ const Filter = ({text, onPress, color, active}) => {
   );
 };
 
-const StatusIncidence = () => {
-  const dispatch = useDispatch();
-  const {statusIncidenceFilter} = useSelector(
-    ({filters: {statusIncidenceFilter}}) => ({statusIncidenceFilter}),
-    shallowEqual,
-  );
-
-  const handleStatusFilter = useCallback(
-    (payload) => dispatch(setStatusIncidenceFilter(payload)),
-    [dispatch],
-  );
-
+const StatusIncidence = ({onChangeFilter, state}) => {
   return (
     <View style={styles.container}>
       <Filter
         text="Resuletas"
         color="#7dd891"
-        active={statusIncidenceFilter === true}
-        onPress={() => handleStatusFilter(true)}
+        active={state === true}
+        onPress={() => onChangeFilter(true)}
       />
       <Filter
         text="Sin resolver"
         color="#ED7A7A"
-        active={statusIncidenceFilter === false}
-        onPress={() => handleStatusFilter(false)}
+        active={state === false}
+        onPress={() => onChangeFilter(false)}
       />
     </View>
   );

@@ -43,13 +43,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const IncidencesList = () => {
-  const {statusIncidenceFilter} = useSelector(
-    ({filters: {statusIncidenceFilter}}) => ({statusIncidenceFilter}),
-    shallowEqual,
-  );
-
-  const {list, loading, error} = useGetFirebase('incidences');
+const IncidencesList = ({list, loading}) => {
   const navigation = useNavigation();
 
   const renderItem = ({item}) => {
@@ -101,13 +95,12 @@ const IncidencesList = () => {
 
   return (
     <View style={styles.container}>
-      {list.filter((inci) => inci.done === statusIncidenceFilter).length ===
-      0 ? (
+      {list.length === 0 ? (
         <Text>No tienes incidencias en este estado</Text>
       ) : (
         <FlatList
           scrollEnabled={false}
-          data={list.filter((inci) => inci.done === statusIncidenceFilter)}
+          data={list}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
         />

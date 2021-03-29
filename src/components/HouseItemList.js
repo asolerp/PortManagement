@@ -2,6 +2,7 @@ import React from 'react';
 import {ImageBackground} from 'react-native';
 
 import {View, Text, Image, StyleSheet} from 'react-native';
+import ImageBlurLoading from 'react-native-image-blur-loading';
 
 const Owner = ({owner}) => {
   return (
@@ -19,12 +20,13 @@ const Owner = ({owner}) => {
 const HouseItemList = ({house}) => {
   return (
     <View style={styles.container}>
-      <ImageBackground
-        style={styles.avatarWrapper}
-        imageStyle={{borderRadius: 20}}
-        source={{
-          uri: house?.houseImage,
-        }}>
+      <View style={{flex: 1, flexDirection: 'row'}}>
+        <ImageBlurLoading
+          withIndicator
+          thumbnailSource={{uri: house?.thumbail}}
+          source={{uri: house?.houseImage}}
+          style={styles.avatarWrapper}
+        />
         <View style={styles.leftTop}>
           <Text style={styles.name}>{house?.houseName}</Text>
           <Text style={styles.ownerTitle}>{house?.owner?.firstName}</Text>
@@ -35,7 +37,7 @@ const HouseItemList = ({house}) => {
         <View style={styles.right}>
           <Owner owner={house.owner} />
         </View>
-      </ImageBackground>
+      </View>
     </View>
   );
 };
@@ -51,8 +53,11 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   avatarWrapper: {
-    flex: 1,
     flexDirection: 'row',
+    width: '100%',
+    height: 180,
+    borderRadius: 20,
+    position: 'absolute',
   },
   ownerWrapper: {
     position: 'absolute',
@@ -71,16 +76,14 @@ const styles = StyleSheet.create({
   },
   left: {
     flex: 1,
-    // backgroundColor: 'red',
     borderTopLeftRadius: 20,
     borderBottomLeftRadius: 20,
+    zIndex: 1,
   },
   right: {
     flex: 1,
-    // backgroundColor: 'blue',
     justifyContent: 'space-around',
     alignSelf: 'stretch',
-    padding: 10,
   },
   ownerTitle: {
     fontWeight: 'bold',
@@ -93,6 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 100,
     borderWidth: 3,
     borderColor: 'white',
+    zIndex: 10,
   },
   street: {
     color: 'white',

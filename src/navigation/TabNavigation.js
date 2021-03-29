@@ -10,13 +10,19 @@ import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {Platform} from 'react-native';
 import ProfileScreen from '../screens/ProfileScreen';
+import IncidencesStack from './IncidencesStack';
 
 const Tabs = AnimatedTabBarNavigator();
 
 const TabNavigation = () => {
   const getTabBarVisible = (route) => {
     const routeName = getFocusedRouteNameFromRoute(route);
-    if (routeName === 'NewJob' || routeName === 'JobScreen') {
+    if (
+      routeName === 'NewJob' ||
+      routeName === 'NewJobTaskSelector' ||
+      routeName === 'JobScreen' ||
+      routeName === 'Incidence'
+    ) {
       return false;
     }
     return true;
@@ -99,6 +105,21 @@ const TabNavigation = () => {
           ),
         }}
       /> */}
+      <Tabs.Screen
+        name="Incidencias"
+        component={IncidencesStack}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisible(route),
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="priority-high"
+              size={size ? size : 24}
+              color={focused ? color : '#3E93A8'}
+              focused={focused}
+            />
+          ),
+        })}
+      />
       <Tabs.Screen
         name="Perfil"
         component={ProfileScreen}

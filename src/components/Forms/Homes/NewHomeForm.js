@@ -1,44 +1,32 @@
 import React, {useCallback, useState} from 'react';
-import {
-  ModalPortal,
-  BottomModal,
-  Modal,
-  ModalContent,
-} from 'react-native-modals';
+import {BottomModal, ModalContent} from 'react-native-modals';
 
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {changeState, setModalContent} from '../../../store/modalActions';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+
+import {useSelector, shallowEqual} from 'react-redux';
 
 import {useNavigation} from '@react-navigation/native';
 import {useForm, Controller} from 'react-hook-form';
 
-import {
-  KeyboardAvoidingView,
-  ActivityIndicator,
-  TextInput,
-  StyleSheet,
-  ScrollView,
-  Text,
-  Alert,
-  View,
-} from 'react-native';
+import {TextInput, StyleSheet, Text, Alert, View} from 'react-native';
 
 // UI
 import ImageLoader from '../../Elements/ImageLoader';
-import UserSelector from '../../Elements/UserSelector';
 import Input from '../../Elements/Input';
-
-// Firebase
-import {newHouse} from '../../../firebase/uploadNewHouse';
-import {useGetFirebase} from '../../../hooks/useGetFirebase';
-
-// Utils
-import {launchImage} from '../../../utils/imageFunctions';
 import InputGroup from '../../Elements/InputGroup';
 import CustomInput from '../../Elements/CustomInput';
 import DynamicSelectorList from '../../DynamicSelectorList';
+import CustomButton from '../../Elements/CustomButton';
+
+// Firebase
+import {newHouse} from '../../../firebase/uploadNewHouse';
+
+// Utils
+import {launchImage} from '../../../utils/imageFunctions';
 
 const NewFormHome = () => {
+  const navigation = useNavigation();
+
   const {users} = useSelector(
     ({houseForm: {users}}) => ({users}),
     shallowEqual,
@@ -55,7 +43,7 @@ const NewFormHome = () => {
   const onSubmit = async (data) => {
     setLoading(true);
     try {
-      await newHouse({...data, owner: users[0]}, houseImage, users[0].uid);
+      await newHouse({...data, owner: owner[0]}, houseImage);
       reset();
       setHouseImage(null);
       Alert.alert(
@@ -66,6 +54,7 @@ const NewFormHome = () => {
       console.log(err);
     } finally {
       setLoading(false);
+      navigation.goBack();
     }
   };
 
@@ -99,127 +88,130 @@ const NewFormHome = () => {
           />
         </ModalContent>
       </BottomModal>
-      <KeyboardAvoidingView enabled behavior="padding">
-        <ScrollView style={styles.scrollWrapper}>
-          <ImageLoader
-            onPress={() => launchImage(setHouseImage)}
-            image={houseImage}
-          />
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <InputGroup>
-                <TextInput
-                  style={{height: 40}}
-                  placeholder="Nombre de la casa"
-                  name="houseName"
-                  error={errors.houseName}
-                  onChangeText={(text) => onChange(text)}
-                  value={value}
-                />
-              </InputGroup>
-            )}
-            name="houseName"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <InputGroup>
-                <TextInput
-                  style={{height: 40}}
-                  placeholder="Dirección"
-                  name="street"
-                  error={errors.street}
-                  onChangeText={(text) => onChange(text)}
-                  value={value}
-                />
-              </InputGroup>
-            )}
-            name="street"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          <Controller
-            control={control}
-            render={({onChange, onBlur, value}) => (
-              <InputGroup>
-                <TextInput
-                  style={{height: 40}}
-                  placeholder="Municipio"
-                  name="municipio"
-                  error={errors.street}
-                  onChangeText={(text) => onChange(text)}
-                  value={value}
-                />
-              </InputGroup>
-            )}
-            name="municipio"
-            rules={{required: true}}
-            defaultValue=""
-          />
-          <View style={styles.multipleLineInputs}>
-            <View style={styles.multiLineElementLeft}>
-              <Controller
-                control={control}
-                render={({onChange, onBlur, value}) => (
-                  <InputGroup>
-                    <TextInput
-                      style={{height: 40}}
-                      placeholder="Código postal"
-                      name="cp"
-                      error={errors.street}
-                      onChangeText={(text) => onChange(text)}
-                      value={value}
-                    />
-                  </InputGroup>
-                )}
-                name="cp"
-                rules={{required: true}}
-                defaultValue=""
-              />
-            </View>
-            <View style={styles.multiLineElementRight}>
-              <Controller
-                control={control}
-                render={({onChange, onBlur, value}) => (
-                  <InputGroup>
-                    <TextInput
-                      style={{height: 40}}
-                      placeholder="Teléfono"
-                      name="phone"
-                      error={errors.street}
-                      onChangeText={(text) => onChange(text)}
-                      value={value}
-                    />
-                  </InputGroup>
-                )}
-                name="phone"
-                rules={{required: true}}
-                defaultValue=""
-              />
-            </View>
-          </View>
-          <Text style={styles.titleStyle}>🔑 Propietario</Text>
-          <InputGroup>
-            <CustomInput
-              title="Propietario"
-              subtitle={
-                owner.length > 0 && (
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{flexDirection: 'row'}}>
-                      <Text style={styles.subtitle}>{owner[0]?.firstName}</Text>
-                    </View>
-                  </View>
-                )
-              }
-              iconProps={{name: 'person', color: '#55A5AD'}}
-              onPress={() => setModalVisible(true)}
+      <KeyboardAwareScrollView>
+        <ImageLoader
+          onPress={() => launchImage(setHouseImage)}
+          image={houseImage}
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              placeholder="Nombre de la casa"
+              name="houseName"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.houseName}
             />
-          </InputGroup>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          )}
+          name="houseName"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              placeholder="Dirección"
+              name="street"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.street}
+            />
+          )}
+          name="street"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <Input
+              onBlur={onBlur}
+              onChangeText={(v) => onChange(v)}
+              value={value}
+              placeholder="Municipio"
+              name="municipio"
+              inputStyles={styles.newHomeInput}
+              labelStyle={styles.newHomeLabel}
+              error={errors.municipio}
+            />
+          )}
+          name="municipio"
+          rules={{required: true}}
+          defaultValue=""
+        />
+        <View style={styles.multipleLineInputs}>
+          <View style={styles.multiLineElementLeft}>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={(v) => onChange(v)}
+                  value={value}
+                  placeholder="Código postal"
+                  name="cp"
+                  inputStyles={styles.newHomeInput}
+                  labelStyle={styles.newHomeLabel}
+                  error={errors.cp}
+                />
+              )}
+              name="cp"
+              rules={{required: true}}
+              defaultValue=""
+            />
+          </View>
+          <View style={styles.multiLineElementRight}>
+            <Controller
+              control={control}
+              render={({onChange, onBlur, value}) => (
+                <Input
+                  onBlur={onBlur}
+                  onChangeText={(v) => onChange(v)}
+                  value={value}
+                  placeholder="Teléfono"
+                  name="phone"
+                  inputStyles={styles.newHomeInput}
+                  labelStyle={styles.newHomeLabel}
+                  error={errors.phone}
+                />
+              )}
+              name="phone"
+              rules={{required: true}}
+              defaultValue=""
+            />
+          </View>
+        </View>
+        <Text style={styles.titleStyle}>🔑 Propietario</Text>
+        <InputGroup>
+          <CustomInput
+            title="Propietario"
+            subtitle={
+              owner.length > 0 && (
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{flexDirection: 'row'}}>
+                    <Text style={styles.subtitle}>{owner[0]?.firstName}</Text>
+                  </View>
+                </View>
+              )
+            }
+            iconProps={{name: 'person', color: '#55A5AD'}}
+            onPress={() => setModalVisible(true)}
+          />
+        </InputGroup>
+        <CustomButton
+          loading={loading}
+          title="Crear casa"
+          onPress={handleSubmit(onSubmit)}
+        />
+      </KeyboardAwareScrollView>
     </React.Fragment>
   );
 };

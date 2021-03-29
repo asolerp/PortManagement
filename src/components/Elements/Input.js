@@ -2,7 +2,7 @@ import React from 'react';
 import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 const Input = ({
-  label,
+  placeholder,
   name,
   value,
   onChange,
@@ -12,43 +12,37 @@ const Input = ({
   ...args
 }) => {
   return (
-    <View style={styles.container}>
-      <TextInput
-        placeholder={error ? 'El campo es obligatorio' : label}
-        placeholderTextColor={error ? 'red' : 'white'}
-        autoCapitalize="none"
-        value={value}
-        style={
-          error
-            ? {...styles.input, ...styles.inputError, ...inputStyles}
-            : {...styles.input, ...inputStyles}
-        }
-        {...args}
-      />
-    </View>
+    <TextInput
+      placeholder={error ? 'El campo es obligatorio' : placeholder}
+      placeholderTextColor={error && '#ED7A7A'}
+      autoCapitalize="none"
+      value={value}
+      style={
+        error
+          ? {...styles.input, ...styles.inputError, ...inputStyles}
+          : {...styles.input, ...inputStyles}
+      }
+      {...args}
+    />
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-  },
   label: {
-    color: 'white',
     marginBottom: 10,
     fontSize: 15,
   },
   input: {
     height: 50,
-    borderColor: 'white',
     borderWidth: 1,
     borderRadius: 10,
     padding: 10,
-    color: 'white',
+    borderColor: '#EAEAEA',
+    marginBottom: 20,
   },
   inputError: {
     borderWidth: 2,
-    borderColor: 'red',
+    borderColor: '#ED7A7A',
   },
 });
 

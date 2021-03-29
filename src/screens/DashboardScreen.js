@@ -1,9 +1,12 @@
 import React, {useCallback, useState} from 'react';
+import {useSelector, shallowEqual} from 'react-redux';
+
 import {View, StyleSheet, Text, Button} from 'react-native';
 
 import {useDispatch} from 'react-redux';
 
 //Firebase
+import {useGetFirebase} from '../hooks/useGetFirebase';
 
 // Components
 import JobsResume from '../components/JobsResume/JobsResume';
@@ -19,19 +22,11 @@ import moment from 'moment';
 import {ScrollView} from 'react-native';
 
 const DashboardScreen = () => {
-  const dispatch = useDispatch();
-  const [visible, setVisible] = useState(false);
+  const {list, loading, error} = useGetFirebase('incidences');
+  const [state, setState] = useState(false);
 
   const date = moment(new Date()).format('LL').split(' ');
   date[2] = date[2][0].toUpperCase() + date[2].slice(1);
-
-  const logUser = useCallback(
-    () =>
-      dispatch({
-        type: 'LOGOUT_USER',
-      }),
-    [dispatch],
-  );
 
   return (
     <React.Fragment>
@@ -55,9 +50,12 @@ const DashboardScreen = () => {
               <JobsResume />
               <View style={styles.filterWrapper}>
                 <Text style={{...styles.todayStyle}}>🚨 Incidencias</Text>
-                <StatusIncidence />
+                <StatusIncidence onChangeFilter={setState} state={state} />
               </View>
-              <IncidencesList />
+              <IncidencesList
+                list={list.filter((inci) => inci.done === state)}
+                loading={loading}
+              />
             </View>
           </View>
         </ScrollView>
