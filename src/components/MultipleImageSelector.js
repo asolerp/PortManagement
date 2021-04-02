@@ -18,10 +18,7 @@ import {setImages} from '../store/incidenceFormActions';
 
 // Utils
 import {launchImage} from '../utils/imageFunctions';
-<<<<<<< HEAD
-=======
 import {Platform} from 'react-native';
->>>>>>> dad1bd1 (commit)
 
 const styles = StyleSheet.create({
   container: {
@@ -101,20 +98,12 @@ const MultipleImageSelector = () => {
       mediaType: 'photo',
       includeBase64: true,
     }).then((images) => {
-<<<<<<< HEAD
-      // setImages(images.map((image) => ({url: image.path})));
-      setImagesAction(
-        images.map((image, i) => ({
-          fileName: image.filename,
-          fileUri: image.sourceURL,
-=======
       console.log(images);
       // setImages(images.map((image) => ({url: image.path})));
       setImagesAction(
         images.map((image, i) => ({
           fileName: image.filename || `image-${i}`,
           fileUri: Platform.OS === 'android' ? image.path : image.sourceURL,
->>>>>>> dad1bd1 (commit)
           fileType: image.mime,
         })),
       );

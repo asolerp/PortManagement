@@ -84,8 +84,10 @@ const AuthNavigator = () => {
   // Handle user state changes
   const onAuthStateChanged = useCallback(
     async (result) => {
-      if (result !== null) {
+      console.log(result);
+      if (result?.uid) {
         const usuario = await getUser(result?.uid);
+        console.log(usuario, 'usuario');
         if (usuario.data()) {
           setUser({...usuario.data(), uid: result.uid});
           updateFirebase(`${result.uid}`, {

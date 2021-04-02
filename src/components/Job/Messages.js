@@ -72,37 +72,12 @@ const Messages = () => {
     ({userLoggedIn: {user}}) => ({user}),
     shallowEqual,
   );
-<<<<<<< HEAD
-  const {document: userLoggedIn, loading, error} = useGetDocFirebase(
-    'users',
-    user.uid,
-  );
-  const {
-    addFirebase: addMessage,
-    result: resultAddMessage,
-    loading: loadingAddMessage,
-    error: addMessageError,
-  } = useAddFirebase();
-
-  const {
-    updateFirebase,
-    loading: updatingMessage,
-    error: errorUpdatingMessage,
-  } = useUpdateFirebase('jobs');
-
-  const {
-    addFirebase: addPhoto,
-    loading: loadingAddPhoto,
-    error: addPhotoError,
-  } = useAddFirebase();
-=======
   const {document: userLoggedIn} = useGetDocFirebase('users', user.uid);
   const {addFirebase: addMessage} = useAddFirebase();
 
   const {updateFirebase} = useUpdateFirebase('jobs');
 
   const {addFirebase: addPhoto, loading: loadingAddPhoto} = useAddFirebase();
->>>>>>> dad1bd1 (commit)
 
   const onSendImage = () => {
     launchImage(setMessageImage);
