@@ -84,14 +84,16 @@ const AuthNavigator = () => {
   // Handle user state changes
   const onAuthStateChanged = useCallback(
     async (result) => {
-      const usuario = await getUser(result?.uid);
-      if (usuario.data()) {
-        setUser({...usuario.data(), uid: result.uid});
-        updateFirebase(`${result.uid}`, {
-          token: await messaging().getToken(),
-        });
-      } else {
-        setUser(null);
+      if (result !== null) {
+        const usuario = await getUser(result?.uid);
+        if (usuario.data()) {
+          setUser({...usuario.data(), uid: result.uid});
+          updateFirebase(`${result.uid}`, {
+            token: await messaging().getToken(),
+          });
+        } else {
+          setUser(null);
+        }
       }
       if (initializing) {
         setInitializing(false);

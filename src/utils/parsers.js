@@ -16,7 +16,11 @@ export const getHightByRoute = (route) => {
     case 'Dashboard':
       return 180;
     case 'Home':
+<<<<<<< HEAD
       return 100;
+=======
+      return 180;
+>>>>>>> dad1bd1 (commit)
     case 'NewHome':
       return 100;
     case 'Incidencias':

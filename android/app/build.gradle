@@ -133,6 +133,10 @@ android {
         applicationId "com.portmanagement"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
+<<<<<<< HEAD
+=======
+        vectorDrawables.useSupportLibrary = true
+>>>>>>> dad1bd1 (commit)
         versionCode 1
         versionName "1.0"
     }
