@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useCallback, createContext} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import React, {useState, useEffect, useCallback} from 'react';
 
 // Redux
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
@@ -58,14 +57,10 @@ const getUserSignInStack = (role) => {
 };
 
 const AuthNavigator = () => {
-  const [initializing, setInitializing] = useState(true);
+  const [initializing, setInitializing] = useState(false);
   const dispatch = useDispatch();
 
-  const {
-    updateFirebase,
-    loading: updatingMessage,
-    error: errorUpdatingMessage,
-  } = useUpdateFirebase('users');
+  const {updateFirebase} = useUpdateFirebase('users');
 
   const {user} = useSelector(
     ({userLoggedIn: {user}}) => ({user}),
@@ -84,10 +79,9 @@ const AuthNavigator = () => {
   // Handle user state changes
   const onAuthStateChanged = useCallback(
     async (result) => {
-      console.log(result);
-      if (result?.uid) {
+      console.log('auth result', result);
+      if (result) {
         const usuario = await getUser(result?.uid);
-        console.log(usuario, 'usuario');
         if (usuario.data()) {
           setUser({...usuario.data(), uid: result.uid});
           updateFirebase(`${result.uid}`, {
@@ -96,9 +90,8 @@ const AuthNavigator = () => {
         } else {
           setUser(null);
         }
-      }
-      if (initializing) {
-        setInitializing(false);
+      } else {
+        setUser(null);
       }
     },
     [initializing, setUser],
@@ -115,7 +108,9 @@ const AuthNavigator = () => {
     return null;
   }
 
-  return user ? (
+  console.log(user);
+
+  return user?.uid ? (
     <React.Fragment>
       <Modal />
       <StatusBar barStyle="light-content" />
