@@ -16,6 +16,7 @@ import JobItem from '../../components/JobItem';
 
 // Utils
 import moment from 'moment';
+import subDays from 'date-fns/subDays';
 import {ScrollView} from 'react-native';
 
 const styles = StyleSheet.create({
@@ -70,6 +71,11 @@ const HomeWorker = () => {
 
   const {list, loading, error} = useGetFirebase('jobs', null, [
     {
+      label: 'date',
+      operator: '>',
+      condition: subDays(new Date(), 1),
+    },
+    {
       label: 'workersId',
       operator: 'array-contains',
       condition: user.uid,
@@ -103,20 +109,26 @@ const HomeWorker = () => {
               </Text>
               <StatusTaskFilter />
               <View style={{marginTop: 20}}>
-                {list
-                  ?.filter((job) => job.done === statusTaskFilter)
-                  .sort((a, b) => a.date - b.date)
-                  .map((item) => (
-                    <JobItem
-                      job={item}
-                      key={item.id}
-                      onPress={() =>
-                        navigation.navigate('JobScreen', {
-                          jobId: item.id,
-                        })
-                      }
-                    />
-                  ))}
+                {list.length > 0 ? (
+                  <React.Fragment>
+                    {list
+                      ?.filter((job) => job.done === statusTaskFilter)
+                      .sort((a, b) => a.date - b.date)
+                      .map((item) => (
+                        <JobItem
+                          job={item}
+                          key={item.id}
+                          onPress={() =>
+                            navigation.navigate('JobScreen', {
+                              jobId: item.id,
+                            })
+                          }
+                        />
+                      ))}
+                  </React.Fragment>
+                ) : (
+                  <Text>No tienes tareas asignadas para hoy</Text>
+                )}
               </View>
             </View>
           </View>

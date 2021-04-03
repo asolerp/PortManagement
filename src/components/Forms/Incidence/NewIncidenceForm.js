@@ -60,6 +60,7 @@ const NewIncidenceForm = () => {
         <TextInput
           multiline
           numberOfLines={10}
+          textAlignVertical="top"
           style={{height: 120}}
           placeholder="Incidencia"
           onChangeText={(text) => setInputFormAction('incidence', text)}

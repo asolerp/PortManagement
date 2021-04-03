@@ -209,6 +209,7 @@ exports.sendPushNotificationNewIncidence = functions.firestore
       await admin.messaging().sendMulticast({
         tokens: adminTokens,
         notification,
+        priority: 'high',
         // data,
       });
     } catch (err) {

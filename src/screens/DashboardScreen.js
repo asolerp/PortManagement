@@ -20,9 +20,16 @@ import LinearGradient from 'react-native-linear-gradient';
 // Utils
 import moment from 'moment';
 import {ScrollView} from 'react-native';
+import subDays from 'date-fns/subDays';
 
 const DashboardScreen = () => {
-  const {list, loading, error} = useGetFirebase('incidences');
+  const {list, loading, error} = useGetFirebase('incidences', null, [
+    {
+      label: 'date',
+      operator: '>',
+      condition: subDays(new Date(), 1),
+    },
+  ]);
   const [state, setState] = useState(false);
 
   const date = moment(new Date()).format('LL').split(' ');

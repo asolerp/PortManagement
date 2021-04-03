@@ -7,6 +7,7 @@ import Avatar from '../components/Avatar';
 import InputGroup from '../components/Elements/InputGroup';
 import CustomButton from '../components/Elements/CustomButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import ImageBlurLoading from 'react-native-image-blur-loading';
 
 //Redux
 import {useSelector, shallowEqual} from 'react-redux';
@@ -31,6 +32,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 20,
     marginBottom: 40,
+  },
+  avatarWrapper: {
+    width: 150,
+    height: 150,
+    borderRadius: 100,
   },
   iconContainer: {
     position: 'absolute',
@@ -132,10 +138,18 @@ const ProfileScreen = () => {
                 </TouchableOpacity>
               </View>
             )}
-            <Avatar
+            <ImageBlurLoading
+              withIndicator
+              thumbnailSource={{
+                uri: newImage?.fileUri || userLoggedIn?.profileImage,
+              }}
+              source={{uri: newImage?.fileUri || userLoggedIn?.profileImage}}
+              style={styles.avatarWrapper}
+            />
+            {/* <Avatar
               uri={newImage?.fileUri || userLoggedIn?.profileImage}
               size="xxl"
-            />
+            /> */}
           </TouchableOpacity>
           <Text style={styles.comonTextStyle}>
             {userLoggedIn?.firstName} {userLoggedIn?.lastName}

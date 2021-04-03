@@ -133,7 +133,7 @@ const JobForm = () => {
     <View style={[styles.newJobScreen]}>
       <BottomModal
         modalStyle={{borderRadius: 30}}
-        height={0.9}
+        height={modalContent === 'date' ? 0.5 : 0.9}
         visible={modalVisible}
         onSwipeOut={(event) => {
           setModalVisible(false);

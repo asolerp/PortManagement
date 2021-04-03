@@ -193,8 +193,7 @@ const Messages = () => {
               borderRadius: 20,
               borderWidth: 1,
               borderColor: '#cccccc',
-              marginHorizontal: 20,
-              marginBottom: 10,
+              marginBottom: 5,
             }}
           />
         )}

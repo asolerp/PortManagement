@@ -28,6 +28,8 @@ import PagetLayout from '../components/PageLayout';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import {ImageBackground} from 'react-native';
 
+import {finishIncidence, openIncidence} from '../components/Alerts/incidences';
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 40,
@@ -125,8 +127,8 @@ const IncidenceScreen = () => {
 
   const {updateFirebase, loading, error} = useUpdateFirebase('incidences');
 
-  const handleFinishTask = (status) => {
-    updateFirebase(`${incidenceId}`, {
+  const handleFinishTask = async (status) => {
+    await updateFirebase(`${incidenceId}`, {
       done: status,
     });
   };
@@ -162,12 +164,17 @@ const IncidenceScreen = () => {
       }
       footer={
         <CustomButton
-          disabled={incidence?.done}
           loading={false}
           title={
             incidence?.done ? 'Incidencia resuelta' : 'Resolver incidencia'
           }
-          onPress={() => handleFinishTask(true)}
+          onPress={() => {
+            if (incidence?.done) {
+              openIncidence(() => handleFinishTask(false));
+            } else {
+              finishIncidence(() => handleFinishTask(true));
+            }
+          }}
         />
       }
       titleProps={{

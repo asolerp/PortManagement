@@ -3,7 +3,7 @@ import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {resetForm} from '../../store/incidenceFormActions';
 
 import {useNavigation} from '@react-navigation/native';
-import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {Alert, View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 
 // UI
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,7 +19,7 @@ import {useUploadCloudinaryImage} from '../../hooks/useUploadCloudinaryImage';
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 0,
   },
   iconWrapper: {
     width: 30,
@@ -70,14 +70,27 @@ const NewIncidence = () => {
     shallowEqual,
   );
 
-  const {updateFirebase, loading: updatingFirebase} = useUpdateFirebase(
-    'incidences',
-  );
+  const {updateFirebase} = useUpdateFirebase('incidences');
 
   const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
 
-  const {addFirebase, result, loading, error} = useAddFirebase();
-  const {upload, loading: uploadImageLoading} = useUploadCloudinaryImage();
+  const {addFirebase} = useAddFirebase();
+  const {upload} = useUploadCloudinaryImage();
+
+  const showAlert = () =>
+    Alert.alert(
+      'Lo sentimos',
+      'Ha ocurrido un error al crear la incidencia. Inténtelo más tarde',
+      [
+        {
+          text: 'Cancelar',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Ok', onPress: () => console.log('OK Pressed')},
+        ,
+      ],
+    );
 
   const createIncidence = async () => {
     try {
@@ -90,20 +103,23 @@ const NewIncidence = () => {
         done: false,
       });
 
-      const uploadImages = incidenceImages.map((file) =>
-        upload(file, `/PortManagement/Incidences/${newIncidence.id}/Photos`),
-      );
+      if (incidenceImages?.length > 0) {
+        const uploadImages = incidenceImages.map((file) =>
+          upload(file, `/PortManagement/Incidences/${newIncidence.id}/Photos`),
+        );
 
-      const imagesURLs = await Promise.all(uploadImages);
+        const imagesURLs = await Promise.all(uploadImages);
 
-      await updateFirebase(`${newIncidence.id}`, {
-        photos: imagesURLs,
-      });
+        await updateFirebase(`${newIncidence.id}`, {
+          photos: imagesURLs,
+        });
+      }
 
       resetFormAction();
       navigation.goBack();
     } catch (err) {
       console.log(err);
+      showAlert();
     } finally {
       setLo(false);
     }

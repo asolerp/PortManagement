@@ -39,6 +39,9 @@ const JobsScreen = () => {
   const dispatch = useDispatch();
   const {list, loading, error} = useGetFirebase('jobs');
 
+  console.log('jobs', list);
+  console.log(error);
+
   const {houses, filterDate} = useSelector(
     ({filters: {houses, filterDate}}) => ({houses, filterDate}),
     shallowEqual,

@@ -1,5 +1,5 @@
 const INITIAL_FILTER_STATE = {
-  user: {},
+  user: null,
 };
 
 export const userReducer = (state = INITIAL_FILTER_STATE, action) => {

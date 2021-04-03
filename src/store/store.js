@@ -20,10 +20,10 @@ const rootReducer = combineReducers({
 
 let middlewaresToApply = [thunk];
 
-// if (__DEV__) {
-//   const createFlipperDebugger = require('redux-flipper').default;
-//   middlewaresToApply.push(createFlipperDebugger());
-// }
+if (__DEV__) {
+  const createFlipperDebugger = require('redux-flipper').default;
+  middlewaresToApply.push(createFlipperDebugger());
+}
 
 const middelware = applyMiddleware(...middlewaresToApply);
 

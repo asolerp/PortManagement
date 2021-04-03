@@ -90,6 +90,9 @@ const AuthNavigator = () => {
         } else {
           setUser(null);
         }
+        if (initializing) {
+          setInitializing(false);
+        }
       } else {
         setUser(null);
       }
@@ -104,7 +107,7 @@ const AuthNavigator = () => {
     return authSubscriber;
   }, [onAuthStateChanged]);
 
-  if (initializing) {
+  if (initializing || !user) {
     return null;
   }
 
