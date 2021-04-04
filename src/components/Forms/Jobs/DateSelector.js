@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Platform, StyleSheet} from 'react-native';
 
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setInputForm, resetForm} from '../../../store/jobFormActions';
@@ -8,11 +8,11 @@ import {setInputForm, resetForm} from '../../../store/jobFormActions';
 import CalendarStrip from 'react-native-calendar-strip';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomButton from '../../Elements/CustomButton';
 
 // Utils
 import moment from 'moment';
-import {Platform} from 'react-native';
-import CustomButton from '../../Elements/CustomButton';
+import setHours from 'date-fns/set';
 
 const styles = StyleSheet.create({
   container: {},
@@ -52,11 +52,21 @@ const DateSelector = ({closeModal}) => {
     shallowEqual,
   );
 
-  const initialTime = new Date();
+  const today = new Date();
+  const initialTime = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate(),
+    8,
+    0,
+    0,
+  );
 
-  const [dateSelected, setDateSelected] = useState(filterDate);
+  const [dateSelected, setDateSelected] = useState(
+    new Date(job?.date) || filterDate,
+  );
   const [timeSelected, setTimeSelected] = useState(
-    job?.time || initialTime.setHours(8, 0),
+    new Date(job?.time) || initialTime,
   );
 
   const setInputFormAction = useCallback(
@@ -65,8 +75,9 @@ const DateSelector = ({closeModal}) => {
   );
 
   const handleSubmit = () => {
-    // setInputFormAction('date', dateSelected);
-    // setInputFormAction('time', moment(timeSelected));
+    console.log(job);
+    setInputFormAction('date', moment(dateSelected));
+    setInputFormAction('time', moment(timeSelected));
     closeModal();
   };
 
@@ -78,7 +89,7 @@ const DateSelector = ({closeModal}) => {
         height: 200,
       }}>
       <CalendarStrip
-        selectedDate={moment(filterDate)}
+        selectedDate={job?.date || moment(new Date())}
         onDateSelected={(date) => setDateSelected(date)}
         scrollable
         style={styles.calendarContainer}
