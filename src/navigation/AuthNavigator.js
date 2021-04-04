@@ -107,11 +107,9 @@ const AuthNavigator = () => {
     return authSubscriber;
   }, [onAuthStateChanged]);
 
-  if (initializing || !user) {
+  if (initializing) {
     return null;
   }
-
-  console.log(user);
 
   return user?.uid ? (
     <React.Fragment>

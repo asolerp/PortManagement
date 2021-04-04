@@ -64,9 +64,7 @@ const DateSelector = ({closeModal}) => {
   );
 
   const [dateSelected, setDateSelected] = useState(job?.date || filterDate);
-  const [timeSelected, setTimeSelected] = useState(
-    new Date(job?.time) || initialTime,
-  );
+  const [timeSelected, setTimeSelected] = useState(job?.time || initialTime);
 
   const setInputFormAction = useCallback(
     (label, value) => dispatch(setInputForm(label, value)),

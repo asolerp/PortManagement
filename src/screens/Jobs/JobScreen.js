@@ -11,11 +11,6 @@ import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
 import PagetLayout from '../../components/PageLayout';
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    height: Dimensions.get('window').height,
-    backgroundColor: 'white',
-  },
   tabBarStyle: {
     backgroundColor: 'transparent',
     color: 'black',
@@ -53,7 +48,9 @@ const JobScreen = ({route, navigation}) => {
     {key: 'photos', title: 'Fotos'},
   ]);
 
-  const initialLayout = {width: Dimensions.get('window').width};
+  const initialLayout = {
+    width: Dimensions.get('window').width,
+  };
 
   const renderScene = SceneMap({
     info: FirstRoute,
@@ -89,6 +86,7 @@ const JobScreen = ({route, navigation}) => {
         renderTabBar={renderTabBar}
         onIndexChange={setIndex}
         initialLayout={initialLayout}
+        style={{height: Dimensions.get('window').height - 100}}
       />
     </PagetLayout>
   );

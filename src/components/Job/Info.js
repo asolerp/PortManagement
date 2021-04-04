@@ -29,7 +29,10 @@ const styles = StyleSheet.create({
   infoWrapper: {
     width: '30%',
   },
-  actionButtonWrapper: {},
+  actionButtonWrapper: {
+    justifyContent: 'flex-end',
+    paddingBottom: 20,
+  },
   date: {
     fontSize: 18,
     marginVertical: 10,
@@ -88,65 +91,61 @@ const Info = () => {
     });
   };
 
-  const {
-    deleteFirebase,
-    loading: loadingDelete,
-    error: errorDelete,
-  } = useDeleteFirebase();
-
   const editFormAaction = useCallback((task) => dispatch(editForm(task, job)), [
     dispatch,
     job,
   ]);
 
   return (
-    <ScrollView>
+    <ScrollView contentContainerStyle={{flex: 1}}>
       <View style={styles.container}>
-        <View style={styles.infoWrapper}>
-          <InfoIcon
-            info={job.done ? 'Termianda' : 'Sin terminar'}
-            color={job.done ? '#7dd891' : '#ED7A7A'}
+        <View style={{flex: 1}}>
+          <View style={styles.infoWrapper}>
+            <InfoIcon
+              info={job.done ? 'Termianda' : 'Sin terminar'}
+              color={job.done ? '#7dd891' : '#ED7A7A'}
+            />
+          </View>
+          <Text style={styles.date}>
+            🕜 {moment(job?.date?.toDate()).format('LL')}
+          </Text>
+          <Text style={styles.label}>🕵️‍♀️ Observaciones</Text>
+          {job?.observations ? (
+            <Text style={styles.observations}>{job?.observations}</Text>
+          ) : (
+            <Text style={styles.observations}>
+              No se han detallado observaciones
+            </Text>
+          )}
+          <Text style={styles.label}>👷‍♂️ Trabajadores asignados</Text>
+          <View style={styles.workers}>
+            {job?.workers?.map((worker) => (
+              <Avatar
+                key={worker.id}
+                uri={worker.profileImage}
+                overlap
+                size="big"
+              />
+            ))}
+          </View>
+          <Text style={styles.label}>
+            🏡 {job?.house && job?.house[0].houseName}
+          </Text>
+          <Text style={styles.houseItems}>
+            <Text style={{fontWeight: 'bold'}}>Calle: </Text>
+            <Text>{job?.house && job?.house[0]?.street}</Text>{' '}
+          </Text>
+          <Text style={styles.houseItems}>
+            <Text style={{fontWeight: 'bold'}}>Municipio: </Text>
+            <Text>{job?.house && job?.house[0]?.municipio}</Text>{' '}
+          </Text>
+          <Image
+            style={styles.houseImage}
+            source={{
+              uri: job?.house && job?.house[0]?.houseImage,
+            }}
           />
         </View>
-        <Text style={styles.date}>
-          🕜 {moment(job?.date?.toDate()).format('LL')}
-        </Text>
-        <Text style={styles.label}>🕵️‍♀️ Observaciones</Text>
-        {job?.observations ? (
-          <Text style={styles.observations}>{job?.observations}</Text>
-        ) : (
-          <Text style={styles.observations}>
-            No se han detallado observaciones
-          </Text>
-        )}
-        <Text style={styles.label}>👷‍♂️ Trabajadores asignados</Text>
-        <View style={styles.workers}>
-          {job?.workers?.map((worker) => (
-            <Avatar
-              key={worker.id}
-              uri={worker.profileImage}
-              overlap
-              size="big"
-            />
-          ))}
-        </View>
-        <Text style={styles.label}>
-          🏡 {job?.house && job?.house[0].houseName}
-        </Text>
-        <Text style={styles.houseItems}>
-          <Text style={{fontWeight: 'bold'}}>Calle: </Text>
-          <Text>{job?.house && job?.house[0]?.street}</Text>{' '}
-        </Text>
-        <Text style={styles.houseItems}>
-          <Text style={{fontWeight: 'bold'}}>Municipio: </Text>
-          <Text>{job?.house && job?.house[0]?.municipio}</Text>{' '}
-        </Text>
-        <Image
-          style={styles.houseImage}
-          source={{
-            uri: job?.house && job?.house[0]?.houseImage,
-          }}
-        />
         <View style={styles.actionButtonWrapper}>
           <CustomButton
             title={job?.done ? 'No está terminada' : 'Finalizar'}

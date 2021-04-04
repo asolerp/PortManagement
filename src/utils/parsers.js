@@ -5,10 +5,13 @@ import {
   PRIORITY_LOW,
   PRIORITY_MEDIUM,
   PRIORITY_HEIGHT,
+  CHECKLIST_DONE,
 } from '../constants/colors';
 
-export const minimizetext = (text) => {
-  return text.length > 40 ? text.substring(0, 40 - 3) + '...' : text;
+export const minimizetext = (text, numberOfCharts = 40) => {
+  return text.length > numberOfCharts
+    ? text.substring(0, numberOfCharts - 3) + '...'
+    : text;
 };
 
 export const getHightByRoute = (route) => {
@@ -53,6 +56,17 @@ export const parsePriorityColor = (priority) => {
       return PRIORITY_MEDIUM;
     case 'height':
       return PRIORITY_HEIGHT;
+  }
+};
+
+export const parsePercentageDone = (percentage) => {
+  console.log(percentage);
+  if (percentage <= 0.5) {
+    return PRIORITY_HEIGHT;
+  } else if (percentage > 0.5 && percentage < 1) {
+    return PRIORITY_MEDIUM;
+  } else {
+    return CHECKLIST_DONE;
   }
 };
 

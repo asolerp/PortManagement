@@ -50,7 +50,7 @@ const NewJobScreen = ({route, navigation}) => {
       const newJobForm = {
         observations: job?.observations,
         date: job?.date?._d,
-        time: job?.time?.toLocaleTimeString(),
+        time: job?.time,
         workers: job?.workers?.value,
         workersId: job?.workers?.value.map((worker) => worker.id),
         houseId: job?.house?.value[0].id,

@@ -1,6 +1,9 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
+// Redux
+import {useSelector, shallowEqual} from 'react-redux';
+
 //Firebase
 import {useGetFirebase} from '../../hooks/useGetFirebase';
 import {useGetDocFirebase} from '../../hooks/useGetDocFIrebase';
@@ -12,6 +15,11 @@ import CheckBox from '@react-native-community/checkbox';
 
 // styles
 import {defaultLabel} from '../../styles/common';
+
+// utils
+import {format} from 'date-fns';
+import moment from 'moment';
+import Avatar from '../../components/Avatar';
 
 const styles = StyleSheet.create({
   checklistContainer: {
@@ -27,23 +35,44 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#dadada',
+  },
+  observationsStyle: {
+    paddingLeft: 10,
+    fontSize: 15,
   },
   avatarWrapper: {
     flex: 1,
   },
+  labelWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
   infoWrapper: {
     flex: 6,
+    marginLeft: 10,
   },
   name: {
     fontSize: 15,
+  },
+  dateStyle: {
+    color: '#2A7BA5',
   },
 });
 
 const CheckItem = ({check, handleCheck}) => {
   return (
     <View style={styles.container}>
+      {check?.worker && <Avatar uri={check?.worker?.profileImage} size="big" />}
       <View style={styles.infoWrapper}>
         <Text style={styles.name}>{check.title}</Text>
+        {check?.date && (
+          <Text style={styles.dateStyle}>
+            {moment(check?.date).format('LL')}
+          </Text>
+        )}
       </View>
       <View style={styles.checkboxWrapper}>
         <CheckBox
@@ -58,13 +87,18 @@ const CheckItem = ({check, handleCheck}) => {
 
 const CheckScreen = ({route, navigation}) => {
   const {checkId} = route.params;
+  console.log(checkId);
   const {document: checklist} = useGetDocFirebase('checklists', checkId);
   const {list: checks} = useGetFirebase(`checklists/${checkId}/checks`);
+
+  const {user} = useSelector(
+    ({userLoggedIn: {user}}) => ({user}),
+    shallowEqual,
+  );
 
   const {updateFirebase} = useUpdateFirebase('checklists');
 
   const handleCheck = async (checklist, check, state) => {
-    console.log(updateFirebase);
     try {
       await updateFirebase(`${checklist.id}`, {
         ...checklist,
@@ -72,7 +106,9 @@ const CheckScreen = ({route, navigation}) => {
       });
       await updateFirebase(`${checklist.id}/checks/${check.id}`, {
         ...check,
+        date: !state ? null : new Date(),
         done: state,
+        worker: state ? user : null,
       });
     } catch (err) {
       console.log(err);
@@ -90,9 +126,22 @@ const CheckScreen = ({route, navigation}) => {
         color: 'white',
       }}>
       <View style={styles.checklistContainer}>
-        <Text style={{...defaultLabel, marginBottom: 20}}>
-          ✅ Listado de checks
-        </Text>
+        <View style={{marginBottom: 20}}>
+          <Text style={{...defaultLabel, marginBottom: 20}}>
+            🕵️ Observaciones
+          </Text>
+          <Text style={styles.observationsStyle}>
+            {checklist?.observations}
+          </Text>
+        </View>
+        <View style={styles.labelWrapper}>
+          <Text style={{...defaultLabel, marginBottom: 20}}>
+            ✅ Listado de checks
+          </Text>
+          <Text>
+            {checklist.done}/{checklist.total}
+          </Text>
+        </View>
         {checks?.map((check) => (
           <CheckItem
             key={check.id}

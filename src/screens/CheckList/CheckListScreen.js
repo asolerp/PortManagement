@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import CheckItem from '../../components/CheckItem';
 import AddButton from '../../components/Elements/AddButton';
 import PagetLayout from '../../components/PageLayout';
 
@@ -23,38 +24,7 @@ const styles = StyleSheet.create({
   checkListWrapper: {
     marginTop: 20,
   },
-  checkItemWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    padding: 10,
-    borderWidth: 1,
-    borderColor: '#DEDEDE',
-    borderRadius: 10,
-    marginBottom: 10,
-  },
-  checkText: {
-    marginTop: 5,
-  },
 });
-
-const CheckItem = ({check, onPress}) => {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <View style={styles.checkItemWrapper}>
-        <View>
-          <Text>🏡 {check.house[0].houseName}</Text>
-          <Text style={styles.checkText}>{check.observations}</Text>
-        </View>
-        <View>
-          <Text>
-            Termiandas {check.done}/{check.total}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
 
 const CheckListScreen = ({navigation}) => {
   const {list: checkLists, loading, error} = useGetFirebase('checklists');

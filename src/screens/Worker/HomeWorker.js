@@ -14,10 +14,14 @@ import {useGetFirebase} from '../../hooks/useGetFirebase';
 import LinearGradient from 'react-native-linear-gradient';
 import JobItem from '../../components/JobItem';
 
+// Styles
+import {defaultLabel} from '../../styles/common';
+
 // Utils
 import moment from 'moment';
 import subDays from 'date-fns/subDays';
 import {ScrollView} from 'react-native';
+import CheckItem from '../../components/CheckItem';
 
 const styles = StyleSheet.create({
   container: {
@@ -55,6 +59,9 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
   },
+  checksWrapper: {
+    marginBottom: 20,
+  },
 });
 
 const HomeWorker = () => {
@@ -69,7 +76,7 @@ const HomeWorker = () => {
     shallowEqual,
   );
 
-  const {list, loading, error} = useGetFirebase('jobs', null, [
+  const {list} = useGetFirebase('jobs', null, [
     {
       label: 'date',
       operator: '>',
@@ -79,6 +86,14 @@ const HomeWorker = () => {
       label: 'workersId',
       operator: 'array-contains',
       condition: user.uid,
+    },
+  ]);
+
+  const {list: checklist} = useGetFirebase('checklists', null, [
+    {
+      label: 'date',
+      operator: '>',
+      condition: subDays(new Date(), 1),
     },
   ]);
 
@@ -107,6 +122,22 @@ const HomeWorker = () => {
               <Text style={styles.label}>
                 Estos son tus trabajos asignados para hoy 💪🏡
               </Text>
+              <Text style={{...defaultLabel, marginBottom: 20}}>
+                ✅ Check list
+              </Text>
+              <View style={styles.checksWrapper}>
+                {checklist?.map((check) => (
+                  <CheckItem
+                    key={check.id}
+                    check={check}
+                    onPress={() =>
+                      navigation.navigate('Check', {
+                        checkId: check.id,
+                      })
+                    }
+                  />
+                ))}
+              </View>
               <StatusTaskFilter />
               <View style={{marginTop: 20}}>
                 {list.length > 0 ? (

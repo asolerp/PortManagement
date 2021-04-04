@@ -7,6 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import HomeWorker from '../../screens/Worker/HomeWorker';
 import JobScreen from '../../screens/Jobs/JobScreen';
 import NewIncidence from '../../screens/Worker/NewIncidence';
+import CheckScreen from '../../screens/CheckList/CheckScreen';
 
 const Stack = createStackNavigator();
 const HomeWorkerStack = () => {
@@ -43,6 +44,7 @@ const HomeWorkerStack = () => {
   return (
     <Stack.Navigator headerMode="none" initialRouteName={initialRoute}>
       <Stack.Screen name="Home" component={HomeWorker} />
+      <Stack.Screen name="Check" component={CheckScreen} />
       <Stack.Screen name="JobScreen" component={JobScreen} />
       <Stack.Screen name="NewIncidence" component={NewIncidence} />
     </Stack.Navigator>
