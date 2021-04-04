@@ -9,8 +9,8 @@ import DashboardStack from './DashboardStack';
 import {AnimatedTabBarNavigator} from 'react-native-animated-nav-tab-bar';
 import {getFocusedRouteNameFromRoute} from '@react-navigation/native';
 import {Platform} from 'react-native';
-import ProfileScreen from '../screens/ProfileScreen';
 import IncidencesStack from './IncidencesStack';
+import CheckListStack from './CheckListStack';
 
 const Tabs = AnimatedTabBarNavigator();
 
@@ -62,6 +62,20 @@ const TabNavigation = () => {
         }}
       />
       <Tabs.Screen
+        name="CheckList"
+        component={CheckListStack}
+        options={{
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="check"
+              size={size ? size : 24}
+              color={focused ? color : '#3E93A8'}
+              focused={focused}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
         name="Trabajos"
         component={JobsStack}
         options={({route}) => ({
@@ -69,6 +83,21 @@ const TabNavigation = () => {
           tabBarIcon: ({focused, color, size}) => (
             <Icon
               name="format-list-bulleted"
+              size={size ? size : 24}
+              color={focused ? color : '#3E93A8'}
+              focused={focused}
+            />
+          ),
+        })}
+      />
+      <Tabs.Screen
+        name="Incidencias"
+        component={IncidencesStack}
+        options={({route}) => ({
+          tabBarVisible: getTabBarVisible(route),
+          tabBarIcon: ({focused, color, size}) => (
+            <Icon
+              name="priority-high"
               size={size ? size : 24}
               color={focused ? color : '#3E93A8'}
               focused={focused}
@@ -92,35 +121,6 @@ const TabNavigation = () => {
         })}
       />
       {/* <Tabs.Screen
-        name="People"
-        component={DashboardScreen}
-        options={{
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon
-              name="person"
-              size={size ? size : 24}
-              color={focused ? color : '#3E93A8'}
-              focused={focused}
-            />
-          ),
-        }}
-      /> */}
-      <Tabs.Screen
-        name="Incidencias"
-        component={IncidencesStack}
-        options={({route}) => ({
-          tabBarVisible: getTabBarVisible(route),
-          tabBarIcon: ({focused, color, size}) => (
-            <Icon
-              name="priority-high"
-              size={size ? size : 24}
-              color={focused ? color : '#3E93A8'}
-              focused={focused}
-            />
-          ),
-        })}
-      />
-      <Tabs.Screen
         name="Perfil"
         component={ProfileScreen}
         options={{
@@ -133,7 +133,7 @@ const TabNavigation = () => {
             />
           ),
         }}
-      />
+      /> */}
     </Tabs.Navigator>
   );
 };

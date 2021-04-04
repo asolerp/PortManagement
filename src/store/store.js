@@ -8,10 +8,12 @@ import {jobFormReducer} from './jobFormReducer';
 import {houseFormReducer} from './houseFormReducer';
 import {incidenceFormReducer} from './incidenceFormReducer';
 import {modalReducer} from './modalReducer';
+import {checkListFormReducer} from './checkLisFormReducer';
 
 const rootReducer = combineReducers({
   filters: filterReducer,
   jobForm: jobFormReducer,
+  checklistForm: checkListFormReducer,
   modal: modalReducer,
   incidenceForm: incidenceFormReducer,
   userLoggedIn: userReducer,

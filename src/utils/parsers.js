@@ -21,6 +21,8 @@ export const getHightByRoute = (route) => {
       return 100;
     case 'Incidencias':
       return 100;
+    case 'CheckList':
+      return 100;
     case 'Jobs':
       return 230;
     case 'Homes':

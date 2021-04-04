@@ -21,8 +21,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import moment from 'moment';
 import {ScrollView} from 'react-native';
 import subDays from 'date-fns/subDays';
+import {TouchableOpacity} from 'react-native';
 
-const DashboardScreen = () => {
+const DashboardScreen = ({navigation}) => {
   const {list, loading, error} = useGetFirebase('incidences', null, [
     {
       label: 'date',
@@ -39,7 +40,9 @@ const DashboardScreen = () => {
     <React.Fragment>
       <View style={{backgroundColor: 'white'}}>
         <TitlePage>
-          <ProfileBar />
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+            <ProfileBar />
+          </TouchableOpacity>
         </TitlePage>
       </View>
       <LinearGradient

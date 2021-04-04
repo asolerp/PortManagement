@@ -9,21 +9,21 @@ import {
 } from 'react-native';
 
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {resetForm} from '../../store/checkListFormAction';
 
 import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
-import JobForm from '../../components/Forms/Jobs/JobForm';
-import TaskForm from '../../components/Forms/Jobs/TaskJob';
+import CheckListForm from '../../components/Forms/CheckList/CheckListForm';
 
 // UI
 import CustomButton from '../../components/Elements/CustomButton';
 import PagetLayout from '../../components/PageLayout';
 
 // Firebase
-import {resetForm} from '../../store/jobFormActions';
-import {newJob} from '../../firebase/newJob';
+import {useAddFirebase} from '../../hooks/useAddFirebase';
+import {useGetFirebase} from '../../hooks/useGetFirebase';
 
 const HideKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -31,12 +31,18 @@ const HideKeyboard = ({children}) => (
   </TouchableWithoutFeedback>
 );
 
-const NewJobScreen = ({route, navigation}) => {
+const NewCheckListJobScreen = ({route, navigation}) => {
   const dispatch = useDispatch();
-  const {taskName} = route.params;
   const [loading, setLoading] = useState();
 
-  const {job} = useSelector(({jobForm: {job}}) => ({job}), shallowEqual);
+  const {list: checks} = useGetFirebase('checks');
+
+  const {checklist} = useSelector(
+    ({checklistForm: {checklist}}) => ({checklist}),
+    shallowEqual,
+  );
+
+  const {addFirebase} = useAddFirebase();
 
   const resetFormAction = useCallback(() => dispatch(resetForm()), [dispatch]);
 
@@ -47,25 +53,31 @@ const NewJobScreen = ({route, navigation}) => {
   const handleSubmit = async () => {
     try {
       setLoading(true);
-      const newJobForm = {
-        observations: job?.observations,
-        date: job?.date?._d,
-        time: job?.time?.toLocaleTimeString(),
-        workers: job?.workers?.value,
-        workersId: job?.workers?.value.map((worker) => worker.id),
-        houseId: job?.house?.value[0].id,
-        house: job?.house?.value,
-        task: job?.task,
-        priority: job?.priority?.value,
-        done: false,
+      const newCheckListForm = {
+        observations: checklist?.observations,
+        date: new Date(),
+        houseId: checklist?.house?.value[0].id,
+        house: checklist?.house?.value,
+        total: checks.length,
+        done: 0,
       };
-      await newJob(newJobForm);
+      const newCheckList = await addFirebase('checklists', newCheckListForm);
+      await Promise.all(
+        checks.map((check) =>
+          addFirebase(`checklists/${newCheckList.id}/checks`, {
+            title: check.title,
+            done: false,
+            worker: null,
+            date: null,
+          }),
+        ),
+      );
     } catch (err) {
       console.log(err);
     } finally {
       setLoading(false);
       cleanForm();
-      navigation.navigate('Jobs');
+      navigation.navigate('CheckList');
     }
   };
 
@@ -84,17 +96,17 @@ const NewJobScreen = ({route, navigation}) => {
       footer={
         <CustomButton
           loading={loading}
-          title="Crear trabajo"
+          title="Crear checklist"
           onPress={() => handleSubmit()}
         />
       }
       titleProps={{
-        title: `Nuevo trabajo de ${taskName.toLowerCase()}`,
+        title: 'Nuevo checklist',
         subPage: true,
       }}>
       <View style={styles.jobScreen}>
         <KeyboardAwareScrollView>
-          <JobForm />
+          <CheckListForm />
         </KeyboardAwareScrollView>
       </View>
     </PagetLayout>
@@ -155,4 +167,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NewJobScreen;
+export default NewCheckListJobScreen;

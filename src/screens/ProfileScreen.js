@@ -124,9 +124,10 @@ const ProfileScreen = () => {
     <PagetLayout
       footer={<CustomButton title="Desconectarse" onPress={() => logOut()} />}
       titleLefSide={true}
+      backButton
       titleProps={{
         title: 'Perfil',
-        subPage: false,
+        subPage: true,
       }}>
       <View style={styles.pageContainer}>
         <View style={styles.avatarContainer}>

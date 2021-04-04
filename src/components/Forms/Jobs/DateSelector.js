@@ -1,5 +1,5 @@
 import React, {useState, useCallback} from 'react';
-import {View, Platform, StyleSheet} from 'react-native';
+import {View, SafeAreaView, Platform, StyleSheet} from 'react-native';
 
 import {useDispatch, useSelector, shallowEqual} from 'react-redux';
 import {setInputForm, resetForm} from '../../../store/jobFormActions';
@@ -13,6 +13,7 @@ import CustomButton from '../../Elements/CustomButton';
 // Utils
 import moment from 'moment';
 import setHours from 'date-fns/set';
+import {} from 'react-native';
 
 const styles = StyleSheet.create({
   container: {},
@@ -62,9 +63,7 @@ const DateSelector = ({closeModal}) => {
     0,
   );
 
-  const [dateSelected, setDateSelected] = useState(
-    new Date(job?.date) || filterDate,
-  );
+  const [dateSelected, setDateSelected] = useState(job?.date || filterDate);
   const [timeSelected, setTimeSelected] = useState(
     new Date(job?.time) || initialTime,
   );
@@ -82,7 +81,7 @@ const DateSelector = ({closeModal}) => {
   };
 
   return (
-    <View
+    <SafeAreaView
       style={{
         flex: 1,
         width: '100%',
@@ -123,7 +122,7 @@ const DateSelector = ({closeModal}) => {
       <View style={{marginTop: 'auto'}}>
         <CustomButton title={'Seleccionar fecha'} onPress={handleSubmit} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
